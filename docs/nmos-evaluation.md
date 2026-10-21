@@ -48,6 +48,8 @@ Set `id` to a stable configuration identity, `model` to the exact provider ID,
 `baseUrl` to its HTTPS base URL and `apiKeyEnvironmentVariable` to the key's
 environment variable name. URLs containing credentials, query or fragment are
 rejected. The template is intentionally a placeholder, not a working account.
+For DeepSeek through an OpenAI-compatible relay, use the
+[relay procedure and configuration template](deepseek-evaluation.md).
 
 Configure request fields from the provider's actual interface:
 
