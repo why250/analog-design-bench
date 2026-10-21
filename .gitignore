@@ -1,0 +1,9 @@
+# Private machine configuration and local setup records.
+/.local/
+# Optional skill used only on this machine.
+/skills/docker-text-stdin-build/
+
+# Generated evaluation records and Python bytecode.
+__pycache__/
+*.py[cod]
+/results/

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "my-model-chat-v2",
+  "model": "REPLACE_WITH_EXACT_PROVIDER_MODEL_ID",
+  "baseUrl": "https://api.example.com/v1",
+  "apiKeyEnvironmentVariable": "MODEL_API_KEY",
+  "request": {
+    "reasoningEffort": null,
+    "thinking": null,
+    "maxTokensField": "max_completion_tokens",
+    "includeUsage": true,
+    "extra": {}
+  },
+  "limits": {
+    "maxTurns": 0,
+    "maxTokensPerResponse": 131072
+  },
+  "pricing": null
+}
