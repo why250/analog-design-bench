@@ -4,7 +4,8 @@ param(
     [string]$Mode = 'Run',
     [string]$WorkspaceDirectory,
     [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_.-]*$')]
-    [string]$ContainerName = 'analog-design-bench-dev'
+    [string]$ContainerName = 'analog-design-bench-dev',
+    [switch]$TextStdin
 )
 
 $ErrorActionPreference = 'Stop'
@@ -19,9 +20,12 @@ if (-not (Test-Path -LiteralPath (Join-Path $workspacePath 'circuit.spi') -PathT
 if ($workspacePath.Contains(',')) { throw 'Docker mount paths must not contain commas.' }
 $dockerCommand = Get-Command docker.exe -ErrorAction SilentlyContinue
 $dockerPath = if ($dockerCommand) { $dockerCommand.Source } else {
-    Join-Path $env:ProgramFiles 'Docker/Docker/resources/bin/docker.exe'
+    @(
+        (Join-Path $env:LOCALAPPDATA 'Programs/DockerDesktop/resources/bin/docker.exe'),
+        (Join-Path $env:ProgramFiles 'Docker/Docker/resources/bin/docker.exe')
+    ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 }
-if (-not (Test-Path -LiteralPath $dockerPath)) { throw 'Docker Desktop is not installed.' }
+if (-not $dockerPath -or -not (Test-Path -LiteralPath $dockerPath)) { throw 'Docker Desktop is not installed.' }
 function Invoke-Docker {
     param([string[]]$DockerArguments)
     & $dockerPath @DockerArguments | Out-Host
@@ -33,7 +37,7 @@ if ($Mode -eq 'Verify') {
     $runId = (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
     & (Join-Path $PSScriptRoot 'Invoke-OfficialTask.ps1') -Task $task `
         -Circuit (Join-Path $workspacePath 'circuit.spi') `
-        -OutputDirectory (Join-Path $workspacePath "results/official-$runId")
+        -OutputDirectory (Join-Path $workspacePath "results/official-$runId") -TextStdin:$TextStdin
     return
 }
 

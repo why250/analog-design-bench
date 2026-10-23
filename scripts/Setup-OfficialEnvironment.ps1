@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$SmokeTestTask = 'sky130-nmos-pass-ldo-0p4v-pvt-mc',
-    [switch]$SkipReferenceTest
+    [switch]$SkipReferenceTest,
+    [switch]$TextStdin
 )
 
 $ErrorActionPreference = 'Stop'
@@ -9,9 +10,12 @@ $baseImage = 'ghcr.io/arcadia-1/analog-arena-sky130-tools@sha256:668783dd8cbcd5e
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $dockerCommand = Get-Command docker.exe -ErrorAction SilentlyContinue
 $dockerPath = if ($dockerCommand) { $dockerCommand.Source } else {
-    Join-Path $env:ProgramFiles 'Docker/Docker/resources/bin/docker.exe'
+    @(
+        (Join-Path $env:LOCALAPPDATA 'Programs/DockerDesktop/resources/bin/docker.exe'),
+        (Join-Path $env:ProgramFiles 'Docker/Docker/resources/bin/docker.exe')
+    ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 }
-if (-not (Test-Path -LiteralPath $dockerPath)) {
+if (-not $dockerPath -or -not (Test-Path -LiteralPath $dockerPath)) {
     throw 'Install Docker Desktop with its WSL 2 backend before running this script.'
 }
 if (-not (Get-CimInstance Win32_ComputerSystem).HypervisorPresent) {
@@ -19,7 +23,10 @@ if (-not (Get-CimInstance Win32_ComputerSystem).HypervisorPresent) {
     exit 3010
 }
 
-$desktopPath = Join-Path $env:ProgramFiles 'Docker/Docker/Docker Desktop.exe'
+$desktopPath = @(
+    (Join-Path $env:LOCALAPPDATA 'Programs/DockerDesktop/Docker Desktop.exe'),
+    (Join-Path $env:ProgramFiles 'Docker/Docker/Docker Desktop.exe')
+) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 function Get-DockerEngineType {
     # Windows PowerShell 5.1 can turn native stderr into terminating errors.
     $savedPreference = $ErrorActionPreference
@@ -34,7 +41,7 @@ function Get-DockerEngineType {
 }
 $engineType = Get-DockerEngineType
 if (-not $engineType) {
-    if (-not (Test-Path -LiteralPath $desktopPath)) { throw 'Cannot find Docker Desktop.' }
+    if (-not $desktopPath) { throw 'Cannot find Docker Desktop.' }
     Start-Process -FilePath $desktopPath -WindowStyle Hidden | Out-Null
     Write-Host 'Waiting for Docker Desktop to start the Linux engine...'
     $deadline = (Get-Date).AddMinutes(3)
@@ -89,7 +96,12 @@ try {
 }
 
 if (-not $SkipReferenceTest) {
-    $result = & (Join-Path $PSScriptRoot 'Invoke-OfficialTask.ps1') -Task $SmokeTestTask -Mode Verify
+    $referenceArguments = @{ Task = $SmokeTestTask; Mode = 'Verify'; TextStdin = $TextStdin }
+    if ($TextStdin) {
+        $runId = (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
+        $referenceArguments.OutputDirectory = Join-Path $repoRoot "workspaces/nmos-ldo/results/setup-reference-$runId"
+    }
+    $result = & (Join-Path $PSScriptRoot 'Invoke-OfficialTask.ps1') @referenceArguments
     if ($result.Reward -ne 1) { throw "Reference verification failed. Inspect: $($result.OutputDirectory)" }
     Write-Host "Published reference passed the official checker and electrical verifier: $SmokeTestTask"
 }

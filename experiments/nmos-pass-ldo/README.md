@@ -1,6 +1,6 @@
 # NMOS-pass LDO experiment
 
-Executed on 2026-10-12 using `IC_Server`. The reference solution and the final
+Executed on 2026-10-12. The reference solution and the final
 candidate both passed all seven electrical checks in the original verifier.
 Each final run retained 54 PVT/load simulations and 50 mismatch simulations.
 Each mismatch simulation evaluates both load endpoints.
@@ -40,23 +40,17 @@ The submitted circuit was mounted read-only from a retained Windows snapshot;
 results stayed in the Windows workspace's ignored `results/` directory.
 The persistent development workspace still contains the reference circuit.
 
-- [Official reward](../../workspaces/nmos-ldo/results/official-candidate-20261013-a7a1ba65/verifier/reward.json).
-- [Official electrical report](../../workspaces/nmos-ldo/results/official-candidate-20261013-a7a1ba65/verifier/new-ctrf.json).
-- [Checker and execution transcript](../../workspaces/nmos-ldo/results/official-candidate-20261013-a7a1ba65/run.log).
-- [Official provenance](../../workspaces/nmos-ldo/results/official-candidate-20261013-a7a1ba65/official_provenance.json).
-- [Submitted input snapshot](../../workspaces/nmos-ldo/results/official-candidate-20261013-a7a1ba65/circuit.spi).
 - Circuit SHA-256: `d9b337005e724ae679bc481530a96eebbd2fd4b8a898f84ec78f6236952e9076`.
 - Base image: `ghcr.io/arcadia-1/analog-arena-sky130-tools@sha256:668783dd8cbcd5ebce5264785803ce73a9466e79dbe4c98cdf4566348a33437a`.
 
 This remains a guided design experiment, not a blind evaluation, because the
 reference solution was inspected before the candidate was developed.
 
-## Initial server environment
+## Reproduction dependencies
 
-- Server workspace: `/home/userone/AAAIC/test_tb/analog-design-bench-ldo`.
-- Python: existing ADS 2027 bundled Python 3.14.6; no ADS simulation was used.
-- Initial reproduction: existing ngspice 39; all seven electrical checks passed.
-- Final simulator: ngspice 46 built in `tools/ngspice46`, with KLU, without X or readline.
+- Python: use a runtime compatible with the original verifier helpers.
+- Initial reproduction: all seven electrical checks passed.
+- Final simulator: the official ngspice 46 environment with KLU.
 - PDK: Volare/open_pdks `c6d73a35f524070e85faff4a6a9eef49553ebc2b`.
 - Model entry: `pdk/sky130A/libs.tech/combined/continuous/sky130.lib.spice`.
 - Public model packages and verified SHA-256 digests: [model_packages.json](model_packages.json).
@@ -149,13 +143,16 @@ and a fresh result directory under `workspaces/nmos-ldo/results/`:
 Retain a copy of the submitted circuit and the console transcript alongside
 the results. Read `verifier/reward.json` and the reports to establish acceptance.
 
-## Reproduce the initial server experiment on IC_Server
+## Reproduce the initial experiment on an authorized Linux host
+
+Set `PROJECT_ROOT`, `NGSPICE_EXE`, and `SKY130_MODEL_LIB` from that host's
+private local configuration.
 
 ```bash
-cd /home/userone/AAAIC/test_tb/analog-design-bench-ldo
-/opt/eda/agilent/ADS2027/tools/python/bin/python3 experiments/nmos-pass-ldo/run_local.py \
-  --ngspice "$PWD/tools/ngspice46/bin/ngspice" \
-  --model-lib "$PWD/pdk/sky130A/libs.tech/combined/continuous/sky130.lib.spice" \
+cd "$PROJECT_ROOT"
+python3 experiments/nmos-pass-ldo/run_local.py \
+  --ngspice "$NGSPICE_EXE" \
+  --model-lib "$SKY130_MODEL_LIB" \
   --circuit experiments/nmos-pass-ldo/candidate.spi \
   --mode full --output experiments/nmos-pass-ldo/output-candidate-v5-final
 ```
