@@ -7,3 +7,5 @@
 __pycache__/
 *.py[cod]
 /results/
+# KiCad local history is maintained separately from the project repository.
+/workspaces/nmos-ldo/kicad/.history/

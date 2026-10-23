@@ -5,6 +5,31 @@ The project was loaded, natively serialized, and visually checked with KiCad
 10.0.6. Devices and internal connections are left for manual placement.
 SPICE simulation continues through the Docker workflow in the parent directory.
 
+## Required environment
+
+Install the stable KiCad 10 Windows package from the
+[official download page](https://www.kicad.org/download/windows/), including
+its standard symbol libraries. At first startup, select **Start with the
+built-in KiCad libraries**. Open the project file before opening the schematic
+so that KiCad resolves the project library and sheet hierarchy correctly.
+
+The project already registers `AnalogBench` in its `sym-lib-table` using
+`${KIPRJMOD}`. No global registration or separate SKY130 symbol download is
+needed. Use the built-in `Simulation_SPICE`, `Device`, and `power` libraries
+for testbench sources, ordinary capacitors, and ground symbols. Leave the
+four-terminal project MOS symbols available for the DUT.
+
+For this manual drawing workflow, no Windows PDK installation or KiCad
+simulator setup is required. Continue running `../circuit.spi` through the
+existing Docker helper. Drawing-symbol fields alone do not configure a
+simulator model, and saving a schematic does not regenerate that SPICE file.
+
+The version-specific global settings and library tables are in
+`%APPDATA%/kicad/10.0`; project-specific libraries stay beside this project.
+See the [KiCad configuration guide](https://docs.kicad.org/10.0/en/kicad/kicad.html)
+for the first-run library options. Machine-specific installation and
+validation records belong in the repository's ignored `.local/` notes.
+
 ```text
 nmos-ldo.kicad_pro
 nmos-ldo.kicad_sch             Overview: DUT/testbench interfaces

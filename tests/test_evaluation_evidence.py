@@ -279,6 +279,56 @@ class ExportTests(unittest.TestCase):
             export_evidence(self.run, self.out)
         self.assertEqual(self.out.read_bytes(), b"retain these bytes")
 
+    def test_assistant_reasoning_is_omitted_with_audit_without_changing_originals(self):
+        source = self.run / "record/trajectory.jsonl"
+        event = {"response": {"message": {"role": "assistant", "content": "Visible answer",
+                 "reasoning_content": "private-text-placeholder", "reasoning": "private-alias-placeholder",
+                 "reasoning_details": [{"type": "reasoning.encrypted", "data": "opaque-placeholder"}]}}}
+        source.write_text(json.dumps(event) + "\n", encoding="utf-8")
+        original = source.read_bytes()
+        manifest = export_evidence(self.run, self.out)
+        self.assertEqual(source.read_bytes(), original)
+        self.assertEqual(manifest["generatedReviewFiles"], ["reasoning-redactions.json"])
+        with zipfile.ZipFile(self.out) as archive:
+            public = archive.read("record/trajectory.jsonl")
+            message = json.loads(public)["response"]["message"]
+            self.assertEqual(message, {"role": "assistant", "content": "Visible answer"})
+            for withheld in (b"private-text-placeholder", b"private-alias-placeholder", b"opaque-placeholder"):
+                self.assertNotIn(withheld, b"".join(archive.read(name) for name in archive.namelist()))
+            audit = json.loads(archive.read("reasoning-redactions.json"))["files"][0]
+            self.assertEqual(audit["sourceSha256"], hashlib.sha256(original).hexdigest())
+            self.assertEqual(audit["exportSha256"], hashlib.sha256(public).hexdigest())
+            self.assertEqual(len(audit["removedFields"]), 3)
+
+    def test_profile_report_locations_are_preserved_and_used_for_archive_verdict(self):
+        (self.run / "verifier/custom").mkdir()
+        self.write_json("record/task-profile.json", {"verifier": {
+            "rewardPath": "custom/score.json", "ctrfPath": "custom/checks.json"}})
+        self.write_json("verifier/custom/score.json", {"reward": 1})
+        self.write_json("verifier/custom/checks.json", report(["passed"]))
+        manifest = export_evidence(self.run, self.out)
+        self.assertEqual(manifest["verification"]["outcome"], "passed")
+        with zipfile.ZipFile(self.out) as archive:
+            self.assertEqual(archive.read("verifier/custom/score.json"),
+                             (self.run / "verifier/custom/score.json").read_bytes())
+            self.assertIn("verifier/custom/checks.json", archive.namelist())
+
+    def test_profile_report_paths_cannot_escape_the_attempt(self):
+        self.write_json("record/task-profile.json", {"verifier": {
+            "rewardPath": "../../outside.json", "ctrfPath": "verifier/new-ctrf.json"}})
+        with self.assertRaisesRegex(ValueError, "escapes"):
+            export_evidence(self.run, self.out)
+        self.assertFalse(self.out.exists())
+
+    def test_profile_cannot_export_private_requests_as_verifier_reports(self):
+        (self.run / "record/requests").mkdir()
+        self.write_json("record/requests/private.json", {"private": "must remain private"})
+        self.write_json("record/task-profile.json", {"verifier": {
+            "rewardPath": "../record/requests/private.json", "ctrfPath": "verifier/new-ctrf.json"}})
+        with self.assertRaisesRegex(ValueError, "escapes"):
+            export_evidence(self.run, self.out)
+        self.assertFalse(self.out.exists())
+
     def test_credential_echo_blocks_export_without_mutating_originals(self):
         secret = "test-only-credential-abc123"
         source = self.run / "record/trajectory.jsonl"

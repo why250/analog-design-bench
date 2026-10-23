@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "deepseek-flash-max-chat-v2",
+  "model": "deepseek-flash",
+  "baseUrl": "https://api.example.com/v1",
+  "apiKeyEnvironmentVariable": "NEW_API_KEY",
+  "request": {
+    "reasoningEffort": "max",
+    "thinking": {
+      "type": "enabled"
+    },
+    "maxTokensField": "max_tokens",
+    "includeUsage": true,
+    "extra": {}
+  },
+  "limits": {
+    "maxTurns": 0,
+    "maxTokensPerResponse": 131072
+  },
+  "pricing": null
+}
