@@ -9,6 +9,33 @@ Use the [Windows environment guide](windows-official-environment.md) for the
 pinned toolchain and simulation workflow. The [shared runner contract](shared-evaluation-runner.md)
 owns profile schemas, image building, preflight and model execution commands.
 
+## Circuit design lifecycle
+
+Use the same stages for task authoring, human design and model-generated
+circuits. Keep design inputs, electrical ports and deliverable files distinct:
+Spec/PDK/constraints/benches are design inputs; supply/bias/signal/test terminals
+are DUT ports; the submitted netlist and retained evidence are workflow outputs.
+
+| Stage | Inputs | Outputs and readiness |
+| --- | --- | --- |
+| Define | Functional goal, PDK, operating conditions and device rules | Reviewed Spec, ordered DUT interface, metrics and acceptance policy |
+| Establish tests | Spec and measurement definitions | Public diagnostic benches, independent formal benches and verifier; explicit coverage for each metric |
+| Design | Fixed contract, clean starter and public diagnostics | Topology rationale, initial parameter calculations and an early runnable candidate |
+| Implement and iterate | Candidate and diagnostic measurements | Updated DUT netlist, optional KiCad project and parameter map, and saved simulation evidence |
+| Freeze and verify | Exact candidate snapshot and pinned environment | Original structural/electrical results, actual coverage and per-check measurements |
+| Retain and hand off | Frozen circuit, reports, logs and provenance | Self-contained deliverables in the established result layout, with known limits recorded |
+
+Set Spec and tests before tuning the circuit. Iterate on the design while
+preserving task-owned benches and thresholds. Topology choice follows each
+task's explicit design constraints; uniform file and interface structure does
+not impose one internal architecture on every circuit.
+
+The [structured electrical contract](electrical-design-contract.md) records
+ports, metric criteria, condition matrices, bench mappings and outputs in a
+versioned form with offline consistency checks. It indexes the original task;
+the original checker and verifier continue to decide acceptance. Its current
+LDO/OTA instances do not imply every task has been migrated or verified.
+
 ## Define the task contract
 
 Before writing benches, specify:
@@ -117,6 +144,15 @@ Retain the exact verified circuit, original reward, available per-check reports,
 logs, relevant source hashes and resolved image identity in a fresh evidence
 location. Demonstrate reference feasibility before handing the task to a
 publishing consumer. Reference evidence is not a measured model score.
+
+## Support manual KiCad learning workflows
+
+Use the [shared KiCad workflow](kicad-spice-workflow.md) when providing a manual
+drawing workspace for a task. It defines source provenance, model and pin
+configuration, native SPICE export, interface adaptation and validation of the
+exported candidate. Keep task-specific drawing instructions with the workspace
+and reuse the original benches and verifier. A drawing workspace is optional
+learning material; its presence does not establish export or electrical success.
 
 ## Version, register and hand off
 

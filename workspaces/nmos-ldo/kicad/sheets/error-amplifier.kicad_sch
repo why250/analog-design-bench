@@ -10,10 +10,591 @@
 		(rev "Scaffold")
 		(comment 1 "Manual drawing workspace; SPICE remains the simulation source")
 	)
-	(lib_symbols)
+	(lib_symbols
+		(symbol "AnalogBench:SKY130_NMOS_LVT_4T"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board no)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 0 10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SKY130_NMOS_LVT_4T"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "NetlistInstance" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "W" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "L" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "m" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "mult" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+			(symbol "SKY130_NMOS_LVT_4T_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -2.54) (xy -1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 2.54 2.54) (xy 2.54 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 5.08 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -2.54) (xy 2.54 -2.54) (xy 2.54 -5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.4 0) (xy 1.5 0.6) (xy 1.5 -0.6) (xy 0.4 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "SKY130_NMOS_LVT_4T_1_1"
+				(pin passive line
+					(at 2.54 7.62 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -7.62 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "AnalogBench:SKY130_PMOS_LVT_4T"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board no)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 0 10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SKY130_PMOS_LVT_4T"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "NetlistInstance" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "W" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "L" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "m" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+			(property "mult" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1 1)
+					)
+				)
+			)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+			(symbol "SKY130_PMOS_LVT_4T_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -2.54) (xy -1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 2.54 2.54) (xy 2.54 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 5.08 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -2.54) (xy 2.54 -2.54) (xy 2.54 -5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2 0) (xy 0.9 0.6) (xy 0.9 -0.6) (xy 2 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "SKY130_PMOS_LVT_4T_1_1"
+				(pin passive line
+					(at 2.54 7.62 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -7.62 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
 	(text "PMOS: XPM0 ... XPM5\nNMOS: XNM0 ... XNM5\nInternal nodes: pdiag, nleft, nright, ptail\nUse NetlistInstance fields to preserve source names."
 		(exclude_from_sim no)
-		(at 83.82 147.32 0)
+		(at 16.002 182.88 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -46,7 +627,7 @@
 	)
 	(text "Drawing area"
 		(exclude_from_sim no)
-		(at 83.82 45.72 0)
+		(at 103.632 21.082 0)
 		(effects
 			(font
 				(size 1.5 1.5)
@@ -57,7 +638,7 @@
 	)
 	(text "Source: ../../circuit.spi, subckt ldo_error_amplifier"
 		(exclude_from_sim no)
-		(at 15.24 175.26 0)
+		(at 14.478 192.786 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -65,6 +646,346 @@
 			(justify left)
 		)
 		(uuid "9bf0e1ce-6298-4d1e-ae95-c61062295112")
+	)
+	(junction
+		(at 161.29 114.3)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "03527c00-a4e0-46a5-8d1e-3eb0f21254d2")
+	)
+	(junction
+		(at 134.62 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "03808ea8-54f7-4b8e-9810-7a90333abcd5")
+	)
+	(junction
+		(at 203.2 106.68)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0c026f5d-fc81-418e-a77a-3eea7975b0fb")
+	)
+	(junction
+		(at 161.29 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "21b7da33-570a-4bb6-9cab-0f972f35ee62")
+	)
+	(junction
+		(at 217.17 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "502a8a89-c3be-4686-9ba5-a55dcf33a7cb")
+	)
+	(junction
+		(at 71.12 125.73)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "824c5047-8101-4670-bb5e-abc54505eb37")
+	)
+	(junction
+		(at 86.36 58.42)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "aa3baf18-e69f-410f-bef3-a65e956b190a")
+	)
+	(junction
+		(at 110.49 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ae45d456-ef3c-4fd4-bbba-b966f269f17d")
+	)
+	(junction
+		(at 110.49 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b5efed01-299d-4c72-92f1-fb14521f9986")
+	)
+	(junction
+		(at 34.29 130.81)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fa0a8986-85b9-4a43-8945-ca641c302b02")
+	)
+	(wire
+		(pts
+			(xy 266.7 142.24) (xy 259.08 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0134303f-d10a-47e6-b14c-1fd8940955db")
+	)
+	(wire
+		(pts
+			(xy 203.2 76.2) (xy 203.2 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02bc411d-3bdb-44b6-8990-5f42e296c77a")
+	)
+	(wire
+		(pts
+			(xy 254 99.06) (xy 254 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03b3c8e8-1246-4fbf-b3c1-a072b2c46a01")
+	)
+	(wire
+		(pts
+			(xy 57.15 140.97) (xy 63.5 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0649fd30-51db-4577-97ae-36e96170ec7b")
+	)
+	(wire
+		(pts
+			(xy 134.62 43.18) (xy 134.62 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "069d6c08-99b7-4ca8-9540-9d8c9e6d9624")
+	)
+	(wire
+		(pts
+			(xy 254 76.2) (xy 254 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "069fe542-bfe8-46bc-a1c8-dbbfb22b38b6")
+	)
+	(wire
+		(pts
+			(xy 203.2 106.68) (xy 203.2 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0dbed23e-eb9f-4b59-8d76-d828b3135044")
+	)
+	(wire
+		(pts
+			(xy 203.2 99.06) (xy 203.2 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12ef7c46-275f-4725-9deb-f7c77246933e")
+	)
+	(wire
+		(pts
+			(xy 123.19 142.24) (xy 115.57 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1385c3dc-1ebf-4f5c-8803-4c0932acce6a")
+	)
+	(wire
+		(pts
+			(xy 161.29 114.3) (xy 161.29 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1545bd7e-4180-440c-ab8f-739aab970f2a")
+	)
+	(wire
+		(pts
+			(xy 190.5 91.44) (xy 198.12 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15ed151d-52f6-435e-ba81-e421637e49e3")
+	)
+	(wire
+		(pts
+			(xy 48.26 140.97) (xy 48.26 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "176efa2c-41e0-4c3f-839f-ac60af102168")
+	)
+	(wire
+		(pts
+			(xy 71.12 148.59) (xy 71.12 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1bd14bcb-b97e-4a99-b3d3-bea10295648d")
+	)
+	(wire
+		(pts
+			(xy 59.69 58.42) (xy 67.31 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1cc2b519-0012-4018-b00e-1380b3a31592")
+	)
+	(wire
+		(pts
+			(xy 161.29 114.3) (xy 240.03 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ff15223-d04f-4d03-838c-a8f48a0b0ea3")
+	)
+	(wire
+		(pts
+			(xy 71.12 119.38) (xy 71.12 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23a3e3e1-9f7f-4262-bed0-ecbb2ff6e699")
+	)
+	(wire
+		(pts
+			(xy 147.32 127) (xy 161.29 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "24b2a4c3-f409-46b8-bd90-4ac648f6e8b7")
+	)
+	(wire
+		(pts
+			(xy 71.12 125.73) (xy 71.12 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "26d7082a-4526-49dd-be00-39d0c504ca06")
+	)
+	(wire
+		(pts
+			(xy 72.39 43.18) (xy 72.39 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d478d1f-03b4-4dfe-bc5d-3997060abf9a")
+	)
+	(wire
+		(pts
+			(xy 86.36 58.42) (xy 127 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3afa6bc3-a585-41a6-94b6-be4e78e913dd")
+	)
+	(wire
+		(pts
+			(xy 175.26 93.98) (xy 168.91 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ce362eb-9fb0-4585-8dd3-38cd1c6348d2")
+	)
+	(wire
+		(pts
+			(xy 83.82 140.97) (xy 76.2 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "41b28d7f-6c93-4618-af5b-2d0c83a86aba")
+	)
+	(wire
+		(pts
+			(xy 266.7 91.44) (xy 259.08 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "426785f7-92f7-4cf5-af4b-12d776f7d1a0")
+	)
+	(wire
+		(pts
+			(xy 110.49 78.74) (xy 134.62 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43d5f180-c133-4755-807f-f9377415356f")
+	)
+	(wire
+		(pts
+			(xy 123.19 93.98) (xy 115.57 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43d7c17c-1e40-48bc-b62e-28ef4260e5d8")
+	)
+	(wire
+		(pts
+			(xy 86.36 58.42) (xy 80.01 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "49a3fadc-6995-4fb6-acd6-339c7f5ba747")
+	)
+	(wire
+		(pts
+			(xy 254 149.86) (xy 254 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4afefea7-e3f4-47ac-88d8-1248028b5355")
+	)
+	(wire
+		(pts
+			(xy 161.29 101.6) (xy 161.29 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5301c8ae-1518-4d54-97e5-adae40d5254b")
 	)
 	(wire
 		(pts
@@ -78,6 +999,136 @@
 	)
 	(wire
 		(pts
+			(xy 110.49 127) (xy 110.49 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "552781f6-bbf5-4e53-b3a9-90d51e063ef8")
+	)
+	(wire
+		(pts
+			(xy 34.29 114.3) (xy 34.29 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "58ffede4-8996-4e14-9151-74a1dab0b318")
+	)
+	(wire
+		(pts
+			(xy 96.52 127) (xy 110.49 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5dabc809-60ce-4d9e-8232-15b5ad2b3744")
+	)
+	(wire
+		(pts
+			(xy 203.2 149.86) (xy 203.2 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60e688e2-2856-424a-bf84-ada754a52423")
+	)
+	(wire
+		(pts
+			(xy 110.49 119.38) (xy 110.49 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "612a44cb-1ad8-4c0a-8083-1476403e2fd7")
+	)
+	(wire
+		(pts
+			(xy 240.03 142.24) (xy 246.38 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61b6d75b-0467-4447-84d9-07c39522f81e")
+	)
+	(wire
+		(pts
+			(xy 147.32 142.24) (xy 147.32 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6781da83-88a8-486d-8f29-64ce2cbbfca4")
+	)
+	(wire
+		(pts
+			(xy 86.36 73.66) (xy 72.39 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e710ae8-1725-496e-876c-819f30459b49")
+	)
+	(wire
+		(pts
+			(xy 34.29 148.59) (xy 34.29 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7010092a-87ba-4c22-9d35-3459367bad19")
+	)
+	(wire
+		(pts
+			(xy 110.49 78.74) (xy 110.49 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7e43bc9e-5702-41c8-a428-4f43be51904f")
+	)
+	(wire
+		(pts
+			(xy 134.62 78.74) (xy 161.29 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "81395c6a-f845-4267-a6c4-0b88bb809f86")
+	)
+	(wire
+		(pts
+			(xy 71.12 119.38) (xy 110.49 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "890a6ef7-8679-43a0-897e-e817eaf89c36")
+	)
+	(wire
+		(pts
+			(xy 34.29 114.3) (xy 161.29 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b8f9a58-661f-4e1c-a5e4-7c539b311f7c")
+	)
+	(wire
+		(pts
 			(xy 30.48 83.82) (xy 38.1 83.82)
 		)
 		(stroke
@@ -88,6 +1139,146 @@
 	)
 	(wire
 		(pts
+			(xy 21.59 140.97) (xy 29.21 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "913006d0-5ed6-4157-97e0-fa92757c6713")
+	)
+	(wire
+		(pts
+			(xy 96.52 142.24) (xy 102.87 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96cf6933-9f2e-443a-b760-0dbd24753495")
+	)
+	(wire
+		(pts
+			(xy 48.26 125.73) (xy 71.12 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96f059e4-3a1b-403e-81e6-d13b47b3972a")
+	)
+	(wire
+		(pts
+			(xy 34.29 130.81) (xy 57.15 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2f1f9aa-28e1-4538-a70f-e38b9e1a222f")
+	)
+	(wire
+		(pts
+			(xy 96.52 142.24) (xy 96.52 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2f86fda-4b1d-4d70-83f9-1ab8f2b77d7e")
+	)
+	(wire
+		(pts
+			(xy 147.32 142.24) (xy 153.67 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a3f612fc-a3b3-4450-886b-573ef9b51e54")
+	)
+	(wire
+		(pts
+			(xy 110.49 101.6) (xy 110.49 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4800775-18d6-426d-8640-4c489cbc2e74")
+	)
+	(wire
+		(pts
+			(xy 161.29 78.74) (xy 161.29 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4ff307f-71ac-41d4-959f-e57ce2a24800")
+	)
+	(wire
+		(pts
+			(xy 86.36 58.42) (xy 86.36 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a844f5cf-d69d-47c5-8683-b3cede2e2216")
+	)
+	(wire
+		(pts
+			(xy 34.29 130.81) (xy 34.29 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9610190-2d04-4936-aa48-80200db53455")
+	)
+	(wire
+		(pts
+			(xy 96.52 93.98) (xy 102.87 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a97f0096-547c-49ee-8dc0-5b406e99f857")
+	)
+	(wire
+		(pts
+			(xy 148.59 93.98) (xy 156.21 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ac449446-4b3b-4ea4-841a-90d81af701e7")
+	)
+	(wire
+		(pts
+			(xy 217.17 106.68) (xy 203.2 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad553634-5ac5-4770-9331-2b2e59f7d3b9")
+	)
+	(wire
+		(pts
+			(xy 189.23 142.24) (xy 189.23 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b0a2a6fb-e640-4386-9aec-64f188623513")
+	)
+	(wire
+		(pts
 			(xy 30.48 71.12) (xy 38.1 71.12)
 		)
 		(stroke
@@ -95,6 +1286,36 @@
 			(type default)
 		)
 		(uuid "b1e24a58-bbca-43f3-b724-254408ee7779")
+	)
+	(wire
+		(pts
+			(xy 189.23 142.24) (xy 195.58 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ba598a7e-b4ad-41b0-a413-582d4d6dd68e")
+	)
+	(wire
+		(pts
+			(xy 215.9 142.24) (xy 208.28 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be133168-cbd6-406e-9b8f-9e034b129fcc")
+	)
+	(wire
+		(pts
+			(xy 173.99 142.24) (xy 166.37 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c0711416-4c05-47a7-91a6-a33405bb21f3")
 	)
 	(wire
 		(pts
@@ -118,6 +1339,126 @@
 	)
 	(wire
 		(pts
+			(xy 161.29 127) (xy 161.29 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cdcb4972-75b2-42d1-baa0-9de84f0c3e5f")
+	)
+	(wire
+		(pts
+			(xy 161.29 149.86) (xy 161.29 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cfd6343e-3aed-43fc-b840-d37a8d39291d")
+	)
+	(wire
+		(pts
+			(xy 72.39 66.04) (xy 72.39 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7710345-6d54-4e41-80ad-6850dae9c346")
+	)
+	(wire
+		(pts
+			(xy 134.62 66.04) (xy 134.62 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "db746680-a77f-4173-8bc3-3777c069450a")
+	)
+	(wire
+		(pts
+			(xy 48.26 140.97) (xy 41.91 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "db96a16d-a507-4452-99fa-dae0a80f864f")
+	)
+	(wire
+		(pts
+			(xy 217.17 91.44) (xy 246.38 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "df7988d1-5aaf-4f85-abab-ba747bee36e7")
+	)
+	(wire
+		(pts
+			(xy 217.17 91.44) (xy 210.82 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ee60ec5f-ff3d-4ecd-8e5b-bd58d109baaf")
+	)
+	(wire
+		(pts
+			(xy 147.32 58.42) (xy 139.7 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "efa7ba74-9429-4e83-9ff9-1823c8c0dfeb")
+	)
+	(wire
+		(pts
+			(xy 57.15 140.97) (xy 57.15 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f20de227-2708-40b9-a96f-cb6d0d5b6a6c")
+	)
+	(wire
+		(pts
+			(xy 240.03 142.24) (xy 240.03 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2a16122-9797-421b-af00-ee59f5a51719")
+	)
+	(wire
+		(pts
+			(xy 110.49 149.86) (xy 110.49 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2d5f65c-55e0-4a02-a185-1aa4f8f79679")
+	)
+	(wire
+		(pts
+			(xy 189.23 119.38) (xy 110.49 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f94a78b7-3a07-4bee-a811-51c66580e0b7")
+	)
+	(wire
+		(pts
 			(xy 30.48 109.22) (xy 38.1 109.22)
 		)
 		(stroke
@@ -125,6 +1466,496 @@
 			(type default)
 		)
 		(uuid "fe445f62-43aa-47df-a5b8-a0717b4bfd72")
+	)
+	(wire
+		(pts
+			(xy 217.17 91.44) (xy 217.17 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ff3a4949-3391-4204-8bdd-b3c097fea2d2")
+	)
+	(label "ibias"
+		(at 121.92 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "06d143c1-168e-4673-8025-8bfd1f10b173")
+	)
+	(label "vss"
+		(at 209.55 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0aefc5fa-6421-4bcf-95db-43732fa64f79")
+	)
+	(label "pdiag"
+		(at 203.2 105.41 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "13e1f050-5bb8-4375-ac88-47e60e2a0acb")
+	)
+	(label "vdd"
+		(at 140.97 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "15701d8d-9322-40d8-b746-f7598ddc711c")
+	)
+	(label "nleft"
+		(at 97.79 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "16204dd9-acf8-4ce6-be6e-51a0f7ac8a32")
+	)
+	(label "nleft"
+		(at 190.5 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1e0c7ce3-b0ba-45cf-bb2a-7839f6ba132d")
+	)
+	(label "vfb"
+		(at 97.79 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "271dbace-5ce9-442b-bc68-bf8c1576a916")
+	)
+	(label "vss"
+		(at 254 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3267563f-4f4e-491c-93eb-43f41846b86f")
+	)
+	(label "vdd"
+		(at 254 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3460a063-1985-4b19-b100-74e3350b5e5b")
+	)
+	(label "nleft"
+		(at 110.49 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "37e7c794-1fb9-4ba4-b6b6-f75cd60097a5")
+	)
+	(label "vss"
+		(at 34.29 154.94 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3d61aa88-6344-45b5-8548-f62cc4ad3ceb")
+	)
+	(label "ptail"
+		(at 161.29 85.09 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4d7ae213-b663-45c6-9eb5-c0c5bdd55beb")
+	)
+	(label "vdd"
+		(at 260.35 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4ffd9fa4-a00a-4e08-b3b1-bfa9f7442597")
+	)
+	(label "vss"
+		(at 110.49 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "59d15107-ab09-4948-90e4-cd7179e24adf")
+	)
+	(label "nright"
+		(at 161.29 107.95 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5a22ac22-8cb4-4974-ac6f-611dfec50e29")
+	)
+	(label "ptail"
+		(at 134.62 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5a6ac448-82e7-4ace-81b1-d7e6d149f592")
+	)
+	(label "vss"
+		(at 27.94 140.97 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5c5574a6-58aa-40f2-84f3-d587d6dde06d")
+	)
+	(label "pdiag"
+		(at 215.9 91.44 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5ed11a0c-6886-4d91-b41d-c28965ce6473")
+	)
+	(label "nleft"
+		(at 110.49 107.95 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "629b3dd0-3862-4054-aba3-ec40e811fe2c")
+	)
+	(label "vref"
+		(at 173.99 93.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "655ca731-dc14-4e33-a9d0-13e0e8ddac18")
+	)
+	(label "vdd"
+		(at 66.04 58.42 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6a4a21be-8801-4555-82c5-772ea4d18d6a")
+	)
+	(label "vss"
+		(at 161.29 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6a8f993c-a7a8-4acb-8979-e6004c70efc1")
+	)
+	(label "nleft"
+		(at 71.12 132.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6ade79f8-1478-4669-bea2-08490917c05c")
+	)
+	(label "vdd"
+		(at 116.84 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "732fc6da-441f-4204-b1b5-e55b05f9b364")
+	)
+	(label "nright"
+		(at 58.42 140.97 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8113f2ec-a00c-42e9-9cf6-5c77729584da")
+	)
+	(label "vss"
+		(at 116.84 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "81b6918d-6576-40ee-8dea-7f5043a9e43c")
+	)
+	(label "loop_out"
+		(at 254 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "87b6a40b-7ac6-45ff-a6fa-7d86614f71bc")
+	)
+	(label "ptail"
+		(at 110.49 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8b5d7bfe-b41c-4a15-aaf5-feb5b64860b7")
+	)
+	(label "vdd"
+		(at 203.2 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9be1167b-cbfa-4f3c-a782-5e55be62c57a")
+	)
+	(label "vss"
+		(at 167.64 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "aad1f556-b46f-4d26-8151-6ea840ef19d7")
+	)
+	(label "vdd"
+		(at 72.39 49.53 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b610ebf3-3c52-4e94-a32b-06dac06c5ab1")
+	)
+	(label "ibias"
+		(at 72.39 72.39 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ba22df99-e647-4e7c-b482-0fd17271bb1c")
+	)
+	(label "nright"
+		(at 34.29 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c5afb673-3ac4-4c29-a2a4-56eba74e4d21")
+	)
+	(label "pdiag"
+		(at 203.2 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c79f3ff8-9b3e-4862-8b9e-5f7448635364")
+	)
+	(label "vss"
+		(at 260.35 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c915ae8d-7675-4f43-ae2a-b9acb61132d3")
+	)
+	(label "nright"
+		(at 148.59 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ca966c7f-cebd-4898-bb05-8f939bbc55fa")
+	)
+	(label "vdd"
+		(at 154.94 93.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d265117f-7c83-42e7-949e-670e1a35e1fe")
+	)
+	(label "vdd"
+		(at 134.62 49.53 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d3f2fc7a-3ca3-467d-9117-2c90914701c2")
+	)
+	(label "nright"
+		(at 161.29 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d97b13bb-7d7a-4b1b-9bf5-66c97ed76899")
+	)
+	(label "vss"
+		(at 77.47 140.97 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "db98fb3c-a98b-411a-b951-418f4323616c")
+	)
+	(label "vss"
+		(at 203.2 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e685fc78-cf79-47b5-931a-15afcf119f83")
+	)
+	(label "ibias"
+		(at 85.09 58.42 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e9d3996d-fd0c-4408-98ea-341c4f424477")
+	)
+	(label "nright"
+		(at 241.3 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "efcb1ca9-8c56-4daa-8893-27045f9a8617")
+	)
+	(label "vdd"
+		(at 196.85 91.44 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f03226ae-cd78-4ac5-8950-56a61a0705be")
+	)
+	(label "vss"
+		(at 71.12 154.94 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f1524a4f-1fb9-4b1c-af95-1f11afd4001b")
+	)
+	(label "loop_out"
+		(at 254 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fa382cfc-cb43-40c6-ae23-29280d2e7019")
+	)
+	(label "pdiag"
+		(at 241.3 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fd487096-4385-4f2d-95ac-e36a3be10f1f")
+	)
+	(label "nleft"
+		(at 46.99 140.97 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fdba1b5a-3434-44f9-b476-b8179209131e")
 	)
 	(hierarchical_label "ibias"
 		(shape bidirectional)
@@ -191,5 +2022,1869 @@
 			(justify right)
 		)
 		(uuid "d7fbfbbd-d229-4c54-99a9-377f581da211")
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_NMOS_LVT_4T")
+		(at 107.95 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0ab586cd-8ec1-45bb-91d4-1a5911ec15f9")
+		(property "Reference" "Q7"
+			(at 123.19 136.1912 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_NMOS_LVT_4T"
+			(at 123.19 138.7313 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XNM0"
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "20"
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "20"
+			(at 107.95 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "1"
+			(uuid "d9dbeb70-4181-47d4-8f02-f9b7e80ec02a")
+		)
+		(pin "2"
+			(uuid "4f2adc85-ce16-4723-be88-cf3387e58c63")
+		)
+		(pin "3"
+			(uuid "951c5c25-61a2-409d-9e47-1fd40055fc49")
+		)
+		(pin "4"
+			(uuid "4d02aa35-10cd-4547-9f76-53ab3facc7f1")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_PMOS_LVT_4T")
+		(at 107.95 93.98 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "283f486c-9a97-40eb-973f-a2a5bf422ef8")
+		(property "Reference" "Q2"
+			(at 95.25 88.7203 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_PMOS_LVT_4T"
+			(at 95.25 91.2604 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XPM1"
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "8"
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "32"
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "32"
+			(at 107.95 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "4"
+			(uuid "52d74f41-488b-4536-a8ed-89cd2cc08dad")
+		)
+		(pin "3"
+			(uuid "cb89c4b4-6203-4592-b39b-cbcdc9e12024")
+		)
+		(pin "1"
+			(uuid "61d246d3-6242-467c-aea6-a208a6022a41")
+		)
+		(pin "2"
+			(uuid "9dd54b1e-9c16-438d-b3ea-3e4b10cbbcf9")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_PMOS_LVT_4T")
+		(at 251.46 91.44 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "42ace814-8aa4-456c-9e01-c7f964e017b5")
+		(property "Reference" "Q6"
+			(at 238.76 86.1803 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_PMOS_LVT_4T"
+			(at 238.76 88.7204 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XPM5"
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "8"
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "2"
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "48"
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "48"
+			(at 251.46 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "4"
+			(uuid "0baa76c2-c43c-461e-95dd-f9b91dcd39ba")
+		)
+		(pin "3"
+			(uuid "cf15a557-a736-47a8-8ff1-0d28f85649ce")
+		)
+		(pin "1"
+			(uuid "3b73225d-d4b7-4c70-8fb1-ce4be4622b3a")
+		)
+		(pin "2"
+			(uuid "9549ee98-6edc-436b-bcca-196a19927886")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_PMOS_LVT_4T")
+		(at 132.08 58.42 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "695685cc-1c59-48be-a7a4-93e463438b62")
+		(property "Reference" "Q1"
+			(at 119.38 53.1603 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_PMOS_LVT_4T"
+			(at 119.38 55.7004 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XPM0"
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "40"
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "40"
+			(at 132.08 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "4"
+			(uuid "d1704317-65ce-4f49-9b4c-6e4d46441f3e")
+		)
+		(pin "3"
+			(uuid "ff41abde-ac4a-4b1b-8c68-00f078a6e626")
+		)
+		(pin "1"
+			(uuid "e9352554-9d29-4be0-beba-62fbd208f267")
+		)
+		(pin "2"
+			(uuid "133abf06-787d-4244-a6c5-d805d4df7a35")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_PMOS_LVT_4T")
+		(at 205.74 91.44 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "72ca6c1a-8b43-416b-bd93-1d90493efcd9")
+		(property "Reference" "Q5"
+			(at 218.44 86.1803 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_PMOS_LVT_4T"
+			(at 218.44 88.7204 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XPM4"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "8"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "2"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "48"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "48"
+			(at 205.74 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "4"
+			(uuid "631a3b62-cfe0-4cbf-b7d9-ff9bdf1b4098")
+		)
+		(pin "3"
+			(uuid "29aa6c9a-b5a8-42a6-ba5e-246d597f0e37")
+		)
+		(pin "1"
+			(uuid "1beb81e4-89e9-47bd-9a3e-26f0ad57411d")
+		)
+		(pin "2"
+			(uuid "12c93209-c452-4d15-8996-292ae6023427")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_NMOS_LVT_4T")
+		(at 36.83 140.97 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b1e4461f-f522-4863-9f81-633360216a3c")
+		(property "Reference" "Q11"
+			(at 21.59 134.9212 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_NMOS_LVT_4T"
+			(at 21.59 137.4613 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XNM4"
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "16"
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "16"
+			(at 36.83 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "1"
+			(uuid "4cbd43b7-b433-49ab-b404-cfa3f6ad2d21")
+		)
+		(pin "2"
+			(uuid "01f06880-ed57-40f5-ac33-97fff0f6a3de")
+		)
+		(pin "3"
+			(uuid "11e81928-03d9-4ba8-8c17-1493de86ed13")
+		)
+		(pin "4"
+			(uuid "5bf6fe94-b706-45f7-b245-aee1e4809d0e")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_PMOS_LVT_4T")
+		(at 163.83 93.98 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "bdcd8817-eae3-4537-84e6-588d3ef9589a")
+		(property "Reference" "Q3"
+			(at 176.53 88.7203 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_PMOS_LVT_4T"
+			(at 176.53 91.2604 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XPM2"
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "8"
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "32"
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "32"
+			(at 163.83 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "4"
+			(uuid "2d4fb91c-bbd2-449f-99ab-11dc2d879cc9")
+		)
+		(pin "3"
+			(uuid "8c6184c6-bc3b-46e9-bbf3-fa40933c9da7")
+		)
+		(pin "1"
+			(uuid "49611fc1-fdda-4b0b-8d5e-9983248238a7")
+		)
+		(pin "2"
+			(uuid "930d24b8-6e1e-4e78-874d-3228425d2c9e")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_PMOS_LVT_4T")
+		(at 74.93 58.42 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ce09a8cb-dca1-40a1-9e42-11db482dbaec")
+		(property "Reference" "Q4"
+			(at 87.63 53.1603 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_PMOS_LVT_4T"
+			(at 87.63 55.7004 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__pfet_01v8_lvt"
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XPM3"
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "8"
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "8"
+			(at 74.93 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "4"
+			(uuid "5950fee0-e1ca-4780-82e7-1f4c64c99fe4")
+		)
+		(pin "3"
+			(uuid "14148d25-70f8-4695-a116-75c463d8563d")
+		)
+		(pin "1"
+			(uuid "042f3e54-3fac-4ce6-b93d-56361c5173e4")
+		)
+		(pin "2"
+			(uuid "0a98f0e3-7fa6-41ee-82ae-f73a0fafe70f")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_NMOS_LVT_4T")
+		(at 251.46 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d65aae84-8f42-45fa-9712-13aba22ee1c5")
+		(property "Reference" "Q10"
+			(at 266.7 136.1912 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_NMOS_LVT_4T"
+			(at 266.7 138.7313 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XNM3"
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "24"
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "24"
+			(at 251.46 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "1"
+			(uuid "d983fbd5-68a9-428d-a687-68f45f875a74")
+		)
+		(pin "2"
+			(uuid "32de1445-eb91-4062-9c63-02c1d87e275e")
+		)
+		(pin "3"
+			(uuid "ac29a47c-1c1a-4716-8ca1-eaa3716918f7")
+		)
+		(pin "4"
+			(uuid "bceb816e-2a57-4a1e-b827-bb026b4f12c9")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_NMOS_LVT_4T")
+		(at 68.58 140.97 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ddb85d24-78a7-4d8e-b473-32afdf8ed348")
+		(property "Reference" "Q12"
+			(at 83.82 134.9212 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_NMOS_LVT_4T"
+			(at 83.82 137.4613 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XNM5"
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "16"
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "16"
+			(at 68.58 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "1"
+			(uuid "400eed41-55dd-45af-b964-1bca5c585e4c")
+		)
+		(pin "2"
+			(uuid "3fb08e39-1e89-418a-9adc-8ffaff9ecca3")
+		)
+		(pin "3"
+			(uuid "a26714e7-4799-473c-9398-bc5da2d949db")
+		)
+		(pin "4"
+			(uuid "f4f77a01-0082-413b-a046-1e86de61c8da")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_NMOS_LVT_4T")
+		(at 200.66 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e6078b9c-bdc8-4ccb-a5e1-52edf158bc56")
+		(property "Reference" "Q9"
+			(at 215.9 136.1912 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_NMOS_LVT_4T"
+			(at 215.9 138.7313 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XNM2"
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "24"
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "24"
+			(at 200.66 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "1"
+			(uuid "399a93b4-89db-4819-b9dc-010c1164909d")
+		)
+		(pin "2"
+			(uuid "d5fc7f00-ac53-4661-b3f3-04e99900f7cd")
+		)
+		(pin "3"
+			(uuid "fb58262e-a901-4b22-9eea-de39097742fc")
+		)
+		(pin "4"
+			(uuid "b05cc622-9ec7-4749-8703-92271fec4bed")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "AnalogBench:SKY130_NMOS_LVT_4T")
+		(at 158.75 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ece0e83c-1c72-4976-a33b-8db0c4c0b004")
+		(property "Reference" "Q8"
+			(at 173.99 136.1912 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKY130_NMOS_LVT_4T"
+			(at 173.99 138.7313 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Model" "sky130_fd_pr__nfet_01v8_lvt"
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NetlistInstance" "XNM1"
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "W" "4"
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "L" "1"
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "m" "20"
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "mult" "20"
+			(at 158.75 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Sim.Device" "SPICE" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Pins" "1=1 2=2 3=3 4=4" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(property "Sim.Params" "type=\"X\" model=\"${Model} w=${W} l=${L} m=${m} mult=${mult}\"" (at 0 0 0) (hide yes) (effects (font (size 1 1))))
+		(pin "1"
+			(uuid "f2c1517e-da4e-4d65-b7c3-fdca07057ee0")
+		)
+		(pin "2"
+			(uuid "77811502-9f75-4f0e-8308-d1695b9de0ec")
+		)
+		(pin "3"
+			(uuid "acec4c9f-50ab-42bf-84cd-674c9e0f6b65")
+		)
+		(pin "4"
+			(uuid "fec63c25-670f-45a5-a55a-aaa1d368a6f2")
+		)
+		(instances
+			(project "nmos-ldo"
+				(path "/30930ac7-76f2-4b46-8f2b-4db96f020a80/3d56b7c5-9cae-435c-8faf-45068939bc80/e10fef35-2440-4578-9113-8292021d6ab4"
+					(reference "Q8")
+					(unit 1)
+				)
+			)
+		)
 	)
 )

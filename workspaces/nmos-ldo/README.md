@@ -8,7 +8,7 @@ official development image under `/opt`.
 The workspace starts with the published reference circuit. `circuit.starter.spi`
 preserves the empty official starter. This workspace is for reference
 reproduction and development.
-A [KiCad drawing project](kicad/README.md) provides a blank hierarchy, interface
+A [KiCad drawing project](kicad/README.md) provides a sheet hierarchy, interface
 labels, and project symbols for manually reconstructing the SPICE circuit.
 
 From PowerShell in the repository root:

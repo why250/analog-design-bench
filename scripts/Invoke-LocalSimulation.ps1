@@ -5,7 +5,10 @@ param(
     [string]$WorkspaceDirectory,
     [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_.-]*$')]
     [string]$ContainerName = 'analog-design-bench-dev',
-    [switch]$TextStdin
+    [switch]$TextStdin,
+    [string]$Circuit,
+    [string]$Bench,
+    [string]$OutputDirectory
 )
 
 $ErrorActionPreference = 'Stop'
@@ -14,6 +17,31 @@ $task = 'sky130-nmos-pass-ldo-0p4v-pvt-mc'
 $imageName = "analog-design-bench/${task}:development"
 if (-not $WorkspaceDirectory) { $WorkspaceDirectory = Join-Path $repoRoot 'workspaces/nmos-ldo' }
 $workspacePath = (Resolve-Path -LiteralPath $WorkspaceDirectory).Path
+if (($Circuit -or $Bench -or $OutputDirectory) -and $Mode -ne 'Run') {
+    throw '-Circuit, -Bench, and -OutputDirectory are supported only in Run mode.'
+}
+function ConvertTo-WorkspaceContainerPath {
+    param([string]$Path, [switch]$ExistingFile)
+    $absolutePath = [IO.Path]::GetFullPath($Path)
+    $workspacePrefix = $workspacePath.TrimEnd('\') + '\'
+    if (-not $absolutePath.StartsWith($workspacePrefix, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Selected path must be inside the mounted workspace: $absolutePath"
+    }
+    if ($ExistingFile -and -not (Test-Path -LiteralPath $absolutePath -PathType Leaf)) {
+        throw "Selected input does not exist: $absolutePath"
+    }
+    return '/app/' + $absolutePath.Substring($workspacePrefix.Length).Replace('\', '/')
+}
+$runArguments = @()
+if ($Circuit -or $Bench -or $OutputDirectory) {
+    $containerCircuit = if ($Circuit) { ConvertTo-WorkspaceContainerPath $Circuit -ExistingFile } else { '/app/circuit.spi' }
+    $containerBench = if ($Bench) { ConvertTo-WorkspaceContainerPath $Bench -ExistingFile } else { '/app/testbench/tb_nominal_export.spi' }
+    $runArguments = @($containerCircuit, $containerBench)
+    if ($OutputDirectory) {
+        if (Test-Path -LiteralPath $OutputDirectory) { throw "Output directory already exists: $OutputDirectory" }
+        $runArguments += ConvertTo-WorkspaceContainerPath $OutputDirectory
+    }
+}
 if (-not (Test-Path -LiteralPath (Join-Path $workspacePath 'circuit.spi') -PathType Leaf)) {
     throw "No circuit.spi in workspace: $workspacePath"
 }
@@ -78,5 +106,5 @@ Write-Host "Workspace: $workspacePath -> /app"
 if ($Mode -eq 'Shell') {
     Invoke-Docker -DockerArguments @('exec', '-it', $ContainerName, 'bash')
 } else {
-    Invoke-Docker -DockerArguments @('exec', $ContainerName, 'bash', '/app/run-nominal.sh')
+    Invoke-Docker -DockerArguments (@('exec', $ContainerName, 'bash', '/app/run-nominal.sh') + $runArguments)
 }
