@@ -1,0 +1,11 @@
+results/
+ads/**/.ads_lock*
+ads/**/*.cdslck
+ads/**/*.cdslck.*
+ads/**/netlist.log
+ads/**/netlist.log.*
+ads/**/simulation/
+ads/**/data/
+ads/**/logFile.txt
+ads/**/*.prf
+ads/**/saved.wrkstate
