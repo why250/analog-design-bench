@@ -1,61 +1,65 @@
-# ADS and EM verification plan (operator guidance)
+# Ideal ADS LPF simulation and metric verification plan (revision 2)
 
-This plan defines how to **measure and report** the requested electrical behavior. It is not an executable independent verifier, a statement of PDK availability or a substitute for the task-development guide.
+**Current scope:** ideal L/C schematic and S-parameter simulation only. This is a documented, manually repeatable measurement protocol, **not** an implemented independent formal verifier and **not** an ADS/PDK/EM validation claim.
 
-## 1. Bench boundary and conditions
+## 1. Two-port setup
 
-Use a linear small-signal two-port simulation with **real 50 Ω source and load references**. Set the ports at the LPF DUT terminals; connect each port signal to the common on-chip return and exclude the bench 50 Ω terminations from the DUT. Use the identical reference planes for all candidate topologies.
+- Place two **ADS Term** ports at the LPF DUT boundaries; Port 1 = \`rfin\`, Port 2 = \`rfout\`, both referenced to the same ground and both \`Z = 50 Ohm\`. Terminations are owned by the testbench and are not part of the filter schematic.
+- Use **ideal L and C** (positive, finite nominal values, no loss or parasitics) for the required design. A pure ideal TLIN stepped-impedance variant is an **optional comparison**, not a first-milestone requirement.
+- Input and output reference planes are the bare DUT port terminals. Pads, PCB interconnect, EM extraction, de-embedding, temperature and process variation are **out of scope**.
+- Confirm a continuous small-signal path through the filter at DC. S-parameters are obtained for frequencies **greater than zero**; use topology/low-frequency limit reasoning to represent DC.
 
-- Nominal process and temperature: **TBD by the actual InP PDK**. Never label unspecified corners as verified.
-- Frequency resolution: combine a low-frequency logarithmic sweep to establish the DC limit (for example, 1 MHz–1 GHz), a broad 1–200 GHz sweep, and a refined 60–90 GHz sweep; use explicit 65 and 80 GHz samples. Start with ≤0.1 GHz step near the passband edge and refine any return-loss peak or S21 notch adaptively. These are proposed bench settings, not evidence of accuracy by themselves.
-- Positive-frequency S-parameter values are evaluated through **65 GHz inclusive**. Inspect DC conduction/transfer separately; a conventional S-matrix at exactly 0 Hz is not defined by this task.
-- Retain complex S-parameter data (Touchstone preferred), not only screenshots. Annotate frequency units, port orientation, de-embedding and all extracted-pad reference-plane changes.
+## 2. Suggested ADS sweep and outputs
 
-## 2. Confirmed acceptance metrics
+1. Create a new ADS workspace with a named LPF schematic and an SP controller (linear two-port S-parameter analysis).
+2. Coarse sweep: e.g. **1 MHz–120 GHz**, including the 0–65 GHz passband and the 80 GHz stopband checkpoint. A broad sweep beyond 80 GHz is **for understanding only**, not an extra stopband requirement.
+3. Passband metric sweep: e.g. **1 MHz–65 GHz with ≤0.1 GHz spacing**, then refine every suspected S11/S22 extremum and S21 minimum as needed. Coarse pointwise maxima alone do not certify the entire continuous band.
+4. Add **separate exact frequency points at 65 GHz and 80 GHz**. Do not replace 80 GHz by the nearest point of a coarse frequency grid.
+5. Plot \`dB(S(1,1))\`, \`dB(S(2,2))\`, \`dB(S(2,1))\`, optionally \`dB(S(1,2))\`; save the ADS schematic/workspace, sweep parameters, numerical results and a complex **.s2p Touchstone** export.
 
-For each declared, actually simulated condition, calculate:
+Do not confuse the stated **passband edge of 65 GHz** with a \`-3 dB\` cutoff. Report the actual \`-3 dB\` frequency separately only if useful for understanding the shape of S21.
 
-```text
-RL_in_worst_dB  = max_{0<f<=65GHz} [20*log10(abs(S11(f)))]
-RL_out_worst_dB = max_{0<f<=65GHz} [20*log10(abs(S22(f)))]
-STOP_80_dB      = 20*log10(abs(S21(80GHz)))
+## 3. Four mandatory acceptance checks
 
-PASS only if:
-  RL_in_worst_dB  < -20.0 dB
-  RL_out_worst_dB < -20.0 dB
-  STOP_80_dB     <= -20.0 dB
-```
+Let \`sij(f) = 20*log10(abs(Sij(f)))\`, in dB. The grid and interpolation/refinement method must be reported.
 
-Implement robust interpolation and passband peak search, record the frequency at each extremum, and distinguish no data/nonconvergence from a passing case. S-parameter magnitudes should also be reported using `dB(S(1,1))`, `dB(S(2,2))` and `dB(S(2,1))` in ADS Data Display.
+    S11_worst = max_{0 < f <= 65 GHz} s11(f)
+    S22_worst = max_{0 < f <= 65 GHz} s22(f)
+    IL_worst  = max_{0 < f <= 65 GHz} (-s21(f))   [dB]
+    S21_80    = s21(80 GHz)
 
-**Do not mark a physical filter as fully accepted on these checks alone.** The passband insertion-loss bound is still unspecified, and a matched dissipative network can pass return-loss criteria while failing the intended signal-transmission function.
+    PASS only if:
+        S11_worst <  -20.0 dB           (strict)
+        S22_worst <  -20.0 dB           (strict)
+        IL_worst  <    1.0 dB           (strict)
+        S21_80    <= -20.0 dB           (inclusive)
 
-## 3. Report-only measurements pending sign-off thresholds
+Always report the worst-case passband **frequency** for S11, S22 and IL. All four checks must be finite and available; failed simulation, missing frequencies, no converged data, or unknown numerical extrema must **not** be treated as passing. For an ideal lossless model, also check the low-frequency limit including the desired DC-through behavior.
 
-- `IL_passband_max_dB = max_{0<f<=65GHz}[-20*log10(abs(S21(f)))]` (positive insertion-loss convention).
-- Worst S21 over representative 80–120 GHz and 80–200 GHz stopband intervals; report any transmission peak, extra notch or spurious passband.
-- Passband ripple, group delay, filter area, layout dimensions and component-count tradeoffs.
-- Port power balance for a passive two-port. Verify `SᴴS ≼ I` within numerical tolerance for a passive EM/circuit model, noting that small round-off errors can occur; a reciprocity check compares S12 and S21 at the same planes.
-- Optional thermal/process/geometry corners and parameter perturbations, only after the real PDK and legal layout rules are available.
+Use \`IL(f) = -dB(S(2,1))\` for the positive insertion-loss metric. Note that in a lossless 50 Ω two-port, \`|S11|^2 + |S21|^2 = 1\`. Thus achieving **S11 < -20 dB** over the passband mathematically ensures \`IL < 0.04365 dB\`; the **<1 dB** limit is still a separate explicit criterion and useful for later finite-loss revisions.
 
-## 4. Staged candidate comparison
+## 4. First-milestone design workflow
 
-| Candidate | Synthesis / initial check | Physical verification risk |
+| Step | Activity | Required evidence |
 | --- | --- | --- |
-| LC ladder / quasi-elliptic | Ideal 50 Ω L/C prototype, possible resonant transmission zeros; compute full 2-port response | Finite inductor Q, self-resonance, capacitor ESL, metal coupling, zero-frequency shifts |
-| Stepped-impedance | Alternating high-/low-impedance ideal TLINs, optimized full ABCD chain with 50 Ω *external* ports | Actual microstrip/CPW stack, conductor and substrate loss, step discontinuities, phase velocity, long total line length |
-| Hybrid (optional) | Co-optimized LC and line elements, with justified added complexity | Unmodeled coupling and parasitic resonances |
+| Define | Review all four limits and ordered ports | This document and approved specification |
+| Synthesize | Start with a **simple ideal L-C ladder**; calculate element values using an appropriate 50 Ω normalized low-pass prototype | Topology sketch/ADS schematic, equations, component table |
+| Evaluate | Simulate S11, S22, S21 over the specified passband and exact 80 GHz | Raw S-parameters, pass/fail table, frequencies of extrema |
+| Refine | If a low-order ladder cannot meet the 65–80 GHz transition, increase order or introduce an **LC transmission zero** (Chebyshev / quasi-elliptic / elliptic as justified) | Updated topology rationale and before/after plots |
+| Check | Compare simulated result to equations / a separate ABCD cascade calculation | Calculation method, discrepancies and explanation |
+| Hand off | Freeze the ideal ADS source and relevant result data | Reproducible ADS workspace and a concise results summary |
 
-Do **not** reuse theoretical component values or claimed ideal S-parameter numbers from informal discussions as verified results. Recompute the prototypes, save the ADS project, and reproduce every plot from frozen inputs.
+The comparison to a stepped-impedance TLIN LPF is **optional** for this revision; physical feasibility, conductor Q, PDK passive models, SRF, dimensions, full-wave EM and DRC are deliberately deferred. There is **no continuous stopband acceptance range**.
 
-## 5. Physical/EM verification sequence
+## 5. Optional, non-scoring observations
 
-1. **Ideal topology** — analytical ABCD/S-matrix or ADS ideal elements; document normalized prototype, 50 Ω frequency scaling, match extrema and stopband response.
-2. **PDK substitution** — frequency-dependent L/C and line models, Q and SRF; check their documented frequency range. Perform loss and parasitic sensitivity sweeps, including series resistance, stray shunt capacitance and resonator coupling.
-3. **Layout + EM** — include signal metal, real return path, grounding vias, MIM connections, bends, junctions and neighboring structures. Confirm substrate, conductor, via and metal-layer definitions match the authorized process.
-4. **Combined EM/circuit** — simulate at consistent calibrated/de-embedded reference planes, compare with schematic results, and investigate reflection peaks and shifted transmission zeros.
-5. **Reproducibility / robustness** — save exact candidate geometry, PDK identifier (without distributing proprietary files), ADS/Momentum settings, extracted S-parameters, run logs, condition values and metric extrema. If available, test PVT/geometry sensitivity rather than silently assuming nominal behavior holds across corners.
+Report to help understand or improve the ideal circuit, **not as pass/fail requirements**:
 
-## 6. Promotion gates
+- S21 shape beyond 80 GHz and any other poles, resonances, transmission zeros, or spurious passbands. A notch exactly at 80 GHz by itself should not be called a demonstrated low-pass response without reviewing the overall shape.
+- Passband group delay, ripple and return-loss margin.
+- Ideal reciprocity \`S21 ≈ S12\`, lossless power conservation \`|S11|² + |S21|² ≈ 1\` and \`|S22|² + |S12|² ≈ 1\`, within numerical tolerance. No power gain is allowed in an ideal passive network.
+- Sensitivity to ideal L/C values (for learning), without claiming process or manufacturing robustness.
 
-Only after the environment, testbenches and reference design are available should this plan be converted into complete public/hidden test files, executable structural/electrical verification, reward/report outputs and a versioned runner profile. This plan's metric definitions are subject to review against those original benches. No current part of this folder establishes official or silicon-validated compliance.
+## 6. Beyond this revision
+
+A later **explicitly approved** task revision may add real InP PDK parts, finite Q/SRF, geometry, EM, PVT, layout sign-off, process corners and an implemented independent official verifier. Do not require these artifacts, invent device data, or describe this specification-only folder as a fully registered and runnable analog-design-bench benchmark.
