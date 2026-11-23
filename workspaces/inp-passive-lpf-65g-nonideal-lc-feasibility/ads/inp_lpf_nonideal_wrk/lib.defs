@@ -1,0 +1,3 @@
+INCLUDE $HPEESOF_DIR/oalibs/analog_rf.defs
+DEFINE inp_lpf_stage2_lib inp_lpf_stage2_lib
+ASSIGN inp_lpf_stage2_lib libMode nonShared

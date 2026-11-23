@@ -127,7 +127,7 @@ class TaskProfileTests(unittest.TestCase):
             lambda p: p["verifier"].update(rewardPath="../../reward.json"),
             lambda p: p["verifier"].update(ctrfPath="/tmp/report.json"),
             lambda p: p["solver"].update(image="--privileged"),
-            lambda p: p["solver"].update(image="https://user:secret@host/image"),
+            lambda p: p["solver"].update(image="https://user:secret@example.com/image"),
             lambda p: p["verifier"].update(command=[]),
             lambda p: p["verifier"].update(checkerCommand=["--invalid"]),
             lambda p: p["solver"].update(publicFiles=["/app/circuit.spi"]),

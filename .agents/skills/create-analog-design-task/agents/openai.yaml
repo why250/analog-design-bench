@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Analog Design Task"
+  short_description: "Clarify requirements and create analog design tasks"
+  default_prompt: "Use $create-analog-design-task to clarify my analog design requirements and create a task package."

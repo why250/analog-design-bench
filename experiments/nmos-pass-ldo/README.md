@@ -40,8 +40,8 @@ The submitted circuit was mounted read-only from a retained Windows snapshot;
 results stayed in the Windows workspace's ignored `results/` directory.
 The persistent development workspace still contains the reference circuit.
 
-- Circuit SHA-256: `d9b337005e724ae679bc481530a96eebbd2fd4b8a898f84ec78f6236952e9076`.
-- Base image: `ghcr.io/arcadia-1/analog-arena-sky130-tools@sha256:668783dd8cbcd5ebce5264785803ce73a9466e79dbe4c98cdf4566348a33437a`.
+- Verified candidate: [candidate.spi](candidate.spi); the exact input identity is retained in the verification records.
+- Base image: the immutable reference declared by the [original verifier Dockerfile](../../tasks/sky130-nmos-pass-ldo-0p4v-pvt-mc/tests/Dockerfile).
 
 This remains a guided design experiment, not a blind evaluation, because the
 reference solution was inspected before the candidate was developed.
@@ -51,9 +51,9 @@ reference solution was inspected before the candidate was developed.
 - Python: use a runtime compatible with the original verifier helpers.
 - Initial reproduction: all seven electrical checks passed.
 - Final simulator: the official ngspice 46 environment with KLU.
-- PDK: Volare/open_pdks `c6d73a35f524070e85faff4a6a9eef49553ebc2b`.
+- PDK: the Volare/open_pdks revision recorded in [model_packages.json](model_packages.json).
 - Model entry: `pdk/sky130A/libs.tech/combined/continuous/sky130.lib.spice`.
-- Public model packages and verified SHA-256 digests: [model_packages.json](model_packages.json).
+- Pinned public model packages and integrity records: [model_packages.json](model_packages.json).
 
 PDK runtime data and simulator binaries stay outside Git. Package download and
 model-only extraction are reproducible with [prepare_models.py](prepare_models.py).

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "task_version_id": "rf-inductor-120ph-65g-em-r1",
+  "physics_revision": "passive-loss-r1",
+  "purpose": "Consumer settings and physical conditions for the complete nominal two-port model; qualification is established separately by retained results",
+  "network": {
+    "port_count": 2,
+    "reference_impedance_ohm": 50,
+    "port_1": "P1 signal p relative to finite-frame contact P4",
+    "port_2": "P2 signal n relative to the same finite-frame contact P4",
+    "ads_s2p_terminal_order": ["P1", "P2", "P4"],
+    "terminal_planes": "Outer ends of the two 5 um feeds; preserve the complete finite Metal1 frame and modeled environment",
+    "calibration": "Uncalibrated point/internal ports; no de-embedding or lead removal",
+    "target_excitation": "I1=I, I2=-I, Icm=0",
+    "target_impedance": "Zd=Z11+Z22-Z12-Z21; no division by two"
+  },
+  "interpolation": {
+    "method": "Piecewise linear interpolation of every complex S entry in real/imaginary coordinates",
+    "ads_component": "ads_datacmps:S2P:symbol",
+    "ads_parameters": {
+      "Type": "touchstone",
+      "InterpMode": "linear",
+      "InterpDom": "ri",
+      "Temp_celsius": 25,
+      "EnforcePassivity": "no"
+    },
+    "default_warning": "ADS Data Based interpolation uses polar coordinates for S parameters; an RI Touchstone header alone does not select rectangular interpolation",
+    "extrapolation": "Not permitted outside the separately qualified frequency domain; native constant-extrapolation capability is not authorization to extrapolate",
+    "fitting_or_passivity_repair": "Not included in this model"
+  },
+  "low_frequency_extension": {
+    "zero_hz": "Optional derived floating series-resistance network; never an actual EM sample",
+    "prerequisites": "Independent DC/contact review, actual LF mesh/contact/return evidence and explicit DC/LF agreement",
+    "between_DC_and_first_actual_RF": "A separately declared derived complex-RI linear segment, with its mathematical properties and physical support reported separately",
+    "inductance_at_zero_hz": "Undefined by Im(Zd)/(2*pi*f); a derived positive-frequency limit is not an actual DC inductance solve"
+  },
+  "validity": {
+    "nominal_temperature_celsius": 25,
+    "materials": "Explicit assumed research stack with constant coefficients; no foundry or InP qualification",
+    "additional_pads_routing_shields_or_nearby_devices": "Require a new environment assessment and appropriate EM verification",
+    "frequency_domain": "Read the final qualification report and model receipt; neither the 200 GHz search endpoint nor the material-assumption range establishes qualification",
+    "time_domain_or_causality": "Not established by pointwise passivity or this interpolation contract",
+    "parent_filter_acceptance": "NOT EVALUATED"
+  },
+  "sources": [
+    "ADS 2027 installed S2P component guide",
+    "ADS 2027 installed ads_datacmps S2P item definition",
+    "Retained native S2P parameter and terminal-order probe"
+  ]
+}

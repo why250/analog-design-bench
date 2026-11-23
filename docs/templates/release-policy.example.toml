@@ -1,0 +1,26 @@
+# Example policy for scripts/check_public_release.py.
+# Copy to ignored .local/release-policy.toml and replace the placeholders.
+# Never commit the real private terms.
+
+[scan]
+ignore_paths = [
+  ".local/",
+  ".mcp.json",
+  ".codex/config.toml",
+  ".cursor/mcp.json",
+  "results/",
+]
+
+[[sensitive]]
+label = "example-private-pdk"
+pattern = "(?i)EXAMPLE_PDK_NAME"
+severity = "high"
+
+[[sensitive]]
+label = "example-internal-host"
+pattern = "(?i)example-internal-host"
+severity = "medium"
+
+[[allow]]
+path_glob = "tests/fixtures/**"
+rules = ["credential-assignment"]

@@ -4,6 +4,20 @@ Use this workflow for native ADS schematic development, simulation and portable
 engineering handoff. The selected task owns the electrical contract and permitted
 models. Keep official benchmark execution under its existing runner contract.
 
+First use the [engineering task workflow](engineering-task-workflow.md) to
+resolve the task and route, freeze the delegation contract and select requested
+deliverables. Retain the common run record and perform its preparation and
+handoff checks alongside this software-specific procedure. Use one writer for
+the primary native project and verify the actual ADS process host and files.
+
+Use the [engineering workspace layout](engineering-workspace-layout.md) for
+task ownership, stable cross-host paths, run storage and migration. New tasks
+use `workspaces/<task-id>/`; a run timestamp belongs below `results/`.
+For reusable InP logic cells and their receiver-load checks, use the
+[ADS InP digital workflow](ads-inp-digital-workflow.md).
+The [nonideal LPF workspace](../workspaces/inp-passive-lpf-65g-nonideal-lc-feasibility/README.md)
+implements that layout with a portable `project.toml` and task-owned tools.
+
 The first implemented example is the [ideal LPF workspace](../workspaces/inp-lpf/README.md).
 It owns its synthesis, element values, commands and numerical results. The
 [rebuild script](../workspaces/inp-lpf/tools/rebuild_ads.py) and
@@ -12,6 +26,39 @@ implementations; adapt and verify them for a different circuit.
 
 For a guided explanation of the electrical decisions and learner-visible
 checkpoints, see the [LPF design learning notes](../workspaces/inp-lpf/design-learning-notes.md).
+For a new low-pass filter, plan and author the design tasks using the
+[task-first LPF workflow](ads-lpf-task-workflow.md). Execute the selected task
+with the shared staged runner and retain the reviewed input for the next task.
+
+## Client configuration and tool availability
+
+The ADS MCP server must be loaded by the client that will call it. Codex,
+Claude Code and Cursor use separate project configuration files; registering
+the server in one client does not create tools in another, and a sub-session
+inherits only its parent client's tool catalog.
+
+- Codex reads `.codex/config.toml` (`[mcp_servers.ads2027]`). The repository
+  keeps this machine file ignored.
+- Claude Code reads the project `.mcp.json` (`mcpServers.ads2027`). Use the same
+  SSH launch command and remote `ads-mcp.exe` as the Codex entry; the file is
+  ignored by the root `.gitignore` because it carries the host alias and ADS
+  installation path. See the client template in the
+  [ADS environment companion](../.agents/skills/configure-ads-environment/references/ads-mcp.md#claude-code-project-mcpjson-template).
+- After creating or changing the project config, restart or reload the client
+  session and approve the project MCP server. A configured file, a successful
+  SSH exit, or a connected session is not proof that the tools are exposed;
+  verify `list_sessions` and a read-only `execute_python` before design work.
+
+When native registration is unavailable, a local JSON-RPC client over the same
+SSH launch can bridge the ADS MCP (the task-owned `tools/ads_mcp.py` or the
+ignored `.local/ads_mcp_client.py`). That fallback adds PowerShell, SSH and
+process-management layers: every invocation starts a new `ads-mcp.exe`, so the
+Python REPL does not persist across calls; scripts must be self-contained and
+long solves use a detached driver plus log/status polling. Prefer the native
+client tools when they are available, and keep the bridge only as a fallback.
+
+The actual host alias, installation path and selected sessions stay in ignored
+local notes; the portable workflow names capabilities, not machine bindings.
 
 ## Establish the task and execution boundary
 
@@ -34,8 +81,10 @@ checkpoints, see the [LPF design learning notes](../workspaces/inp-lpf/design-le
 
 ## Build an editable, portable source
 
-- Create a task-owned workspace under the relevant development workspace. Check
-  for unsaved designs before switching the ADS session's active workspace.
+- Complete [Start another ADS task](engineering-workspace-layout.md#start-another-ads-task)
+  before the first native build. Create the editable ADS project under its
+  declared `workspaces/<task-id>/ads/` path and resolve paths from `project.toml`.
+  Check for unsaved designs before switching the ADS session's active workspace.
 - Keep the DUT, its symbol and its simulation testbench as separate views. Give
   the DUT explicit ordered terminals; place sources, reference terminations and
   global ground connections in the testbench according to the task contract.
@@ -69,6 +118,61 @@ checkpoints, see the [LPF design learning notes](../workspaces/inp-lpf/design-le
 The LPF workspace documents the implemented sweep and cross-check method.
 Its verification results establish that circuit and task revision only.
 
+## Screen cached-model circuit variants by netlist
+
+When a fixed testbench and extracted PCell EM samples already exist, screen many
+device sizes without editing the DUT:
+
+- Generate the top-level testbench netlist once, then replace only the intended
+  per-instance parameter literals. Keep topology, ground pins, model bindings and
+  the kit include unchanged. Use a fresh output directory per case and retain the
+  netlist actually simulated.
+- Run `hpeesofsim` per netlist. From the ADS application's Python, a subprocess
+  needs `stdin=subprocess.DEVNULL`, stdout and stderr redirected to files, and
+  `creationflags=subprocess.CREATE_NEW_PROCESS_GROUP`; otherwise Windows can raise
+  `WinError 6` (invalid handle). Parallelism is license- and host-dependent; start
+  with a small worker count and require a valid dataset from every case.
+- Read the dataset with `keysight.ads.dataset`. Combine passband and refinement
+  blocks only after sorting by frequency, and read exact checkpoint frequencies
+  from their own block. Record the sample count and refinement method.
+- A standalone ADS Python can fail to import `keysight.ads.dataset` with a DLL
+  load error. Before the import, add the ADS installation's `bin` and
+  `lib/win32_x86_64` directories with `os.add_dll_directory`, set `HPEESOF_DIR`
+  to the intended installation, or run inside the ADS MCP session. Do not infer
+  success from an exit code alone.
+- Netlist continuation lines must end with exactly one backslash. Do not build
+  them by nested string escaping; keep a validated controller block in a template
+  file and insert that block into generated netlists.
+- A size without a cached sample is not a circuit result. It attempts an
+  on-demand extraction and a direct simulator may fail with a Gemx error. Use the
+  open-application extraction path documented in the Windows EDA project's
+  `ads2027-pcell` skill, `references/parameterized-em.md`, and verify the sample
+  index before screening.
+
+This is a screening aid. A selected candidate still needs a fresh run with its
+netlist, simulator log, native dataset, model bindings, source hashes and a
+model-validity review.
+
+## Toolkit geometry and Momentum candidate screening
+
+Use the repository skill
+[`rf-inductor-toolkit-design`](../.agents/skills/rf-inductor-toolkit-design/SKILL.md)
+to apply this staged design workflow to a requested task.
+
+For Toolkit-generated on-chip inductors, start with the task-owned
+[automation-chain overview](../workspaces/rf-inductor-120ph-65g-em/docs/reproduce.md#reusable-automation-chain).
+It connects parameterized artwork/native construction, validated application
+export, Momentum full-wave solving, full-network L/Q extraction and recorded
+candidate ranking. The same guide owns the detailed commands and handoff
+formats; keep that implementation documentation in one place.
+
+This is a staged implementation for an assumed-stack 120 pH research task.
+Application export and observation-manifest assembly remain explicit handoffs.
+Reuse for another task requires its own stack, physical return, port/excitation
+contract and adapted tool checks. A completed candidate screen is separate from
+qualified continuous-band device acceptance and parent-circuit integration.
+The original study is closed; these instructions do not restart it.
+
 ## Transfer and reproduce
 
 When the ADS host cannot access the repository, use the available authorized
@@ -95,6 +199,9 @@ followed by local decoding and extraction.
    the original run evidence when producing derived checks or presentation files.
 
 ## Inspect the engineering handoff
+
+Complete the [layout handoff checks](engineering-workspace-layout.md#check-the-layout-before-handoff)
+alongside the electrical checks below.
 
 Open the native design and render exported schematic pages and plots. Check
 terminal labels, annotations, units, margins and the full response shape. A native

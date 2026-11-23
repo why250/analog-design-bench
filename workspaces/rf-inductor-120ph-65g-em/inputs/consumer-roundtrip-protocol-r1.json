@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "purpose": "Standalone native ADS consumption control; not a new EM solve or parent-filter acceptance",
+  "adopted_before_first_consumer_simulation": true,
+  "settings": {
+    "reference_impedance_ohm": 50,
+    "temperature_celsius": 25,
+    "S2P_terminal_order": ["p", "n", "common finite-frame reference"],
+    "interpolation": "linear complex rectangular S",
+    "passivity_enforcement": false,
+    "extrapolation": false
+  },
+  "frequencies": {
+    "exact_RF_GHz": [10, 65, 80],
+    "optional_derived_DC_extension": "0 through 10 MHz in 1 MHz steps, only when the final source has an explicitly supported derived DC anchor"
+  },
+  "comparison": {
+    "complete_matrix_required": true,
+    "maximum_absolute_complex_S_error": 1e-8,
+    "maximum_absolute_Zd_error_ohm": 0.0001,
+    "Zd_definition": "Z11+Z22-Z12-Z21 under I1=I,I2=-I,Icm=0",
+    "expected_response": "Declared complex-RI interpolation of the unchanged source model; preserve source and actual circuit-consumer datasets separately"
+  },
+  "physical_qualification": "Established separately by EM, geometry/material, mesh, port/return and DC/LF evidence; import agreement alone does not establish it"
+}

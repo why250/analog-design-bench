@@ -75,8 +75,8 @@ The submitted circuit was mounted read-only from a retained Windows snapshot;
 results stayed in the Windows workspace's ignored `results/` directory.
 The persistent development workspace still contains the reference circuit.
 
-- Circuit SHA-256: `{candidate_hash}`.
-- Base image: `{metadata['base_image']}`.
+- Submitted circuit: [candidate.spi](candidate.spi); exact provenance is retained with the verification records.
+- Base image: the pinned official toolchain documented in the [Windows environment guide](../../docs/windows-official-environment.md).
 
 This remains a guided design experiment, not a blind evaluation, because the
 reference solution was inspected before the candidate was developed.
@@ -115,7 +115,7 @@ optimization, and silicon measurements were outside this task's checks.
 - Python: use a runtime compatible with the original verifier helpers.
 - Initial reproduction: all seven electrical checks passed.
 - Final simulator: the official ngspice 46 environment with KLU.
-- PDK: Volare/open_pdks `c6d73a35f524070e85faff4a6a9eef49553ebc2b`.
+- PDK: the Volare/open_pdks version recorded in [model_packages.json](model_packages.json).
 - Model entry: `pdk/sky130A/libs.tech/combined/continuous/sky130.lib.spice`.
 - Public model packages and verified SHA-256 digests: [model_packages.json](model_packages.json).
 

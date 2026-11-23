@@ -1,0 +1,13 @@
+{
+  "schema_version":1,
+  "name":"RFIC Inductor Toolkit Open",
+  "selected_version":"2.3.1",
+  "source_date":"2025-08-26",
+  "upstream":"https://github.com/VolkerMuehlhaus/RFIC-Inductor-Toolkit-Open",
+  "license":"MIT permission notice retained in toolkit-open-LICENSE.txt and the copied dependency",
+  "role":"Diameter synthesis and editable single-turn artwork; stock analytic estimates are not EM acceptance",
+  "owned_copy":"toolkit-open",
+  "adaptations":["Task-owned PCell calls supported mi_octa_singleturn with center tap and stacked metal disabled","Reviewed grid helper and wrapper in tools/toolkit-adapter.ael","ResearchOpen stack and finite physical return replace the sample perfect backside ground","Native OA port definitions explicitly map P1/P2 to finite return P4","Solver mode, output paths and mesh units are prepared and verified by task-owned tools"],
+  "restrictions":"No proprietary simulator binaries or restricted foundry models are bundled. The dependency is included in private engineering handoff artifacts; no publication is authorized by this task.",
+  "integrity_evidence":"Machine-readable source inventories in retained result receipts; narrative documents intentionally omit digests"
+}

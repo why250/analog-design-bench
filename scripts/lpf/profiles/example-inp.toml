@@ -1,0 +1,38 @@
+id = "example-inp"
+
+[devices.L]
+library = "example_inductor_lib"
+cell = "example_circular_inductor"
+signal_terms = [1, 2]
+ground_terms = [3, 4, 5, 6]
+layout_signal_pins = ["P1", "P2"]
+layout_ground_pins = ["P3", "P4", "P5", "P6"]
+variables = ["inner_diameter"]
+fixed_parameters = { ground_gap = 5.0, margin_left = 5.0, margin_right = 5.0, margin_top = 5.0, margin_bottom = 5.0 }
+proposal_steps_um = { inner_diameter = 0.5 }
+proposal_bounds_um = { inner_diameter = [16.0, 70.0] }
+unqualified_above_hz = 40e9
+
+[devices.C]
+library = "example_capacitor_lib"
+cell = "example_shunt_capacitor"
+signal_terms = [3, 4]
+ground_terms = [1, 2]
+layout_signal_pins = ["P5", "P6"]
+layout_ground_pins = ["P3", "P4"]
+variables = ["cap_length", "cap_width"]
+fixed_parameters = { margin_left = 5.0, margin_right = 5.0, margin_top = 5.0, margin_bottom = 5.0 }
+proposal_steps_um = { cap_length = 0.25, cap_width = 0.25 }
+proposal_bounds_um = { cap_length = [5.0, 18.0], cap_width = [5.0, 18.0] }
+unqualified_above_hz = 40e9
+
+[layout]
+library = "example_layout_lib"
+signal_layer = "M2"
+ground_layer = "M3"
+cell_gap_um = 6.0
+launch_um = 10.0
+signal_width_um = 3.0
+ground_width_um = 3.0
+ground_clearance_um = 6.0
+contact_overlap_um = 0.25

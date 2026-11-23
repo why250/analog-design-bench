@@ -1,0 +1,17 @@
+{
+  "schema_version":1,
+  "status":"frozen-before-canonical-control-solve",
+  "physical_profile":"effective-stack-r1.json",
+  "purpose":"Reduce redundant substrate Green-function requests by merging identical empty dielectric interfaces; preserve the actual expanded research stack",
+  "reference_case":"c09-screen",
+  "control_frequency_GHz":[65,80],
+  "geometry_and_ports":"Byte-identical proj_a, proj.pin and proj.prt; all source exports retained",
+  "profile_absolute_z_tolerance_um":0.000001,
+  "active_conductor_faces_must_match":true,
+  "complex_S_absolute_max":0.0001,
+  "L_relative_max":0.002,
+  "Q_relative_max":0.01,
+  "treatment":"Record representation differences as additional numerical uncertainty. Reject the canonical input if physical profile, active faces or numerical controls disagree; retain the original representation and failed control.",
+  "independent_reproduction_tolerances_unchanged":{"absolute_S":0.00001,"relative_L":0.002},
+  "electrical_target_windows_unchanged":true
+}

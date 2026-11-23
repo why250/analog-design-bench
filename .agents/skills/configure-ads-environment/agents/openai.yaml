@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure ADS Environment"
+  short_description: "Plan and configure ADS workspaces and MCP connections"
+  default_prompt: "Use $configure-ads-environment to plan or configure the ADS instance, workspace layout, and connection for my task."

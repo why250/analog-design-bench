@@ -1,0 +1,44 @@
+schema_version = 1
+
+[project]
+task_id = "rf-inductor-120ph-65g-em"
+revision = 1
+task_version_id = "rf-inductor-120ph-65g-em-r1"
+
+[planning]
+state = "closed-at-user-request-with-incomplete-qualification"
+native_geometry_created = true
+em_simulation_executed = true
+unit_geometry_and_em_authorized = true
+full_filter_em_authorized = false
+
+[design]
+target_inductance_h = 1.2e-10
+proposed_reference_frequency_hz = 6.5e10
+fixed_pdk_required = false
+assumed_stack_permitted = true
+selected_stack_state = "assumed-research-stack-frozen-in-inputs"
+selected_solver_state = "Momentum-2027-fullwave-runtime-and-checkout-verified"
+
+[qualification]
+physics_revision = "passive-loss-r1"
+frequency_protocol = "inputs/numerical-protocol-amendment-r2.json"
+current_run = "results/20261028T092348Z-passive-loss-r1"
+previous_run_evidence = "invalid-for-passive-device-acceptance"
+study_completion = "INCOMPLETE"
+execution_status = "CLOSED AT USER REQUEST"
+closeout_date = "2026-10-29"
+further_simulation_scheduled = false
+device_target_result = "INDETERMINATE"
+model_integration_readiness = "NOT READY"
+parent_filter_acceptance = "NOT EVALUATED"
+foundry_or_inp_qualification = "NOT CLAIMED"
+
+[paths]
+tools = "tools"
+tests = "tests"
+docs = "docs"
+ads = "ads/inductor_120ph_wrk"
+inputs = "inputs"
+specification_snapshot = "inputs/task-spec"
+results = "results"
