@@ -2,17 +2,40 @@
 
 ## Shared MCP entrypoint
 
-When the EDA Lab MCP is connected, use `register_project(profile="auto")`,
-`plan_task` and `prepare_run` with this repository's absolute path. The shared
-service detects the existing engineering profile and delegates preparation,
-checks and closeout to the helper documented below. Author the task contract
-first and pass its selected workflow/block-key options when needed. Existing
-task and workspace identities remain authoritative. Generic new repositories
-can use the shared service without copying this repository's scripts.
+The lab exposes eight MCP tools: `list_capabilities`, `discover_environment`,
+`list_software`, `get_launch_command`, `register_project`,
+`ensure_product_tools`, `plan_environment` and `transfer_files`. It no longer
+prepares, checks or closes engineering runs. Run preparation, workspace reuse,
+verification and closeout stay in this repository and its `engineering_runs.py`
+helper.
+
+Start each design task with the read-only `plan_environment` gate, passing this
+repository's absolute path, the route inferred from the task (`ads` or `em`) and
+the actual calling client (`claude` for Claude Code, or `codex`, `cursor`,
+`antigravity`). The result selects one of these paths:
+
+| Result | Action |
+|---|---|
+| `status=unregistered` | First connection: `register_project` with the actual client, then `ensure_product_tools`, then repeat the plan. |
+| `status=blocked` with `setup_action` | Run the named action (`ensure_product_tools` or `register_project`) with the named client, then repeat the plan. |
+| `status=blocked` without `setup_action` | Report the environment constraint; do not substitute a host. |
+| `status=planned` and `project_binding.status=configured` | Call the product MCP named by `project_binding.mcp_name` under this project's workflows. |
+
+A returning project starts at `plan_environment` and does not re-register or
+rewrite MCP configuration. A visible product tool or an earlier conversation is
+not evidence of the current binding. Registration adds the calling client's layer
+without replacing another client's interface binding.
 
 The portable `eda-lab` guidance and the MCP descriptions direct the agent through
-environment planning, native execution and retained evidence review. Product
-tools must be loaded in the selected client. The CLI binding remains compatible.
+environment planning and native execution. Product tools must be loaded in the
+selected client. The CLI binding remains supported; `engineering_runs.py` uses
+the lab's `lab.py plan` JSON interface behind the ignored `.local/eda-lab.json`
+binding.
+
+The legacy `plan_task` name is a Python/CLI compatibility alias for environment
+planning only and is not one of the eight MCP tools. The former `prepare_run`,
+`check_run`, `close_run` and handoff/relay interfaces no longer exist; use this
+repository's `engineering_runs.py` commands instead.
 
 ## Responsibilities
 
@@ -21,8 +44,9 @@ electrical checks, workflows, native projects and results. The external lab owns
 host capabilities, selected software, connection launch definitions and resource
 policy. Engineering workflow selection and execution-host selection are separate.
 
-The agent calls the lab through a local subprocess and its JSON interface; it
-does not require another conversation. Keep the lab location, Python executable,
+The agent calls the lab through its MCP tools or, for the helper commands below,
+through a local subprocess and the lab's JSON interface; it does not require
+another conversation. Keep the lab location, Python executable,
 MCP alias mappings and remote roots in ignored `.local/eda-lab.json`. Never put
 these machine-specific values in a portable skill or task contract.
 
@@ -30,22 +54,28 @@ The integration is a development-time dependency. Frozen task/evidence packages
 and formal benchmark inputs keep their self-contained contracts. Runtime
 credentials and private profiles are not part of portable result packages.
 
-## One-time project binding
+## First connection and returning projects
 
-From the selected lab installation, run its binding command with discovered
-paths and an interface from its host inventory:
+The MCP path above is the preferred onboarding: when `plan_environment` reports
+`unregistered`, `register_project` and `ensure_product_tools` bind the calling
+client. Registration writes only private metadata under `.local/` and an ignore
+rule; it creates no task, workspace, run or remote directory.
+
+The CLI binding remains available from the selected lab installation:
 
 ```powershell
-python <lab-root>/scripts/lab.py bind-project --project <design-repository> --client codex --interface <lab-interface>=<client-mcp-name> --remote-root <host-key>=<existing-remote-project-root>
+python <lab-root>/scripts/lab.py bind-project --project <design-repository> --client claude --interface <lab-interface>=<client-mcp-name> --remote-root <host-key>=<existing-remote-project-root>
 ```
 
 The command reuses a matching native MCP entry or appends a missing entry while
 preserving unrelated settings. A conflicting or disabled launch is rejected.
 Codex, Claude Code and Cursor have separate project configuration formats; bind
-the intended client. The current preferred binding identifies which native
-configuration is checked during planning. Each client must load its project
-configuration and expose the mapped tools before execution. File generation
-alone does not prove activation.
+the intended client. Bindings are stored per client. When several clients are
+registered, planning must name the calling client (`--client` on the helper
+commands or the MCP `client` argument); an unnamed plan is blocked rather than
+verifying or rewriting another client's connection. Each client must load its
+project configuration and expose the mapped tools before execution. File
+generation alone does not prove activation.
 
 A remote root is a path proposal taken from existing authorized work or supplied
 by the operator. Recording it does not grant new write scope. Preserve existing
@@ -60,9 +90,13 @@ its EDA, workflow and requested deliverables. It populates the actual electrical
 contract; the user does not need to fill configuration files.
 
 ```powershell
-python scripts/engineering_runs.py environment --task tasks/<task-id>
-python scripts/engineering_runs.py prepare --task tasks/<task-id> --slug nominal --block-key <BLOCK> --dut-cell <BLOCK>_Main --dut-ports <ordered,ports>
+python scripts/engineering_runs.py environment --task tasks/<task-id> --client claude
+python scripts/engineering_runs.py prepare --task tasks/<task-id> --slug nominal --client claude --block-key <BLOCK> --dut-cell <BLOCK>_Main --dut-ports <ordered,ports>
 ```
+
+`--client` is optional when exactly one client is bound to the project; with
+several registered clients it is required, otherwise the lab returns a blocked
+plan naming the registered clients.
 
 `environment` reads the task/workflow and existing private task binding, calls
 the external lab planner, and returns its actual JSON plan. It creates no run.

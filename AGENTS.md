@@ -2,12 +2,17 @@
 
 ## Engineering task entrypoint
 
-- When EDA Lab MCP tools are available, use their shared project entrypoint:
-  register this absolute project path with `profile="auto"`, plan the environment,
-  and prepare a run after authoring the task contract. The engineering profile
-  delegates to this repository's existing helper; keep its returned run and
-  naming convention. Use the shared `eda-lab` guidance and this project's actual
-  electrical checks. The CLI integration below remains a supported fallback.
+- When the EDA Lab MCP is connected, start with the read-only
+  `plan_environment` gate for this absolute project path and the actual calling
+  client. Only `status=unregistered` requires `register_project` followed by
+  `ensure_product_tools`; a returning project plans directly and does not
+  re-register or rewrite MCP configuration. Follow `setup_action` when the plan
+  is blocked. The lab selects the host, software versions, resources and product
+  interface only: it does not prepare, check or close engineering runs and does
+  not interpret this project's design method. Keep run preparation, checks and
+  closeout in this repository. Use the shared `eda-lab` guidance and this
+  project's actual electrical checks. The CLI integration below remains a
+  supported fallback.
 
 - For every new or resumed engineering task, start with the
   [engineering task workflow](docs/engineering-task-workflow.md) and the
@@ -19,12 +24,14 @@
   is reserved for generic task drafting until an implementation exists.
 - For ADS engineering, use the [lab integration](docs/lab-integration.md).
   After resolving the task, run `python scripts/engineering_runs.py environment
-  --task tasks/<task-id>` to select the bound environment. For a new execution,
-  use `prepare --task tasks/<task-id> --slug <purpose>` and supply a block key
-  when initializing a new workspace. These commands call the external lab
-  through ignored `.local/eda-lab.json`; do not duplicate host selection or ask
-  the user to repeat a configured host/MCP choice. Preserve existing task
-  bindings, frozen runs and approved scope. Resolve genuine conflicts first.
+  --task tasks/<task-id> --client <lab-client>` to select the bound environment;
+  `--client` is required when the project has several registered clients. For a
+  new execution, use `prepare --task tasks/<task-id> --slug <purpose> --client
+  <lab-client>` and supply a block key when initializing a new workspace. These
+  commands call the external lab through ignored `.local/eda-lab.json`; do not
+  duplicate host selection or ask the user to repeat a configured host/MCP
+  choice. Preserve existing task bindings, frozen runs and approved scope.
+  Resolve genuine conflicts first.
 - Pass the prepared run, portable environment plan and private receipt to the
   executor. Use the mapped, actually available MCP entry and the specified
   source/output paths. Preparation leaves readiness in draft; complete the

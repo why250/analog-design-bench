@@ -18,6 +18,18 @@ No ADS binaries, proprietary technology or host-specific launcher are bundled. D
 available capabilities before dependent operations; unavailable native checks remain pending.
 Use the evidence levels below to verify the actual outcome of the requested mode.
 
+## Relationship to an external environment planner
+
+When an external planner such as AI EDA Lab supplies the host, software version,
+resource decision or product MCP interface, accept that selection as the plan
+input. The planner owns discovery, host/software selection and connection
+configuration; this skill owns the ADS-level checks the planner cannot
+establish: the actual ADS session, workspace and library contents, PDK and model
+bindings, license availability, native interface behavior and preflight
+evidence. Do not duplicate planner duties here, and do not require the planner
+to understand circuit topology, synthesis or electrical acceptance. When no
+planner is in use, this skill may plan those environment steps directly.
+
 ## Choose the authorized mode
 
 | Mode | When selected | Permitted outcome |

@@ -1,4 +1,4 @@
-"""Use an external lab planner to prepare a task-owned engineering run.
+"""Select an environment with an external lab planner, then prepare a task-owned run.
 
 Only local scaffolding and records are written. No ADS session, SSH command,
 simulation or remote directory is created by this module.
@@ -59,7 +59,7 @@ def task_context(repo, task, workspace=None):
 
 
 def environment_plan(repo, task, *, workspace=None, workflow=None, kind=None, deliverables=None,
-                     host=None, platform=None, cpus=None, memory_gib=None):
+                     host=None, platform=None, cpus=None, memory_gib=None, client=None):
     repo, task, workspace, identity, task_binding = task_context(repo, task, workspace)
     route = er.resolve_route(repo / "engineering/workflows.toml", task=task,
                              eda=None if (task / "engineering.toml").exists() else "ads",
@@ -69,9 +69,10 @@ def environment_plan(repo, task, *, workspace=None, workflow=None, kind=None, de
     binding_path = repo / ".local/eda-lab.json"
     aw._ensure_no_links(repo, binding_path)
     if not binding_path.exists():
-        raise ValueError("Connect this project with the lab bind-project command first; no execution environment was guessed.")
+        raise ValueError("Connect this project with the lab register_project/bind-project command first; "
+                         "no execution environment was guessed.")
     binding = er.read_json(binding_path)
-    if binding.get("schema_version") != 1:
+    if binding.get("schema_version") not in (1, 2):
         raise ValueError("Unsupported lab project binding.")
     lab_root = Path(binding["lab_root"])
     request = {"schema_version": 1, "project": identity["task_id"],
@@ -88,6 +89,8 @@ def environment_plan(repo, task, *, workspace=None, workflow=None, kind=None, de
         request["workspace_root"] = remote_workspace
     command = [binding.get("python_executable") or sys.executable, str(lab_root / "scripts/lab.py"),
                "plan", "-", "--project", str(repo), "--workspace-suffix", workspace.relative_to(repo).as_posix()]
+    if client:
+        command.extend(["--client", client])
     try:
         child_env = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
         done = subprocess.run(command, input=json.dumps(request, allow_nan=False), encoding="utf-8", env=child_env,

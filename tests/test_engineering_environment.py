@@ -1,4 +1,6 @@
 """Task preparation and closeout checks with a local planner protocol fixture."""
+import contextlib
+import io
 import json
 from pathlib import Path
 import shutil
@@ -30,7 +32,11 @@ class EngineeringEnvironmentTests(unittest.TestCase):
         for name in ("ads_workspace.py", "engineering_runs.py"):
             shutil.copyfile(REPO / "scripts" / name, self.repo / "scripts" / name)
         (self.repo / ".local").mkdir()
-        (self.repo / ".local/eda-lab.json").write_text(json.dumps({"schema_version": 1, "lab_root": str(self.repo / "lab")}), encoding="utf-8")
+        (self.repo / ".local/eda-lab.json").write_text(json.dumps({
+            "schema_version": 2, "lab_root": str(self.repo / "lab"),
+            "clients": {"claude": {"interfaces": {"ads2027-win": {"mcp_name": "ads2027"}}},
+                        "codex": {"interfaces": {"ads2027-win": {"mcp_name": "ads2027"}}}}},
+        ), encoding="utf-8")
         self.plan = dict(status="planned", task="ads", selected_host="win", platform="windows",
                          required_tools={"ads": "2027"}, requested_resources={},
                          planning_ceiling=dict(logical_cpus=64, memory_gib=376, enforcement="planning_only"),
@@ -95,6 +101,37 @@ class EngineeringEnvironmentTests(unittest.TestCase):
         (self.repo / ".local/eda-lab.json").unlink()
         with self.assertRaisesRegex(ValueError, "bind-project"):
             ee.environment_plan(self.repo, self.task)
+
+    def test_plan_forwards_the_calling_client(self):
+        with patch.object(ee.subprocess, "run", side_effect=self.invoke_planner):
+            ee.environment_plan(self.repo, self.task, client="claude")
+        self.assertEqual(self.command[self.command.index("--client") + 1], "claude")
+
+    def test_legacy_schema_one_binding_remains_accepted(self):
+        (self.repo / ".local/eda-lab.json").write_text(
+            json.dumps({"schema_version": 1, "lab_root": str(self.repo / "lab")}), encoding="utf-8")
+        with patch.object(ee.subprocess, "run", side_effect=self.invoke_planner):
+            result = ee.environment_plan(self.repo, self.task)
+        self.assertEqual(result["status"], "planned")
+
+    def test_unsupported_binding_schema_is_rejected(self):
+        (self.repo / ".local/eda-lab.json").write_text(
+            json.dumps({"schema_version": 3, "lab_root": str(self.repo / "lab")}), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Unsupported lab project binding"):
+            ee.environment_plan(self.repo, self.task)
+
+    def test_cli_forwards_the_calling_client(self):
+        captured = {}
+
+        def fake_plan(repo, task, **kwargs):
+            captured.update(kwargs)
+            return {"status": "planned"}
+
+        with patch.object(ee, "environment_plan", side_effect=fake_plan):
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = er.main(["environment", "--repo", str(self.repo), "--task", str(self.task), "--client", "claude"])
+        self.assertEqual(code, 0)
+        self.assertEqual(captured["client"], "claude")
 
     def test_prepare_can_initialize_a_new_standard_workspace(self):
         self.assertTrue(self.ws.resolve().is_relative_to(self.repo.resolve()))

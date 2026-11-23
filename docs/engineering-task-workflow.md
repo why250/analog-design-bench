@@ -87,12 +87,14 @@ successful result or a blanket exception from a required check.
 
 For this project's configured host integration, follow
 [External lab integration](lab-integration.md). After task selection, use
-`engineering_runs.py environment --task tasks/<task-id>` to obtain the lab's
-host/MCP plan. Use `prepare --task tasks/<task-id> --slug <purpose>` for a new
-execution; it reuses or initializes the stable workspace, allocates a run,
-prepares delegation and freezes the baseline. These commands replace manual
-allocation/freezing for that prepared run. Continue the actual readiness and
-closeout steps below; do not allocate another run for the same invocation.
+`engineering_runs.py environment --task tasks/<task-id> --client <lab-client>`
+to obtain the lab's host/MCP plan; the client is required when several clients
+are registered. Use `prepare --task tasks/<task-id> --slug <purpose> --client
+<lab-client>` for a new execution; it reuses or initializes the stable
+workspace, allocates a run, prepares delegation and freezes the baseline. These
+commands replace manual allocation/freezing for that prepared run. Continue the
+actual readiness and closeout steps below; do not allocate another run for the
+same invocation.
 
 Keep `tasks/<task-id>/` authoritative and `workspaces/<task-id>/` stable. Apply
 the [engineering workspace layout](engineering-workspace-layout.md) before
