@@ -572,7 +572,7 @@ def main(argv=None) -> int:
     route.add_argument("--kind", choices=KINDS)
     route.add_argument("--deliverables", help="Comma-separated deliverable groups")
     for command in ("environment", "prepare"):
-        entry = sub.add_parser(command, help="Select the lab environment" if command == "environment" else "Prepare a local workspace, run and delegation package through the lab")
+        entry = sub.add_parser(command, help="Select the lab environment" if command == "environment" else "Prepare a local workspace, run and delegation package after lab environment selection")
         entry.add_argument("--repo", type=Path, default=aw.default_repo_root())
         entry.add_argument("--task", required=True, type=Path)
         entry.add_argument("--workspace", type=Path)
@@ -583,6 +583,7 @@ def main(argv=None) -> int:
         entry.add_argument("--platform", choices=("windows", "linux"))
         entry.add_argument("--cpus", type=int)
         entry.add_argument("--memory-gib", type=float)
+        entry.add_argument("--client", help="Calling lab client whose MCP binding is verified; required when several clients are registered")
         if command == "prepare":
             entry.add_argument("--slug", required=True)
             entry.add_argument("--model-policy", choices=aw.MODEL_POLICIES, default="restricted-pdk")
@@ -609,7 +610,8 @@ def main(argv=None) -> int:
                 import engineering_environment as environment
             options = dict(workspace=args.workspace, workflow=args.workflow, kind=args.kind,
                            deliverables=args.deliverables.split(",") if args.deliverables else None,
-                           host=args.host, platform=args.platform, cpus=args.cpus, memory_gib=args.memory_gib)
+                           host=args.host, platform=args.platform, cpus=args.cpus, memory_gib=args.memory_gib,
+                           client=args.client)
             if args.command == "prepare":
                 options.update(slug=args.slug, model_policy=args.model_policy, block_key=args.block_key,
                                dut_cell=args.dut_cell, dut_ports=args.dut_ports.split(",") if args.dut_ports else None)
