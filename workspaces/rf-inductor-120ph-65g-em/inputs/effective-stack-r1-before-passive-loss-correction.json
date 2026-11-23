@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "task_version_id": "rf-inductor-120ph-65g-em-r1",
+  "record_type": "expanded-stack-interpretation-before-final-acceptance",
+  "nominal_contract_retained": "research-contract-r1.json",
+  "classification": "Explicit research assumptions adapted from Toolkit Open; no supplier, foundry or measured-device qualification",
+  "source": "Retained native ResearchOpen substrate, material database, exported proj.ltd and actual generated proj.sub",
+  "interpretation": "The original contract table lists nominal dielectric inputs. ADS EXPAND_UP also adds the mapped conductor thicknesses, including inactive process layers. This record preserves and describes the actual simulated background rather than silently substituting the nominal sum.",
+  "coordinate_reference": "z=0 at the top of the finite silicon substrate; positive z points toward air",
+  "background_profile": [
+    {"name":"bottom AIR","z_min_um":null,"z_max_um":-500,"er_real":1,"er_imag":0,"conductivity_s_per_m":0},
+    {"name":"Silicon","z_min_um":-500,"z_max_um":0,"er_real":11.9,"er_imag":0,"conductivity_s_per_m":5,"resistivity_ohm_cm":20},
+    {"name":"sub","z_min_um":0,"z_max_um":0.35,"er_real":3.9,"er_imag":0.0195},
+    {"name":"ResearchOx1","z_min_um":0.35,"z_max_um":1.05,"er_real":4.2,"er_imag":0.021},
+    {"name":"ox_mixed_eff","z_min_um":1.05,"z_max_um":7.77,"er_real":3.76,"er_imag":0.0188},
+    {"name":"pass1","z_min_um":7.77,"z_max_um":9.76,"er_real":4.2,"er_imag":0.021},
+    {"name":"pass2","z_min_um":9.76,"z_max_um":10.46,"er_real":7.9,"er_imag":0.0395},
+    {"name":"top AIR","z_min_um":10.46,"z_max_um":null,"er_real":1,"er_imag":0,"conductivity_s_per_m":0}
+  ],
+  "conductors": [
+    {"name":"Metal1 finite return frame","mask":7,"z_bottom_um":1.05,"z_top_um":1.58,"thickness_um":0.53,"conductivity_s_per_m":24050900},
+    {"name":"Metal6 signal loop and leads","mask":35,"z_bottom_um":7.77,"z_top_um":8.76,"thickness_um":0.99,"conductivity_s_per_m":24050000}
+  ],
+  "material_assumptions":{"mu_relative":1,"roughness":"smooth","temperature_c":25,"oxide_loss_tangent":0.005,"frequency_dependence":"constant research material parameters over the declared mathematical range"},
+  "canonical_raw_stack": {"ResearchOx1_height_um":0.7,"mixed_height_um":6.19,"pass1_height_um":1,"pass2_height_um":0.7,"sub_height_um":0.35,"Silicon_height_um":500,"retain_M1_EXPAND_UP_um":0.53,"retain_M6_EXPAND_UP_um":0.99},
+  "equivalence_requirement":"Canonicalization may merge only identical, unoccupied dielectric interfaces. Preserve the complete complex background profile, both active conductor faces, physical masks 7/35 and open AIR halfspaces. Generated profiles and complete complex S must be independently checked.",
+  "change_in_physical_targets":false
+}

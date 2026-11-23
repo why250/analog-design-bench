@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "task_version_id": "al2o3-tf-msl-110g-em-r1",
+  "created_utc": "2026-11-20T02:37:20.721448+00:00",
+  "cell": "MSL_Line_C34",
+  "library": "MSL_R01_lib",
+  "model": "au_ground",
+  "substrate": "Al2O3_MSL_AuGND",
+  "workspace": "workspaces/al2o3-tf-msl-110g-em/ads/al2o3_msl_wrk",
+  "geometry": {
+    "length_mm": 3.0,
+    "width_um": 120.0,
+    "dielectric_top_layout_width_um": 2000.0,
+    "coupon_width_um": null,
+    "top_metal_um": 4.5,
+    "bottom_metal_um": 4.5,
+    "dielectric_um": 127.0
+  },
+  "pins": [
+    {
+      "number": 1,
+      "x_um": 0.0,
+      "y_um": 0.0,
+      "layer": "cond"
+    },
+    {
+      "number": 2,
+      "x_um": 3000.0,
+      "y_um": 0.0,
+      "layer": "cond"
+    }
+  ],
+  "native_port_definitions": [
+    [
+      [
+        "P1"
+      ],
+      null,
+      50.0,
+      0.0,
+      1,
+      0.0,
+      ""
+    ],
+    [
+      [
+        "P2"
+      ],
+      null,
+      50.0,
+      0.0,
+      1,
+      0.0,
+      ""
+    ]
+  ],
+  "exported_port_mapping": [
+    [
+      "P1",
+      null
+    ],
+    [
+      "P2",
+      null
+    ]
+  ],
+  "expected_port_mapping": [
+    [
+      "P1",
+      null
+    ],
+    [
+      "P2",
+      null
+    ]
+  ],
+  "frequency_plan": {
+    "start_ghz": 0.1,
+    "stop_ghz": 110.0,
+    "adaptive_max_samples": 100
+  },
+  "requested_mesh_um": 50.0,
+  "export_dir": "workspaces/al2o3-tf-msl-110g-em/results/20261119T065241Z-msl-em-execution/cases/C34/export",
+  "template": "workspaces/al2o3-tf-msl-110g-em/tools/templates/emSetup/emStateFile.xml",
+  "export_result": "True"
+}

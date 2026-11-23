@@ -1,9 +1,49 @@
 # Project guidance
 
+## Engineering task entrypoint
+
+- When EDA Lab MCP tools are available, use their shared project entrypoint:
+  register this absolute project path with `profile="auto"`, plan the environment,
+  and prepare a run after authoring the task contract. The engineering profile
+  delegates to this repository's existing helper; keep its returned run and
+  naming convention. Use the shared `eda-lab` guidance and this project's actual
+  electrical checks. The CLI integration below remains a supported fallback.
+
+- For every new or resumed engineering task, start with the
+  [engineering task workflow](docs/engineering-task-workflow.md) and the
+  [workflow catalog](engineering/workflows.toml). Resolve an existing task,
+  workspace or run before creating another identity. Route by its declared
+  EDA, stage and workflow; load only relevant skills and references.
+- Use `create-analog-design-task` for new or changed contracts. ADS work also
+  uses `configure-ads-environment` and its selected domain workflow. Virtuoso
+  is reserved for generic task drafting until an implementation exists.
+- For ADS engineering, use the [lab integration](docs/lab-integration.md).
+  After resolving the task, run `python scripts/engineering_runs.py environment
+  --task tasks/<task-id>` to select the bound environment. For a new execution,
+  use `prepare --task tasks/<task-id> --slug <purpose>` and supply a block key
+  when initializing a new workspace. These commands call the external lab
+  through ignored `.local/eda-lab.json`; do not duplicate host selection or ask
+  the user to repeat a configured host/MCP choice. Preserve existing task
+  bindings, frozen runs and approved scope. Resolve genuine conflicts first.
+- Pass the prepared run, portable environment plan and private receipt to the
+  executor. Use the mapped, actually available MCP entry and the specified
+  source/output paths. Preparation leaves readiness in draft; complete the
+  existing authorized-scope and actual environment checks before native work.
+  Review artifacts and close the run so the workspace README links its results.
+- Freeze the task and workflow baseline before delegation. Use the
+  [execution brief](docs/templates/engineering-delegation.md), one writer per
+  native workspace, a fresh run record, and the scaffold/ready/handoff checks.
+  Review actual returned artifacts before accepting completion. Static checks
+  do not establish electrical acceptance or actual remote readiness.
+- Preserve legacy projects and completed evidence. Engineering work does not
+  require benchmark registration or a formal verifier unless the task says so.
+
 ## Evaluation ownership and entrypoints
 
 - Follow [the task development guide](docs/task-development.md) when adding or
   revising task packages, benches, scoring contracts and reference designs.
+- Use [the task-first ADS low-pass filter workflow](docs/ads-lpf-task-workflow.md)
+  when planning a new LPF and defining its ideal, PCell and layout handoffs.
 - Use [the electrical design contract](docs/electrical-design-contract.md) for
   structured design inputs, DUT ports, metrics, conditions, bench mappings and
   outputs. Keep operator contracts outside blind solver input; static contract
@@ -50,6 +90,17 @@
   engineering designs, cross-host handoff and reproducible simulation. Use the
   selected task's ADS workflow; official benchmark runs retain their original
   runtime and verifier requirements.
+- For every new task with ADS engineering work, follow the
+  [engineering workspace layout](docs/engineering-workspace-layout.md#start-another-ads-task)
+  before creating the native project. Initialize new `schema_version = 2`
+  workspaces with `python scripts/ads_workspace.py init` and verify them with
+  `python scripts/ads_workspace.py validate --workspace workspaces/<task-id>`
+  (or `--all-v2`). Use stable `workspaces/<task-id>/` roots with `project.toml`
+  and the same relative structure on each host; keep run timestamps under
+  `results/`. Preserve existing task roots and completed evidence. Name new
+  ADS libraries, cells and views per the
+  [ADS naming convention](docs/ads-naming-convention.md); pass `--block-key`
+  to `init` and declare byte-copied PDK libraries in `vendored_libs`.
 - Follow [the KiCad XAMP guide](workspaces/nmos-ldo/kicad/README.md#native-spice-export-and-docker-simulation)
   for native schematic export and Docker diagnostics. Its runner combines a
   schematic-derived XAMP with the source-netlist LDO core; distinguish this
@@ -74,3 +125,26 @@
   Consult the environment guide for the verified CRLF failure and repair.
 - Validate the relevant selected task and workflow. Do not extend one successful
   reference run into a claim that every benchmark task has been verified.
+
+## Publication
+
+- Before pushing to a public remote, run
+  `python scripts/check_public_release.py --check-ignores --history` and follow
+  the [public release checklist](docs/public-release-checklist.md).
+- Keep project-specific forbidden terms in the ignored
+  `.local/release-policy.toml`, not in a tracked file.
+- Push only the intended branch. Do not use `git push --mirror`: local
+  checkpoint refs and `refs/stash` can contain private PDK or design material.
+
+## Collaboration workflow
+
+- For multi-step engineering work in this repository (simulation, EM, layout,
+  code changes, or evidence collection), keep the main conversation focused on
+  task definition, decisions, review, and synthesis. Delegate execution to a
+  subagent or a separate session with a self-contained brief.
+- The task package and its acceptance contract remain authoritative. A delegated
+  executor works against the frozen task, not a reinterpretation of it. Verify
+  the actual artifacts and evidence in the main conversation before reporting.
+- Keep quick questions, single edits, and short lookups in the main
+  conversation. Do not delegate when the user wants continuous steering or when
+  the task is a one-step change.

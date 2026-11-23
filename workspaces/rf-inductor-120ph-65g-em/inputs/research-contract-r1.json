@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "task_version_id": "rf-inductor-120ph-65g-em-r1",
+  "adopted_utc": "2026-10-28T07:08:00Z",
+  "status": "frozen-before-candidate-EM",
+  "platform": "Assumed on-chip research stack adapted from Toolkit Open GPDK180 sample; no foundry qualification",
+  "solver": "ADS Momentum 2027 full-wave, verified runtime; actual solve checkout required",
+  "generator": "RFIC Inductor Toolkit Open 2.3.1 single-turn artwork and diameter synthesis",
+  "geometry": {
+    "family": "single-turn octagonal loop, no stacked metal",
+    "width_seed_um": [4, 8, 12],
+    "gap_um": 2,
+    "feed_width_um": 10,
+    "feed_extension_um": 5,
+    "diameter_bounds_um": [15, 120],
+    "width_bounds_um": [2, 20],
+    "minimum_line_and_gap_um": 0.5,
+    "rules_classification": "explicit research assumptions adopted from open example, not DRC certification",
+    "center_tap": "omit with documented toolkit artwork option if supported; otherwise retain as open auxiliary port with original network"
+  },
+  "return": {
+    "conductor": "finite Metal1 rectangular frame, conductivity 24.0509 MS/m, thickness 0.53 um",
+    "inner_side": "1.8 times loop diameter",
+    "frame_width_um": 20,
+    "contact": "explicit reference pin on lower frame; all signal port negatives connect to this physical conductor",
+    "backside": "open; remove sample perfect infinite ground",
+    "environment": "laterally infinite stratified dielectric/substrate; air above and below; no enclosure or nearby metal",
+    "sensitivity": "frame size factors 1.5 and 2.2; reference pin/contact sensitivity at unchanged signal planes"
+  },
+  "stack": {
+    "source": "Toolkit Open Inductor_Generic_Layers_IC_lib GPDK180.subst and materials.matdb",
+    "classification": "open example values adopted as explicit research assumptions; no measured 65 GHz validation",
+    "dielectrics_bottom_to_top": [
+      {"name":"Silicon", "thickness_um":500, "er":11.9, "resistivity_ohm_cm":20},
+      {"name":"sub", "thickness_um":0.35, "er":3.9},
+      {"name":"ox1", "thickness_um":0.5, "er":4.2},
+      {"name":"ox_mixed_eff", "count":5, "each_thickness_um":0.8, "er":3.76},
+      {"name":"pass1", "thickness_um":1, "er":4.2},
+      {"name":"pass2", "thickness_um":0.7, "er":7.9}
+    ],
+    "oxide_passivation_loss_tangent": 0.005,
+    "loss_tangent_classification": "explicit research assumption replacing sample lossless oxides",
+    "oxide1_permittivity_classification": "4.2 is an explicit research assumption; validate exported solver values against this contract",
+    "metal6": {"thickness_um":0.99,"conductivity_s_per_m":24050000},
+    "metal1": {"thickness_um":0.53,"conductivity_s_per_m":24050900},
+    "roughness": "smooth, explicit assumption",
+    "temperature_c": 25,
+    "dispersion": "constant parameters within mathematical 0-200 GHz research domain; fabrication/material accuracy unqualified",
+    "conductor_treatment": "finite thickness and bulk conductivity with skin/proximity loss; compare available thick conductor model"
+  },
+  "ports": {
+    "signal_order": ["p","n"],
+    "additional": "retain center tap if present and set its current to zero for extraction",
+    "current_direction": "into signal conductor, out through common finite frame reference",
+    "reference_impedance_ohm":50,
+    "reference_planes":"outer end of both toolkit 5 um feed extensions; no pads and no lead removal",
+    "calibration":"uncalibrated internal/point ports baseline; sensitivity documented separately",
+    "extraction":"Zd=Z11+Z22-Z12-Z21; I1=I,I2=-I,Icm=0; all auxiliary signal currents zero"
+  },
+  "criteria": {
+    "L65_pH_inclusive":[114,126],
+    "L10_to_65_pH_inclusive":[108,132],
+    "positive_reactance_through_80_GHz":true,
+    "Q_minimum":null,
+    "report":["Q65","Q80","R65","R80","DCR","first_terminal_reactance_crossing","impedance_peak","area","full_network"],
+    "mesh_relative_L_max":0.02,
+    "mesh_relative_Q_max":0.05,
+    "passivity_eigenvalue_tolerance":1e-6,
+    "reciprocity_absolute_S_tolerance":1e-6,
+    "reproduction_absolute_S_tolerance":1e-5,
+    "reproduction_relative_L_tolerance":0.002,
+    "uncertainty":"combine observed numerical sensitivities conservatively; uncovered intervals or unresolved checks give INDETERMINATE"
+  },
+  "frequency_protocol": {
+    "seed_exact_GHz":[0.01,0.1,1,5,10,20,30,40,50,60,65,70,75,80,100,125,150,175,200],
+    "final_GHz":"0.01,0.1,1, then 5:1:100 and 105:5:200; refine crossings/extrema and independently solve 65/80",
+    "low_frequency":"geometry/conductivity DCR with declared return contribution and RF low-frequency comparison; RF point is not DC solve",
+    "resonance_claim":"only within simulated/covered assumed-material interval"
+  },
+  "budget":{"seed_geometry_max":9,"additional_geometry_max":30,"numerical_checks_additional":true,"stop":"qualified target with no required gaps, geometry budget exhausted, or demonstrated unavailable essential solver capability"},
+  "decisions":{"parent_filter_acceptance":"NOT EVALUATED","InP_qualification":"NOT CLAIMED","model_use":"conditional diagnostic until single-device numerical checks and separate parent compatibility review"}
+}

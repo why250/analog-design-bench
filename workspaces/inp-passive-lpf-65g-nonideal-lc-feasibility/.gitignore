@@ -1,0 +1,14 @@
+results/
+.local/
+__pycache__/
+*.py[cod]
+**/.ads_lock*
+**/*.cdslck
+**/*.cdslck.*
+**/*.lck
+**/*.prf
+**/saved.wrkstate
+**/logFile.txt
+**/netlist.log*
+**/simulation/
+**/data/

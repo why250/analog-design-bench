@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+PYTHON=${PYTHON:-python}
+if ! command -v "$PYTHON" >/dev/null 2>&1; then
+    echo "public-release check: python not found; install Python or set PYTHON" >&2
+    exit 1
+fi
+
+exec "$PYTHON" scripts/check_public_release.py --staged

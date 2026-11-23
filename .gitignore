@@ -1,7 +1,25 @@
 # Private machine configuration and local setup records.
 /.local/
+/.codex/config.toml
+/.mcp.json
+/.cursor/mcp.json
 # Optional skill used only on this machine.
 /skills/docker-text-stdin-build/
+
+# Credentials, private keys and vendor license files never enter Git.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.lic
+license.dat
+id_rsa
+id_ed25519
 
 # Generated evaluation records and Python bytecode.
 __pycache__/
@@ -9,3 +27,15 @@ __pycache__/
 /results/
 # KiCad local history is maintained separately from the project repository.
 /workspaces/nmos-ldo/kicad/.history/
+
+# Private InP PDK engineering material stays in a local working copy. All InP
+# tasks and workspaces are excluded by default; only the open, ideal-only work
+# below is tracked. The private device profile lives under ignored .local/.
+/tasks/inp-*/
+!/tasks/inp-passive-lpf-65g-50ohm-80g-stop20/
+!/tasks/inp-passive-lpf-65g-nonideal-lc-feasibility/
+!/tasks/inp-passive-lpf-65g-shunt-first-ideal/
+/workspaces/inp-*/
+!/workspaces/inp-lpf/
+!/workspaces/inp-passive-lpf-65g-nonideal-lc-feasibility/
+!/workspaces/inp-passive-lpf-65g-shunt-first-ideal/

@@ -1,0 +1,19 @@
+# Ordinary engineering runs, private bindings, and transient ADS caches.
+/results/
+/private/
+/inputs/private/
+/inputs/upstream/
+**/*.prf
+**/logFile.txt
+**/netlist.log*
+**/simulation/
+**/data/
+
+# Runtime bytecode and transient ADS locks/session state.
+__pycache__/
+*.py[cod]
+**/.ads_lock*
+**/*.cdslck
+**/*.cdslck.*
+**/*.lck
+**/saved.wrkstate

@@ -1,0 +1,29 @@
+// Copyright 2025 Dr. Muehlhaus Consulting & Software GmbH
+// Adapted from RFIC Inductor Toolkit Open under the retained MIT permission
+// notice in inputs/toolkit-open-LICENSE.txt and inputs/toolkit-open/license/license.txt.
+decl database_resolution=1000;
+defun gridsnap(a)
+// snap to database grid
+{ 
+
+  decl snapped = 1.0*round(a*database_resolution)/database_resolution;
+  // fputs(stderr, strcat("input value to snapping = ", identify_value(a)));
+  // fputs(stderr, strcat("snapped value  = ", identify_value(snapped),"\n"));
+  return snapped; 
+}
+defun getLayerNum_NumPurposeString (NumPurposeString)
+{
+  // This splits a string with layer:purpose into two pieces, and returns the first part as a number
+  
+  decl items = parse (NumPurposeString, ":");
+  return round(val(nth(0, items)));
+}
+defun getPurposeNum_NumPurposeString (NumPurposeString)
+{
+  // This splits a string with layer:purpose into two pieces, and returns the second part as a number
+  decl items = parse (NumPurposeString, ":");
+  return round(val(nth(1, items)));
+}
+
+// Supported Toolkit artwork option: no unused center tap.
+defun task_pH_2port(N,D,w,s,L) { mi_octa_singleturn(N,D,w,s,L,FALSE,FALSE); }

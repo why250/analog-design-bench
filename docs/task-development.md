@@ -5,6 +5,24 @@ task package with independently retained reference verification. Model attempts
 against that fixed version follow the [model evaluation workflow](model-evaluation.md).
 These are operator instructions; keep them outside blind solver input.
 
+For ordinary engineering design, reproduction or feasibility work, begin with
+the [engineering task workflow](engineering-task-workflow.md). It shares task
+authoring semantics but does not require benchmark environments, registration
+or an official verifier. Use the benchmark-specific sections below only when
+that mode is actually selected.
+
+For progressive requirement clarification and task-package creation, use the
+project skill [Create Analog Design Task](../.agents/skills/create-analog-design-task/SKILL.md).
+It covers analog, RF and mixed-signal design, reproduction and feasibility
+tasks across EDA environments. Its bundled templates guide authoring; this
+project's task formats, original requirements and implemented verifiers remain
+authoritative. The skill is independent of this repository's documents and
+directory layout; its bundled defaults also support projects without a task
+framework. ADS engineering structure, connections and preflight are maintained by
+the separate project skill [Configure ADS Environment](../.agents/skills/configure-ads-environment/SKILL.md),
+which the task-authoring skill selects only when ADS is relevant. Other EDA
+environments can use independent companions with the same handoff semantics.
+
 Use the [Windows environment guide](windows-official-environment.md) for the
 pinned toolchain and simulation workflow. The [shared runner contract](shared-evaluation-runner.md)
 owns profile schemas, image building, preflight and model execution commands.
@@ -55,6 +73,16 @@ Before writing benches, specify:
 Keep instructions, interfaces and scoring aligned. A public nominal diagnostic
 may cover a declared subset of the conditions; passing it does not establish
 full PVT or mismatch acceptance.
+
+## Select the execution environment
+
+Use the [environment selection and handoff check](../.agents/skills/create-analog-design-task/references/eda-environments.md#select-and-retain-the-task-binding)
+when authoring each task. Keep portable requirements in the task package and
+task-specific host and tool bindings in ignored local configuration. For ADS,
+use the [workspace binding convention](engineering-workspace-layout.md#start-another-ads-task).
+When engineering development and formal verification use different environments,
+record each role separately. The original verifier and pinned runtime remain
+authoritative for a registered task's formal verification.
 
 ## Assemble the task package
 
@@ -153,6 +181,20 @@ configuration, native SPICE export, interface adaptation and validation of the
 exported candidate. Keep task-specific drawing instructions with the workspace
 and reuse the original benches and verifier. A drawing workspace is optional
 learning material; its presence does not establish export or electrical success.
+
+## Establish an ADS engineering workspace
+
+When a task needs native ADS engineering work, complete
+[Start another ADS task](engineering-workspace-layout.md#start-another-ads-task)
+before constructing its first design or running simulations. That contract owns
+the stable task workspace, portable manifest, cross-host layout and source/result
+boundaries. Keep the task package authoritative and link its `DEVELOPMENT.md` to
+the engineering workspace README. Name its ADS libraries, cells and views per
+the [ADS naming convention](ads-naming-convention.md). Follow the
+[ADS MCP workflow](ads-mcp-workflow.md)
+for native construction, simulation and reproduction, and complete the layout
+contract's [handoff checks](engineering-workspace-layout.md#check-the-layout-before-handoff).
+An ADS workspace does not register a benchmark task or replace its verifier.
 
 ## Version, register and hand off
 

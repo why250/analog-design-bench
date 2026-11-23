@@ -1,0 +1,8 @@
+/results/
+__pycache__/
+*.py[cod]
+*.lck
+*.log
+*.ds
+/ads/*/data/
+/ads/*/simulation/

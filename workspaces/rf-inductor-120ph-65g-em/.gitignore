@@ -1,0 +1,19 @@
+/results/
+/private/
+/inputs/private/
+/inputs/pdk/
+/inputs/toolkit-open/
+/inputs/local-bindings.json
+# Retain native source privately until its dependency classification is resolved.
+/ads/
+*.ds
+*.net
+*.[sS][0-9]*[pP]
+*.[sS][nN][pP]
+*.zip
+__pycache__/
+*.py[cod]
+*.cdslck
+*.cdslck.*
+.ads_lock*
+saved.wrkstate

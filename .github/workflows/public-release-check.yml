@@ -1,0 +1,21 @@
+name: public-release-check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Scan publishable files and history
+        run: python scripts/check_public_release.py --check-ignores --history --fail-on high
