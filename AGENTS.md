@@ -143,6 +143,21 @@
 - Push only the intended branch. Do not use `git push --mirror`: local
   checkpoint refs and `refs/stash` can contain private PDK or design material.
 
+## Optional learning overlay
+
+- Load `engineering-learning` only when the user explicitly requests Learning
+  Mode (e.g., "enable engineering-learning" or "use the engineering-learning
+  skill"). Do not activate it for ordinary task execution.
+- When active, the skill adds teaching behavior — theory explanations,
+  pre-simulation predictions, result comparisons, and structured learning notes —
+  without changing the task specification, EDA workflow, acceptance criteria, or
+  verification protocol.
+- Learning notes are written to `workspaces/<task-id>/learning-notes.md`
+  alongside the existing `README.md`. They do not alter or replace any
+  engineering record or retained evidence.
+- The user may toggle Learning Mode on or off at any time during a run.
+  Deactivation stops new teaching content; already-written notes are preserved.
+
 ## Collaboration workflow
 
 - For multi-step engineering work in this repository (simulation, EM, layout,
