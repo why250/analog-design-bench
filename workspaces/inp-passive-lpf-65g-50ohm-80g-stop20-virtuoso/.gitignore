@@ -1,0 +1,15 @@
+# Engineering results, private dependencies and Virtuoso runtime state.
+/results/
+/private/
+/inputs/private/
+__pycache__/
+*.py[cod]
+**/*.cdslck
+**/*.cdslck.*
+**/*.lck
+**/CDS.log*
+**/si.log
+**/simulation/
+**/psf/
+**/netlist/
+**/spectre.out

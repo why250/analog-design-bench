@@ -1,0 +1,135 @@
+; Top Design: "inp_lpf_lib:inp_lpf_sp:schematic"
+; Netlisted using Hierarchy Policy: "Standard"
+
+Options ResourceUsage=yes UseNutmegFormat=no EnableOptim=no TopDesignName="inp_lpf_lib:inp_lpf_sp:schematic" DcopOutputNodeVoltages=yes DcopOutputPinCurrents=yes DcopOutputAllSweepPoints=no DcopOutputDcopType=0
+; Library Name: inp_lpf_lib
+; Cell Name: inp_lpf
+; View Name: schematic
+define inp_lpf ( rfin  rfout  gnd ) 
+;parameters 
+L:L1  rfin n1 L=1.2067415721369464e-10 H R=0 Ohm Noise=no  
+C:C1  n1 gnd C=7.1558825488853105e-14 F 
+L:L2  n1 n2 L=2.3889190700153503e-10 H R=0 Ohm Noise=no  
+C:C2  n2 gnd C=8.2666384715202915e-14 F 
+L:L3  n2 n3 L=2.4918217284264656e-10 H R=0 Ohm Noise=no  
+C:C3  n3 gnd C=8.2666384715202928e-14 F 
+L:L4  n3 n4 L=2.3889190700153497e-10 H R=0 Ohm Noise=no  
+C:C4  n4 gnd C=7.155882548885313e-14 F 
+L:L5  n4 rfout L=1.2067415721369459e-10 H R=0 Ohm Noise=no  
+end inp_lpf
+
+inp_lpf:DUT  rfin rfout 0 
+Port:Term1  rfin 0 Num=1 Z=50 Ohm Noise=no 
+Port:Term2  rfout 0 Num=2 Z=50 Ohm Noise=no 
+S_Param:SP_broad CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_broad_stim" OutputPlan="SP_broad_Output" 
+
+SweepPlan: SP_broad_stim Start=1000000 Hz Stop=120000000000 Hz Lin=2401 
+
+OutputPlan:SP_broad_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_passband CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_passband_stim" OutputPlan="SP_passband_Output" 
+
+SweepPlan: SP_passband_stim Start=1000000 Hz Stop=65000000000 Hz Lin=1301 
+
+OutputPlan:SP_passband_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_checkpoints CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_checkpoints_stim" OutputPlan="SP_checkpoints_Output" 
+
+SweepPlan: SP_checkpoints_stim Start=65000000000 Hz Stop=80000000000 Hz Lin=2 
+
+OutputPlan:SP_checkpoints_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_ext1 CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_ext1_stim" OutputPlan="SP_ext1_Output" 
+
+SweepPlan: SP_ext1_stim Start=11286131548.350477 Hz Stop=11288131548.350477 Hz Lin=21 
+
+OutputPlan:SP_ext1_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_ext2 CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_ext2_stim" OutputPlan="SP_ext2_Output" 
+
+SweepPlan: SP_ext2_stim Start=32499000000.000008 Hz Stop=32501000000.000008 Hz Lin=21 
+
+OutputPlan:SP_ext2_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_ext3 CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_ext3_stim" OutputPlan="SP_ext3_Output" 
+
+SweepPlan: SP_ext3_stim Start=49791888802.733574 Hz Stop=49793888802.733574 Hz Lin=21 
+
+OutputPlan:SP_ext3_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_ext4 CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_ext4_stim" OutputPlan="SP_ext4_Output" 
+
+SweepPlan: SP_ext4_stim Start=61079020351.084045 Hz Stop=61081020351.084045 Hz Lin=21 
+
+OutputPlan:SP_ext4_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
+S_Param:SP_ext5 CalcS=yes CalcY=no CalcZ=no GroupDelayAperture=1e-4 FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 SPSS_WSP=yes \
+SweepVar="freq" SweepPlan="SP_ext5_stim" OutputPlan="SP_ext5_Output" 
+
+SweepPlan: SP_ext5_stim Start=64999000000 Hz Stop=65000000000 Hz Lin=11 
+
+OutputPlan:SP_ext5_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
