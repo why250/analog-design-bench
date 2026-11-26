@@ -16,6 +16,7 @@ from pathlib import Path
 import stat
 import sys
 from typing import Any, Iterable
+import warnings
 
 ADS_PROJECT_KIT_REPO = "https://github.com/why250/ads-project-kit"
 ADS_PROJECT_KIT_PINNED_COMMIT = "00ae027d578336c7b70f8d76ab553ecc257b3b67"
@@ -78,12 +79,14 @@ def _package_version(module: Any) -> str:
     version = getattr(module, "__version__", None)
     if isinstance(version, str) and version.strip():
         return version.strip()
-    try:
-        found = importlib.metadata.version("ads-project-kit")
-        if found:
-            return found
-    except importlib.metadata.PackageNotFoundError:
-        pass
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        try:
+            found = importlib.metadata.version("ads-project-kit")
+            if found:
+                return found
+        except importlib.metadata.PackageNotFoundError:
+            pass
     return "unknown"
 
 
@@ -170,7 +173,17 @@ def load_ads_project_kit(
             f"Loaded ads_project_kit is missing required APIs {missing}. {_remediation_hint()}"
         )
 
-    version = _package_version(module)
+    pkg_info_fn = getattr(module, "package_info", None)
+    pkg_info: dict[str, Any] = {}
+    if callable(pkg_info_fn):
+        try:
+            candidate = pkg_info_fn()
+            if isinstance(candidate, dict):
+                pkg_info = candidate
+        except Exception:
+            pkg_info = {}
+
+    version = str(pkg_info.get("version") or "").strip() or _package_version(module)
     parsed = _parse_version(version)
     min_parsed = _parse_version(ADS_PROJECT_KIT_MIN_VERSION)
     if parsed is not None and min_parsed is not None and parsed < min_parsed:
@@ -179,14 +192,16 @@ def load_ads_project_kit(
             f"{ADS_PROJECT_KIT_MIN_VERSION}. {_remediation_hint()}"
         )
 
+    deployed_commit = pkg_info.get("commit") or _deployed_commit(pkg_file)
     info = {
         "repo": ADS_PROJECT_KIT_REPO,
         "pinned_commit": ADS_PROJECT_KIT_PINNED_COMMIT,
         "min_version": ADS_PROJECT_KIT_MIN_VERSION,
         "load_mode": load_mode,
-        "package_path": str(pkg_file) if pkg_file is not None else None,
+        "package_path": str(pkg_file) if pkg_file is not None else pkg_info.get("package_path"),
         "package_version": version,
-        "deployed_commit": _deployed_commit(pkg_file),
+        "deployed_commit": deployed_commit,
+        "source_kind": pkg_info.get("source_kind"),
     }
     return module, info
 

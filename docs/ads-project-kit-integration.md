@@ -19,7 +19,7 @@ not import or require `ads-project-kit`.
 
 - Repository: `https://github.com/why250/ads-project-kit`
 - Minimum version: `0.1.0`
-- Pinned commit (ADS 2027 native integration): `00ae027d578336c7b70f8d76ab553ecc257b3b67`
+- Pinned commit (ADS 2027 native integration): `00ae027d578336c7b70f8d76ab553ecc257b3b67` (merged into `main` at `6f7a361`)
 
 The ADS Python Runtime (`HPEESOF_DIR/tools/python` or an attached/local ADS MCP
 session) may run on a different host and use a different Python environment than

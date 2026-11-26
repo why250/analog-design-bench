@@ -8,7 +8,7 @@ This report records the end-to-end verification of `analog-design-bench`,
 - **Target task & workspace**: `ideal-lpf-apk-acceptance-r1` (`workspaces/ideal-lpf-apk-acceptance/`)
 - **Run ID**: `20261126T074605Z-ads2027-acceptance`
 - **analog-design-bench base commit**: `64dbe4e643f8fd9fa5958ebc38a822172043eabb` (`feat/ads-project-kit-integration`)
-- **ads-project-kit target commit / version**: `0.1.0` (pinned commit `00ae027d578336c7b70f8d76ab553ecc257b3b67` on `feat/native-ads2027-integration`)
+- **ads-project-kit target commit / version**: `0.1.0` (pinned commit `00ae027d578336c7b70f8d76ab553ecc257b3b67`, merged into `main` via PR #1 at `6f7a361`)
 - **ai-eda-lab routing**: Host `win` (`platform = windows`, `transport = ssh`, `interface = ads2027-win`, `required_tools.ads = 2027`)
 - **ADS version & runtime type**:
   - `de.version() = 650`
@@ -36,6 +36,6 @@ This report records the end-to-end verification of `analog-design-bench`,
 
 ## Known Limitations and Observations
 
-1. **Pre-installed `ads_project_kit` precedence in ADS Python**: On the Windows ADS host, `ads-project-kit` (`0.1.0`) was already installed via `.egg-info` / `.pth` in the ADS Python environment. Passing a separate `src_path` triggered `load_ads_project_kit()`'s path-mismatch guard (`already loaded from ...`), confirming that the preflight guard catches shadowed installs. Calling with `src_path=None` loaded the installed environment cleanly, while `deployed_commit` reported `null` because the `.egg-info` install had no `.git` or commit marker file.
+1. **Pre-installed `ads_project_kit` precedence in ADS Python**: On the Windows ADS host, `ads-project-kit` (`0.1.0`) was already installed via `.egg-info` / `.pth` in the ADS Python environment. Passing a separate `src_path` triggered `load_ads_project_kit()`'s path-mismatch guard (`already loaded from ...`), confirming that the preflight guard catches shadowed installs. Calling with `src_path=None` loaded the installed environment cleanly, while `deployed_commit` reported `null` because the `.egg-info` install had no `.git` or commit marker file. Upstream follow-up Draft PR [`why250/ads-project-kit#2`](https://github.com/why250/ads-project-kit/pull/2) adds `package_info()` to report `ads-project-kit-commit.txt`, `.git/HEAD` (+ `packed-refs`), and PEP 610 `direct_url.json` provenance without emitting Python 3.14 `None`-version metadata warnings.
 2. **Large directory `transfer_files` timeout**: Transferring an entire repository tree or full OA workspace in one `eda-lab` `transfer_files` call can exceed a 3-minute MCP tool timeout when many files are hashed over SSH. Scoping `source_path` to the minimal subdirectory (`src/ads_project_kit` or a single OA library) completed reliably with SHA-256 verification.
 3. **Scope boundary**: This acceptance exercises schematic-only ideal technology (`setup_schematic_tech=True`) in ADS 2027 headless automation mode. External PDK attachment (`setup_schematic_tech=False`), layout geometry, Momentum EM, and attached GUI PDE sessions remain outside this acceptance scope.

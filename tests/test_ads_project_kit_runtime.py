@@ -131,8 +131,29 @@ class AdsProjectKitRuntimeTests(unittest.TestCase):
             self.assertEqual(info["load_mode"], f"env:{runtime.ADS_PROJECT_KIT_ENV_VAR}")
             self.assertEqual(info["package_version"], "0.1.0")
             self.assertEqual(info["deployed_commit"], runtime.ADS_PROJECT_KIT_PINNED_COMMIT)
+            self.assertIsNone(info["source_kind"])
             self.assertTrue(Path(info["package_path"]).is_file())
             self.assertIsNotNone(mod)
+
+    def test_load_uses_package_info_when_available(self):
+        fake_kit = ModuleType("ads_project_kit")
+        fake_kit.__version__ = "0.1.0"
+        fake_kit.__file__ = str(self.root / "site-packages" / "ads_project_kit" / "__init__.py")
+        fake_kit.create_project = lambda *args, **kwargs: None
+        fake_kit.validate_project = lambda *args, **kwargs: None
+        fake_kit.package_info = lambda: {
+            "name": "ads-project-kit",
+            "version": "0.1.0",
+            "package_path": fake_kit.__file__,
+            "commit": "6f7a361000000000000000000000000000000000",
+            "source_kind": "vcs",
+        }
+        with patch.dict(sys.modules, {"ads_project_kit": fake_kit}), patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(runtime.ADS_PROJECT_KIT_ENV_VAR, None)
+            _mod, info = runtime.load_ads_project_kit()
+        self.assertEqual(info["deployed_commit"], "6f7a361000000000000000000000000000000000")
+        self.assertEqual(info["source_kind"], "vcs")
+        self.assertEqual(info["package_version"], "0.1.0")
 
     def test_preflight_requires_ads_runtime_when_requested(self):
         kit_root = _write_minimal_kit(self.root / "kit")
