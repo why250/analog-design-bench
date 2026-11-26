@@ -29,7 +29,7 @@ class EngineeringEnvironmentTests(unittest.TestCase):
         (self.repo / "engineering/workflows.toml").write_text(
             'schema_version = 1\n[workflows.ads-generic]\neda = "ads"\nstatus = "implemented"\nversion = "1.1"\ndocuments = []\n', encoding="utf-8")
         (self.repo / "scripts").mkdir()
-        for name in ("ads_workspace.py", "engineering_runs.py"):
+        for name in ("ads_workspace.py", "engineering_runs.py", "virtuoso_workspace.py"):
             shutil.copyfile(REPO / "scripts" / name, self.repo / "scripts" / name)
         (self.repo / ".local").mkdir()
         (self.repo / ".local/eda-lab.json").write_text(json.dumps({
@@ -154,6 +154,74 @@ class EngineeringEnvironmentTests(unittest.TestCase):
         self.assertIn("interrupted", readme)
         self.assertIn(run.name, readme)
         self.assertEqual(er.check_run(run, "scaffold")["status"], "ok")
+
+    def virtuoso_task(self):
+        task = self.repo / "tasks/demo-lpf"
+        task.mkdir()
+        (task / "task.toml").write_text('[metadata]\ntask_id="demo-lpf"\nrevision=1\nstage="ideal"\n', encoding="utf-8")
+        for name in ("instruction.md", "verification-plan.md", "DEVELOPMENT.md"):
+            (task / name).write_text("# Contract\n", encoding="utf-8")
+        (task / "engineering.toml").write_text(
+            'schema_version=1\neda="virtuoso"\nworkflow="virtuoso"\nkind="reproduction"\n'
+            'deliverables=["source","simulation"]\n', encoding="utf-8")
+        registry = self.repo / "engineering/workflows.toml"
+        registry.write_text(registry.read_text() + '\n[workflows.virtuoso]\neda="virtuoso"\nstatus="implemented"\nversion="1.0"\ndocuments=[]\n', encoding="utf-8")
+        binding = self.repo / ".local/virtuoso-projects/demo-lpf.json"
+        binding.parent.mkdir()
+        binding.write_text(json.dumps(dict(task_id="demo-lpf", revision=1, mcp_server="virt-tools",
+            remote_project="/owned/demo-lpf", required_tools={"virtuoso":"IC-custom", "spectre":"S-custom"})), encoding="utf-8")
+        self.plan.update(task="virtuoso", selected_host="linux", platform="linux", workspace_root="/owned/demo-lpf",
+                         required_tools={"virtuoso":"IC-custom", "spectre":"S-custom"},
+                         project_binding={"mcp_name":"virt-tools", "status":"configured"})
+        return task, binding
+
+    def test_virtuoso_prepare_uses_selected_tools_and_native_paths(self):
+        task, binding = self.virtuoso_task()
+        original = binding.read_bytes()
+        with patch.object(ee.subprocess, "run", side_effect=self.invoke_planner):
+            result = ee.prepare_task(self.repo, task, slug="smoke", block_key="VLPF",
+                                     dut_cell="VLPF_Main", dut_ports=["rfin","rfout","gnd"], client="codex")
+        self.assertEqual(self.request["task"], "virtuoso")
+        self.assertEqual(self.request["required_tools"], {"virtuoso":"IC-custom", "spectre":"S-custom"})
+        private = er.read_json(self.repo / result["private_receipt"])
+        self.assertEqual(private["paths"]["remote_native"], "/owned/demo-lpf/virtuoso")
+        self.assertEqual(private["paths"]["remote_virtuoso"], private["paths"]["remote_native"])
+        self.assertNotIn("remote_ads", private["paths"])
+        run = self.repo / result["run"]
+        portable = er.read_json(run / "environment-plan.json")
+        self.assertEqual(portable["paths"]["virtuoso"], "virtuoso")
+        self.assertNotIn("/owned/", json.dumps(portable))
+        self.assertTrue((run / "contract/workflow/scripts/virtuoso_workspace.py").is_file())
+        self.assertEqual(er.read_json(run / "run.json")["eda"], "virtuoso")
+        self.assertEqual(binding.read_bytes(), original)
+
+    def test_virtuoso_missing_solver_selection_or_unconfigured_binding_creates_no_run(self):
+        task, binding = self.virtuoso_task()
+        data = er.read_json(binding)
+        del data["required_tools"]["spectre"]
+        binding.write_text(json.dumps(data), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Virtuoso and Spectre"):
+            ee.environment_plan(self.repo, task)
+        data["required_tools"]["spectre"] = "S-custom"
+        binding.write_text(json.dumps(data), encoding="utf-8")
+        self.plan["project_binding"]["status"] = "not-configured"
+        with patch.object(ee.subprocess, "run", side_effect=self.invoke_planner):
+            with self.assertRaisesRegex(ValueError, "configured calling-client"):
+                ee.prepare_task(self.repo, task, slug="smoke", block_key="VLPF")
+        self.assertFalse((self.repo / "workspaces/demo-lpf").exists())
+
+    def test_reserved_virtuoso_environment_is_not_bypassed(self):
+        task, _ = self.virtuoso_task()
+        registry = self.repo / "engineering/workflows.toml"
+        registry.write_text(registry.read_text().replace('status="implemented"', 'status="reserved"'), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "reserved"):
+            ee.environment_plan(self.repo, task)
+
+    def test_existing_workspace_wrong_eda_is_rejected(self):
+        (self.task / "engineering.toml").write_text(
+            'schema_version=1\neda="virtuoso"\nworkflow="virtuoso"\nkind="design"\ndeliverables=["source"]\n', encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "workspace EDA"):
+            ee.task_context(self.repo, self.task)
 
 
 if __name__ == "__main__":

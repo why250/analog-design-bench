@@ -112,6 +112,26 @@ def _task_identity(task_doc: dict, identity: dict) -> None:
             raise ValueError(f"Task metadata.{key} differs from run identity.")
 
 
+def workspace_eda(project: dict) -> str:
+    """Old manifests are ADS; new EDA manifests declare their product explicitly."""
+    eda = project.get("eda", "ads")
+    if eda not in ("ads", "virtuoso"):
+        raise ValueError("Unsupported workspace EDA.")
+    return eda
+
+
+def workspace_module(eda: str):
+    if eda == "ads":
+        return aw
+    if eda == "virtuoso":
+        if __package__:
+            from . import virtuoso_workspace
+        else:
+            import virtuoso_workspace
+        return virtuoso_workspace
+    raise ValueError("Unsupported workspace EDA.")
+
+
 def load_registry(path: Path) -> dict:
     registry = tomllib.loads(path.read_text(encoding="utf-8"))
     if registry.get("schema_version") != 1 or not isinstance(registry.get("workflows"), dict):
@@ -172,6 +192,8 @@ def resolve_route(registry: Path, *, task: Path | None = None, workflow: str | N
         raise ValueError(f"kind must be one of {KINDS}.")
     if not isinstance(groups, list) or not groups or any(g not in DELIVERABLES for g in groups) or len(set(groups)) != len(groups):
         raise ValueError(f"deliverables must be unique values from {DELIVERABLES}.")
+    if actual_eda == "virtuoso" and status == "implemented" and set(groups) - {"source", "simulation"}:
+        raise ValueError("The implemented Virtuoso workflow supports source and simulation only.")
     return dict(eda=actual_eda, workflow=chosen_workflow, version=_text(entry.get("version"), "workflow.version"),
                 status=status, kind=chosen_kind, deliverables=groups,
                 selection_basis="task-profile" if profile else "explicit-or-default")
@@ -187,7 +209,8 @@ def initialize_run(run: Path, workspace: Path, *, registry: Path | None = None,
     repo = repo or workspace.parent.parent
     task, _ = select_task_source(repo, workspace, identity)
     registry = registry or aw.default_repo_root() / "engineering" / "workflows.toml"
-    route = resolve_route(registry, task=task, eda="ads", workflow=workflow, kind=kind, deliverables=deliverables)
+    route = resolve_route(registry, task=task, eda=workspace_eda(project), workflow=workflow,
+                          kind=kind, deliverables=deliverables)
     record = dict(
         schema_version=1, task=identity, run_id=run.name, created_utc=utc_now(), started_utc=None, ended_utc=None,
         eda=route["eda"], workflow=dict(id=route["workflow"], version=route["version"]),
@@ -295,7 +318,8 @@ def freeze_contract(run: Path, repo: Path) -> dict:
     if source_kind == "verified-workspace-task-snapshot":
         copies.append((task / "manifest.json", "task-source-manifest.json"))
         source_provenance["receipt"] = "task-source-manifest.json"
-    for rel in dict.fromkeys(["engineering/workflows.toml", "scripts/ads_workspace.py", "scripts/engineering_runs.py", *resources]):
+    helpers = ["scripts/virtuoso_workspace.py"] if record["eda"] == "virtuoso" else []
+    for rel in dict.fromkeys(["engineering/workflows.toml", "scripts/ads_workspace.py", "scripts/engineering_runs.py", *helpers, *resources]):
         copies.append((_inside(repo, rel, "workflow resource"), f"workflow/{rel}"))
     if "environment" in record:
         _check_environment(run, record)
@@ -385,9 +409,12 @@ def _check_record(run: Path, record: dict, phase: str) -> None:
     owner_manifest = run.parent.parent / "project.toml"
     if owner_manifest.is_file():
         aw._ensure_no_links(run.parent.parent, owner_manifest)
-        owner = _identity(tomllib.loads(owner_manifest.read_text(encoding="utf-8")))
+        owner_doc = tomllib.loads(owner_manifest.read_text(encoding="utf-8"))
+        owner = _identity(owner_doc)
         if owner != identity:
             raise ValueError("Run task identity differs from its owning workspace project.toml.")
+        if workspace_eda(owner_doc) != record.get("eda"):
+            raise ValueError("Run EDA differs from its owning workspace project.toml.")
     _timestamp(record.get("created_utc"), "created_utc")
     for name in ("started_utc", "ended_utc"):
         if record.get(name) is not None:

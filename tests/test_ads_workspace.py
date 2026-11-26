@@ -203,6 +203,27 @@ class AdsWorkspaceTests(unittest.TestCase):
         errors = [r for r in reports if r["status"] == "error"]
         self.assertEqual(errors, [], f"Unexpected errors in repository audit: {errors}")
 
+    def test_mixed_eda_audit_scopes_ads_without_hiding_unknown_eda(self):
+        from scripts import virtuoso_workspace as vw
+        ads = aw.init_workspace(self.repo, task_id="ads-demo", stage="ideal", create_task=True)
+        task = self.repo / "tasks/virtuoso-demo"
+        task.mkdir()
+        (task / "task.toml").write_text('[metadata]\ntask_id="virtuoso-demo"\nrevision=1\nstage="ideal"\n', encoding="utf-8")
+        for name in ("instruction.md", "verification-plan.md", "DEVELOPMENT.md"):
+            (task / name).write_text("# Contract\n", encoding="utf-8")
+        native = vw.init_workspace(self.repo, task_id="virtuoso-demo", stage="ideal", block_key="LPF",
+                                   dut_lib="LPF_R01_lib", dut_cell="LPF_Main", dut_ports=["rfin","rfout","gnd"])
+        v2_reports = aw.audit_workspaces(self.repo, v2_only=True)
+        self.assertEqual([(r["workspace"],r["status"]) for r in v2_reports], [(ads.name,"ok")])
+        normal = {r["workspace"]:r for r in aw.audit_workspaces(self.repo)}
+        self.assertEqual(normal[native.name]["status"],"non-ads")
+        self.assertIn("outside ADS audit coverage",normal[native.name]["warnings"][0])
+        manifest = native / "project.toml"
+        manifest.write_text(manifest.read_text().replace('eda = "virtuoso"','eda = "virtouso"'),encoding="utf-8")
+        self.assertEqual(aw.audit_workspaces(self.repo,v2_only=True)[1]["status"],"error")
+        manifest.write_text('schema_version = [broken',encoding="utf-8")
+        self.assertEqual(aw.audit_workspaces(self.repo,v2_only=True)[1]["status"],"error")
+
     def _init_named_workspace(self, **kwargs):
         defaults = dict(
             task_id="lpf-naming-demo",

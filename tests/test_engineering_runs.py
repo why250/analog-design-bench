@@ -35,7 +35,7 @@ class EngineeringRunTests(unittest.TestCase):
         (self.repo / "docs").mkdir()
         (self.repo / "docs" / "common.md").write_text("# Common rules\n", encoding="utf-8")
         (self.repo / "scripts").mkdir()
-        for name in ("ads_workspace.py", "engineering_runs.py"):
+        for name in ("ads_workspace.py", "engineering_runs.py", "virtuoso_workspace.py"):
             shutil.copyfile(REPO / "scripts" / name, self.repo / "scripts" / name)
         self.ws = aw.init_workspace(self.repo, task_id="demo-amp", stage="source-creation", create_task=True)
         self.task = self.repo / "tasks" / "demo-amp"
@@ -336,6 +336,75 @@ class EngineeringRunTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unknown workflow"):
             aw.allocate_run_dir(self.ws, "bad-route", workflow="missing", registry=self.registry)
         self.assertEqual(list((self.ws / "results").iterdir()), [])
+
+    def test_virtuoso_simulation_lifecycle_and_frozen_helper(self):
+        from scripts import virtuoso_workspace as vw
+        task = self.repo / "tasks/demo-lpf"
+        (task / "inputs").mkdir(parents=True)
+        (task / "task.toml").write_text('[metadata]\ntask_id="demo-lpf"\nrevision=1\nstage="ideal"\n', encoding="utf-8")
+        for name in ("instruction.md", "verification-plan.md", "DEVELOPMENT.md"):
+            (task / name).write_text("# LPF contract\n", encoding="utf-8")
+        (task / "engineering.toml").write_text(
+            'schema_version=1\neda="virtuoso"\nworkflow="virtuoso"\nkind="reproduction"\n'
+            'deliverables=["source","simulation"]\ninputs=["inputs/device.json"]\n', encoding="utf-8")
+        (task / "inputs/device.json").write_text('{"L":1e-10}\n', encoding="utf-8")
+        text = self.registry.read_text().replace('eda = "virtuoso"\nstatus = "reserved"\nversion = "0.0"',
+                                                 'eda = "virtuoso"\nstatus = "implemented"\nversion = "1.0"')
+        self.registry.write_text(text, encoding="utf-8")
+        workspace = vw.init_workspace(self.repo, task_id="demo-lpf", stage="ideal", block_key="VLPF",
+                                      dut_lib="VLPF_R01_lib", dut_cell="VLPF_Main", dut_ports=["rfin","rfout","gnd"])
+        run = vw.allocate_run_dir(workspace, "simulation", registry=self.registry, repo=self.repo)
+        er.freeze_contract(run, self.repo)
+        record = er.read_json(run / "run.json")
+        self.assertEqual(record["eda"], "virtuoso")
+        record["selection"]["native_design"] = "VLPF_R01_lib:VLPF_Main:schematic"
+        record["readiness"] = dict(status="confirmed", scope="One recorded ideal smoke run.",
+                                    brief=self.artifact(run,"delegation.md"), confirmed_by="task owner", confirmed_utc=er.utc_now())
+        record["preflight"] = "preflight.json"
+        er.write_json(run / "preflight.json", dict(schema_version=1,status="ready",observed_utc=er.utc_now(),
+            eda="virtuoso",task_version_id="demo-lpf-r1",native_design=record["selection"]["native_design"],
+            workspace=dict(status="verified",evidence=[self.artifact(run,"workspace.txt")]),
+            models=dict(status="not-applicable",reason="Ideal devices only.",evidence=[self.artifact(run,"models.txt")])) )
+        self.write_record(run, record)
+        self.assertEqual(er.check_run(run,"ready")["status"],"ok")
+        # A portable frozen helper checks its retained inputs from a different cwd.
+        helper = run / "contract/workflow/scripts/engineering_runs.py"
+        done = subprocess.run([sys.executable,str(helper),"check","--run",str(run),"--phase","ready"],
+                               cwd=self.repo.parent,text=True,capture_output=True,encoding="utf-8")
+        self.assertEqual(done.returncode,0,done.stderr+done.stdout)
+        frozen = run / "contract/task/inputs/device.json"
+        original = frozen.read_bytes()
+        frozen.write_text("changed",encoding="utf-8")
+        self.assertEqual(er.check_run(run,"ready")["status"],"error")
+        frozen.write_bytes(original)
+        owner = workspace / "project.toml"
+        original_owner = owner.read_text()
+        owner.write_text(original_owner.replace('eda = "virtuoso"','eda = "ads"'),encoding="utf-8")
+        self.assertEqual(er.check_run(run,"ready")["status"],"error")
+        owner.write_text(original_owner,encoding="utf-8")
+        record.update(state="completed",started_utc=er.utc_now(),ended_utc=er.utc_now())
+        report=self.artifact(run,"review.json")
+        record["outcomes"] = {key:dict(status=status,evidence=[report]) for key,status in
+                              (("execution","completed"),("electrical","passed"),("models","verified"),("delivery","complete"))}
+        for role in ("native_source","netlist","simulator_log","raw_data","measurements","check_report"):
+            record["evidence"][role]=[self.artifact(run,f"evidence/{role}.txt")]
+        raw = run / record["evidence"]["raw_data"][0]
+        raw.write_bytes(b"")
+        self.write_record(run,record)
+        self.assertEqual(er.check_run(run,"handoff")["status"],"error")
+        raw.write_text("actual retained fixture\n",encoding="utf-8")
+        self.assertEqual(er.check_run(run,"handoff")["status"],"ok")
+        self.assertEqual(er.close_run(run)["status"],"sealed")
+        self.assertEqual(er.check_run(run,"handoff")["status"],"ok")
+        raw.write_text("changed after seal",encoding="utf-8")
+        self.assertEqual(er.check_run(run,"handoff")["status"],"error")
+
+    def test_implemented_virtuoso_does_not_claim_layout_or_em_support(self):
+        self.registry.write_text(self.registry.read_text().replace('eda = "virtuoso"\nstatus = "reserved"',
+                                    'eda = "virtuoso"\nstatus = "implemented"'),encoding="utf-8")
+        for groups in (["source","layout"],["em"]):
+            with self.assertRaisesRegex(ValueError,"source and simulation only"):
+                er.resolve_route(self.registry,eda="virtuoso",deliverables=groups)
 
     def test_owner_identity_mismatch_rejected_but_standalone_handoff_works(self):
         run, _ = self.ready_run()

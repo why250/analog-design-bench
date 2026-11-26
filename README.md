@@ -16,8 +16,9 @@ Start a new design or resume an existing engineering task through the
 [engineering task workflow](docs/engineering-task-workflow.md). It selects the
 task and EDA workflow, freezes the execution contract, delegates a bounded work
 package and checks the returned evidence. The
-[workflow catalog](engineering/workflows.toml) contains the ADS branches and a
-reserved Virtuoso branch; Virtuoso execution is not implemented.
+[workflow catalog](engineering/workflows.toml) contains the ADS branches and
+the [Virtuoso schematic/Spectre workflow](docs/virtuoso-mcp-workflow.md).
+Native readiness and electrical acceptance require each task's actual checks.
 
 The [lab integration](docs/lab-integration.md) connects engineering tasks to an
 external host/environment planner. Agents use the ignored project binding to

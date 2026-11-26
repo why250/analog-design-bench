@@ -1,6 +1,6 @@
 """Select an environment with an external lab planner, then prepare a task-owned run.
 
-Only local scaffolding and records are written. No ADS session, SSH command,
+Only local scaffolding and records are written. No EDA session, SSH command,
 simulation or remote directory is created by this module.
 """
 from __future__ import annotations
@@ -30,6 +30,10 @@ def task_context(repo, task, workspace=None):
     task_id = metadata["task_id"]
     if task.name != task_id or not aw.TASK_ID_RE.fullmatch(task_id):
         raise ValueError("Task identity does not match its directory.")
+    profile_path = task / "engineering.toml"
+    aw._ensure_no_links(task, profile_path)
+    eda = tomllib.loads(profile_path.read_text(encoding="utf-8")).get("eda", "ads") if profile_path.exists() else "ads"
+    er.workspace_module(eda)
     if workspace is None:
         matches = []
         for path in (repo / "workspaces").glob("*/project.toml"):
@@ -48,9 +52,11 @@ def task_context(repo, task, workspace=None):
         project = tomllib.loads((workspace / "project.toml").read_text(encoding="utf-8"))
         identity = er._identity(project)
         er._task_identity(doc, identity)
+        if er.workspace_eda(project) != eda:
+            raise ValueError("Existing workspace EDA conflicts with the task profile.")
     else:
         identity = er._identity({"project": metadata})
-    binding_path = repo / ".local/ads-projects" / (task_id + ".json")
+    binding_path = repo / ".local" / (eda + "-projects") / (task_id + ".json")
     aw._ensure_no_links(repo, binding_path)
     binding = er.read_json(binding_path) if binding_path.exists() else {}
     if binding.get("task_id", task_id) != task_id or binding.get("revision", identity["revision"]) != identity["revision"]:
@@ -64,7 +70,7 @@ def environment_plan(repo, task, *, workspace=None, workflow=None, kind=None, de
     route = er.resolve_route(repo / "engineering/workflows.toml", task=task,
                              eda=None if (task / "engineering.toml").exists() else "ads",
                              workflow=workflow, kind=kind, deliverables=deliverables)
-    if route["status"] != "implemented" or route["eda"] != "ads":
+    if route["status"] != "implemented" or route["eda"] not in ("ads", "virtuoso"):
         raise ValueError("This engineering execution branch is reserved or not implemented.")
     binding_path = repo / ".local/eda-lab.json"
     aw._ensure_no_links(repo, binding_path)
@@ -76,14 +82,21 @@ def environment_plan(repo, task, *, workspace=None, workflow=None, kind=None, de
         raise ValueError("Unsupported lab project binding.")
     lab_root = Path(binding["lab_root"])
     request = {"schema_version": 1, "project": identity["task_id"],
-               "task": "em" if "em" in route["deliverables"] else "ads", "resources": {}}
+               "task": "virtuoso" if route["eda"] == "virtuoso" else ("em" if "em" in route["deliverables"] else "ads"),
+               "resources": {}}
+    if route["eda"] == "virtuoso":
+        selected_tools = task_binding.get("required_tools", {})
+        if (not isinstance(selected_tools, dict) or any(not isinstance(selected_tools.get(key), str)
+                or not selected_tools[key].strip() for key in ("virtuoso", "spectre"))):
+            raise ValueError("Record the lab-selected Virtuoso and Spectre versions in the private task binding required_tools before preparation.")
+        request["required_tools"] = {key: selected_tools[key] for key in ("virtuoso", "spectre")}
     for key, value in (("host", host), ("platform", platform), ("ssh_alias", task_binding.get("ssh_alias"))):
         if value is not None:
             request[key] = value
     for key, value in (("logical_cpus", cpus), ("memory_gib", memory_gib)):
         if value is not None:
             request["resources"][key] = value
-    # These existing fields name a task workspace, not its nested native ADS project.
+    # These fields name a task workspace, not its nested native project.
     remote_workspace = task_binding.get("remote_project") or task_binding.get("planned_remote_workspace")
     if remote_workspace:
         request["workspace_root"] = remote_workspace
@@ -103,6 +116,11 @@ def environment_plan(repo, task, *, workspace=None, workflow=None, kind=None, de
     if plan["status"] == "planned" and task_binding.get("mcp_server"):
         if task_binding["mcp_server"] != plan["project_binding"]["mcp_name"]:
             raise ValueError("Existing task MCP binding conflicts with the selected project interface.")
+    if plan["status"] == "planned" and route["eda"] == "virtuoso":
+        if plan.get("task") != "virtuoso" or plan.get("project_binding", {}).get("status") != "configured":
+            raise ValueError("Virtuoso planning requires the configured calling-client product binding.")
+        if any(plan.get("required_tools", {}).get(key) != version for key, version in request["required_tools"].items()):
+            raise ValueError("Lab plan does not retain both selected Virtuoso and Spectre versions.")
     return dict(schema_version=1, status=plan["status"], task=identity, workflow=route,
                 workspace=workspace.relative_to(repo).as_posix(), lab_request=request, lab_plan=plan,
                 execution=dict(submitted=False, ready=False, remote_writes=False))
@@ -119,21 +137,26 @@ def prepare_task(repo, task, *, slug, workspace=None, model_policy="restricted-p
         raise ValueError("Run slug must use lowercase kebab-case.")
     if not workspace.exists():
         if not block_key:
-            raise ValueError("Choose a block key for the new task before preparing its ADS workspace.")
-        workspace = aw.init_workspace(repo, task_id=identity["task_id"], stage=identity["stage"],
-                                      revision=identity["revision"], model_policy=model_policy,
-                                      block_key=block_key, dut_lib=f"{block_key}_R{identity['revision']:02d}_lib",
-                                      dut_cell=dut_cell or f"{block_key}_Main", dut_ports=dut_ports,
-                                      with_tools=True)
-    validation = aw.validate_workspace(repo, workspace, require_v2=False)
+            raise ValueError("Choose a block key for the new task before preparing its native workspace.")
+        module = er.workspace_module(result["workflow"]["eda"])
+        options = dict(task_id=identity["task_id"], stage=identity["stage"], revision=identity["revision"],
+                       model_policy=model_policy, block_key=block_key,
+                       dut_lib=f"{block_key}_R{identity['revision']:02d}_lib",
+                       dut_cell=dut_cell or f"{block_key}_Main", dut_ports=dut_ports)
+        if result["workflow"]["eda"] == "ads":
+            options["with_tools"] = True
+        workspace = module.init_workspace(repo, **options)
+    module = er.workspace_module(result["workflow"]["eda"])
+    validation = module.validate_workspace(repo, workspace, require_v2=False)
     if validation["errors"]:
         raise ValueError("Workspace validation failed: " + "; ".join(validation["errors"]))
     route = result["workflow"]
-    run = aw.allocate_run_dir(workspace, slug, registry=repo / "engineering/workflows.toml", repo=repo,
+    run = module.allocate_run_dir(workspace, slug, registry=repo / "engineering/workflows.toml", repo=repo,
                               workflow=route["workflow"], kind=route["kind"], deliverables=route["deliverables"])
     project = tomllib.loads((workspace / "project.toml").read_text(encoding="utf-8"))
     paths = project["paths"]
-    native_rel = aw._relative_posix(paths["ads"], "paths.ads").as_posix()
+    native_key = route["eda"]
+    native_rel = aw._relative_posix(paths[native_key], "paths." + native_key).as_posix()
     run_rel = run.relative_to(workspace).as_posix()
     private_ref = f"engineering-runs/{identity['task_id']}/{run.name}/environment.json"
     private_path = repo / ".local" / private_ref
@@ -143,7 +166,8 @@ def prepare_task(repo, task, *, slug, workspace=None, model_policy="restricted-p
     private = {**result, "run_id": run.name, "paths": {
         "local_workspace": str(workspace), "local_run": str(run),
         "remote_workspace": remote_workspace,
-        "remote_ads": remote_workspace.rstrip("/\\") + "/" + native_rel if remote_workspace else None,
+        "remote_native": remote_workspace.rstrip("/\\") + "/" + native_rel if remote_workspace else None,
+        "remote_" + native_key: remote_workspace.rstrip("/\\") + "/" + native_rel if remote_workspace else None,
         "remote_run": remote_workspace.rstrip("/\\") + "/" + run_rel if remote_workspace else None,
     }}
     private_path.parent.mkdir(parents=True, exist_ok=True)
@@ -153,7 +177,7 @@ def prepare_task(repo, task, *, slug, workspace=None, model_policy="restricted-p
                    route=plan["task"], host=plan["selected_host"], platform=plan["platform"],
                    required_tools=plan["required_tools"], requested_resources=plan["requested_resources"],
                    planning_ceiling=plan["planning_ceiling"], private_binding_ref=private_ref,
-                   paths=dict(workspace=result["workspace"], ads=native_rel, results=run_rel),
+                   paths={"workspace": result["workspace"], "native": native_rel, native_key: native_rel, "results": run_rel},
                    pending_checks=plan["pending_checks"], execution=result["execution"])
     er.write_json(run / "environment-plan.json", summary)
     record = er.read_json(run / "run.json")
@@ -172,7 +196,7 @@ def prepare_task(repo, task, *, slug, workspace=None, model_policy="restricted-p
              "Scope and existing authorization: pending review against the user's request. "
              "Populate the budget, stop rules, required evidence and deferred work using "
              "the frozen delegation template before marking readiness confirmed. "
-             "This scaffold does not start ADS, authorize a new license or approve GUI work.\n\n"
+             "This scaffold does not start EDA, authorize a new license or approve GUI work.\n\n"
              "Return actual native source and the requested simulation/layout/EM evidence. "
              "Record execution completion, electrical acceptance, model applicability and "
              "delivery completeness independently in run.json. The main agent reviews the "

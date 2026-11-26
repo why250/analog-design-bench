@@ -84,7 +84,18 @@ documents = [
 
 [workflows.virtuoso]
 eda = "virtuoso"
-status = "reserved"
-version = "0.0"
+status = "implemented"
+version = "0.1"
+guide = "docs/virtuoso-mcp-workflow.md"
 skills = []
-documents = []
+documents = [
+  "AGENTS.md",
+  "docs/engineering-task-workflow.md",
+  "docs/templates/engineering-delegation.md",
+  "docs/lab-integration.md",
+  "docs/virtuoso-mcp-workflow.md",
+  "scripts/ads_workspace.py",
+  "scripts/virtuoso_workspace.py",
+  "scripts/engineering_runs.py",
+  "scripts/engineering_environment.py",
+]

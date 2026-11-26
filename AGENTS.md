@@ -21,8 +21,9 @@
   EDA, stage and workflow; load only relevant skills and references.
 - Use `create-analog-design-task` for new or changed contracts. ADS work also
   uses `configure-ads-environment` and its selected domain workflow. Virtuoso
-  is reserved for generic task drafting until an implementation exists.
-- For ADS engineering, use the [lab integration](docs/lab-integration.md).
+  schematic and Spectre work uses the [Virtuoso workflow](docs/virtuoso-mcp-workflow.md);
+  PDK, layout, extraction and ADE capabilities need task-specific procedures.
+- For supported engineering execution, use the [lab integration](docs/lab-integration.md).
   After resolving the task, run `python scripts/engineering_runs.py environment
   --task tasks/<task-id> --client <lab-client>` to select the bound environment;
   `--client` is required when the project has several registered clients. For a

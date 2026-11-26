@@ -33,9 +33,12 @@ __pycache__/
 # below is tracked. The private device profile lives under ignored .local/.
 /tasks/inp-*/
 !/tasks/inp-passive-lpf-65g-50ohm-80g-stop20/
+!/tasks/inp-passive-lpf-65g-50ohm-80g-stop20-virtuoso/
 !/tasks/inp-passive-lpf-65g-nonideal-lc-feasibility/
 !/tasks/inp-passive-lpf-65g-shunt-first-ideal/
 /workspaces/inp-*/
 !/workspaces/inp-lpf/
+!/workspaces/inp-passive-lpf-65g-50ohm-80g-stop20-virtuoso/
 !/workspaces/inp-passive-lpf-65g-nonideal-lc-feasibility/
 !/workspaces/inp-passive-lpf-65g-shunt-first-ideal/
+/.agents/mcp_config.json

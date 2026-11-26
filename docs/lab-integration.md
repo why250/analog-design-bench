@@ -10,7 +10,7 @@ verification and closeout stay in this repository and its `engineering_runs.py`
 helper.
 
 Start each design task with the read-only `plan_environment` gate, passing this
-repository's absolute path, the route inferred from the task (`ads` or `em`) and
+repository's absolute path, the route inferred from the task (`ads`, `em`, or `virtuoso`) and
 the actual calling client (`claude` for Claude Code, or `codex`, `cursor`,
 `antigravity`). The result selects one of these paths:
 
@@ -101,7 +101,9 @@ plan naming the registered clients.
 `environment` reads the task/workflow and existing private task binding, calls
 the external lab planner, and returns its actual JSON plan. It creates no run.
 ADS simulation/source/layout work requests the lab's `ads` route; requested EM
-deliverables request `em`. Specialized electrical workflows remain authoritative.
+deliverables request `em`. Virtuoso source/simulation work requests `virtuoso`
+and carries the selected Virtuoso and Spectre requirements from its private
+task binding. Specialized electrical workflows remain authoritative.
 Optional `--host`, `--platform`, `--cpus` and `--memory-gib` constrain selection.
 An existing task SSH binding is also a constraint. Missing project binding,
 unavailable interfaces, configuration drift and incompatible requests do not
@@ -125,7 +127,7 @@ an explicit `--workspace`. It then allocates a fresh run and writes:
 The returned run path is authoritative. The private receipt gives the executor
 the exact remote native project and run-output locations, derived from the
 workspace manifest and selected root. All remote locations remain proposals
-until the actual ADS process and filesystem are checked. Live solver scratch
+until the actual native EDA process and filesystem are checked. Live solver scratch
 may be produced in vendor-owned locations; collect retained evidence into the
 selected run. Do not synchronize an open workspace continuously in both directions.
 
@@ -134,7 +136,7 @@ and populate `delegation.md` from the frozen delegation template using the
 user's existing authorization, budget and stop rules. Verify the actual tool
 process, workspace and PDK; record real preflight observations. Set readiness
 only for the agreed work. GUI work follows the user's explicit consent rule.
-No preparation command launches ADS, simulates, transfers files or starts a
+No preparation command launches an EDA application, simulates, transfers files or starts a
 subagent. The parent agent delegates the self-contained work package within the
 task's authorized scope and maintains one native writer.
 

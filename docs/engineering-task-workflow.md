@@ -32,12 +32,13 @@ guarantees automatic execution or electrical correctness.
 | `ads-generic` | ADS engineering without a more specific implemented workflow | ADS environment, native organization and task-owned electrical checks |
 | `ads-lpf` | Passive LC low-pass filter staged design | Generic ADS requirements plus the [LPF task workflow](ads-lpf-task-workflow.md) |
 | `ads-inductor` | RFIC Inductor Toolkit geometry and Momentum screening | Generic ADS requirements plus the available inductor skill; task-specific stack and checks remain required |
-| `virtuoso` | Reserved future branch | Generic task drafting only; execution support is not implemented |
+| `virtuoso` | Editable schematics and source-derived Spectre simulation | [Virtuoso workspace, native netlisting and evidence workflow](virtuoso-mcp-workflow.md); initial validation is ideal two-port work |
 
-Only load skills and references needed for the selected work. For a Virtuoso
-request, preserve the goal and write pending software prerequisites; do not
-invent an available companion, native project or execution route. Add its
-implemented branch only when real procedures and checks have been verified.
+Only load skills and references needed for the selected work. The Virtuoso
+branch uses the selected Bridge's actual native skills and installed Cadence
+documentation. Its implementation does not establish PDK compatibility,
+layout/extraction or ADE readiness; record those task-specific prerequisites
+when requested. Unsupported routes remain drafts rather than guessed workflows.
 
 ### Record the task's route
 
@@ -99,7 +100,9 @@ same invocation.
 Keep `tasks/<task-id>/` authoritative and `workspaces/<task-id>/` stable. Apply
 the [engineering workspace layout](engineering-workspace-layout.md) before
 building an ADS project and the [naming convention](ads-naming-convention.md)
-before creating libraries or cells. Keep task, workflow and software versions
+before creating its libraries or cells. For Virtuoso, use the
+[native workspace and ownership rules](virtuoso-mcp-workflow.md#stable-native-workspace-and-ownership).
+Keep task, workflow and software versions
 distinct. A new run or candidate is not a new task revision.
 
 `project.toml` is static identity and path configuration. Dynamic selection and
@@ -161,7 +164,7 @@ Computer Use consent rule when UI inspection or operation is needed.
 
 Before modifying native source, the executor must establish the intended tool
 process, software version, workspace and consumer-visible files. Distinguish
-the agent's environment, SSH shell host and ADS process host. Matching drive
+the agent's environment, SSH shell host and native EDA process host. Matching drive
 letters or an MCP server label do not establish a shared filesystem.
 
 For ADS, follow the [ADS MCP workflow](ads-mcp-workflow.md) and record separately
@@ -170,7 +173,9 @@ checks actually performed. Link a portable preflight report from `run.json`;
 keep exact host/session/path observations in the private binding receipt.
 Unavailable or unperformed checks remain pending. A recorded preflight status
 is an assertion with evidence references; the static checker does not discover
-the remote session or test a license itself.
+the remote session or test a license itself. For Virtuoso, apply the corresponding
+[preflight and native-source checks](virtuoso-mcp-workflow.md#actual-preflight-and-source-preparation),
+including isolated library definitions and source-derived netlisting.
 
 Assign one writer to the primary editable native workspace. Parallel analysis
 may read frozen inputs. Parallel native edits require separate owned copies
@@ -198,7 +203,8 @@ there is no separate status-update command. All evidence references are
 normalized paths relative to the run root and must identify nonempty files,
 not directories, links or absolute host paths. For multi-file native source,
 link its released snapshot files or archive and retain the corresponding
-inventory. The stable editable project remains in the workspace's `ads/`.
+inventory. The stable editable project remains in the manifest's native
+directory (`ads/` or `virtuoso/`).
 
 | Field | Use |
 | --- | --- |
@@ -306,7 +312,7 @@ evidence that another checkout received the standard. Committing or publishing
 a baseline is separate from preparing and validating its frozen handoff.
 
 Verify updates using temporary tasks and runs: route an existing task, create a
-new ADS run, reject a reserved Virtuoso execution, reject missing or changed
+new ADS and Virtuoso run, reject reserved workflow execution, reject missing or changed
 evidence, and close a complete source-only or simulated delivery. Do not use
 historical evidence as disposable test fixtures or claim electrical validation
 from these workflow tests.

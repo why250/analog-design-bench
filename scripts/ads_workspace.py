@@ -1285,8 +1285,31 @@ def audit_workspaces(repo: Path, *, v2_only: bool = False) -> list[dict[str, obj
         is_v2 = False
         if toml_path.is_file():
             try:
-                is_v2 = tomllib.loads(toml_path.read_text(encoding="utf-8")).get("schema_version") == SCHEMA_VERSION
-            except (OSError, tomllib.TOMLDecodeError):
+                _ensure_no_links(root, entry)
+                _ensure_no_links(entry, toml_path)
+                doc = tomllib.loads(toml_path.read_text(encoding="utf-8"))
+                is_v2 = doc.get("schema_version") == SCHEMA_VERSION
+                declared_eda = doc.get("eda", "ads")
+                if declared_eda == "virtuoso" and is_v2:
+                    if not v2_only:
+                        project = doc.get("project", {})
+                        reports.append({
+                            "workspace": entry.name,
+                            "task_id": project.get("task_id") if isinstance(project, dict) else None,
+                            "revision": project.get("revision") if isinstance(project, dict) else None,
+                            "schema_version": SCHEMA_VERSION,
+                            "status": "non-ads", "errors": [],
+                            "warnings": ["Virtuoso workspace is outside ADS audit coverage; validate it with scripts/virtuoso_workspace.py."],
+                        })
+                    continue
+                if declared_eda != "ads":
+                    reports.append({
+                        "workspace": entry.name, "task_id": None, "revision": None,
+                        "schema_version": doc.get("schema_version"), "status": "error",
+                        "errors": ["Unsupported workspace EDA or schema declaration."], "warnings": [],
+                    })
+                    continue
+            except (OSError, ValueError):
                 is_v2 = True
         if v2_only and not is_v2:
             continue
