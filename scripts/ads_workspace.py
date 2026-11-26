@@ -32,19 +32,17 @@ AUX_WRK_NAME_RE = re.compile(r"^aux_[a-z][a-z0-9_]{0,19}_wrk$")
 AUX_ROLE_RE = re.compile(r"^[a-z][a-z0-9_]{0,23}$")
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
-# ADS library/cell naming convention (docs/ads-naming-convention.md).
+# ADS task/revision naming extensions (docs/ads-naming-convention.md).
+# Generic ADS workspace, library, cell, and view rules come from ads_project_kit.naming.
 BLOCK_KEY_RE = re.compile(r"^[A-Z][A-Z0-9]{0,15}$")
 DUT_LIB_RE = re.compile(r"^(?P<block>[A-Z][A-Z0-9]*)_R(?P<rev>\d{2})_lib$")
 LIB_ROLE_SUFFIXES = ("_lib", "_tb_lib", "_pcell_lib", "_em_lib", "_aux_lib")
 SIMULATION_TOKENS = ("SP", "HB", "TRAN", "AC", "DC", "EM")
-TB_CELL_RE = re.compile(
-    r"^TB_(?P<dut>.+)_(?P<sim>" + "|".join(SIMULATION_TOKENS) + r")(?:_(?P<purpose>[A-Z0-9]+))?$"
+TB_DUT_EXTRACT_RE = re.compile(
+    r"^TB_(?P<dut>.+)_(?:" + "|".join(SIMULATION_TOKENS) + r")(?:_[A-Z][A-Z0-9]*)?$"
 )
 EM_CELL_RE = re.compile(r"^EM_[A-Z][A-Z0-9_]*$")
 AUX_CELL_RE = re.compile(r"^AUX_[A-Z][A-Z0-9_]*$")
-AUTHORITATIVE_VIEW_NAMES = frozenset(
-    {"schematic", "symbol", "layout", "emSetup", "emModel", "emModel_mw"}
-)
 RUN_ID_RE = re.compile(
     r"^20\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])"
     r"T(?:[01]\d|2[0-3])[0-5]\d[0-5]\dZ-[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -1020,6 +1018,26 @@ def _is_within(path: Path, parent: Path) -> bool:
         return False
 
 
+def _load_ads_project_kit_modules():
+    """Optionally load ads_project_kit and its naming module without requiring it for non-ADS work."""
+    import importlib
+
+    env_path = os.environ.get("ADS_PROJECT_KIT_PATH", "").strip()
+    if env_path:
+        candidate = Path(env_path).expanduser()
+        src_dir = candidate / "src" if (candidate / "src" / "ads_project_kit" / "__init__.py").is_file() else candidate
+        if (src_dir / "ads_project_kit" / "__init__.py").is_file():
+            src_str = str(src_dir.resolve())
+            if src_str not in sys.path:
+                sys.path.insert(0, src_str)
+    try:
+        kit = importlib.import_module("ads_project_kit")
+        naming = importlib.import_module("ads_project_kit.naming")
+        return kit, naming
+    except ImportError:
+        return None, None
+
+
 def _validate_ads_naming(
     workspace: Path,
     ads_ws_rels: list[str],
@@ -1028,7 +1046,7 @@ def _validate_ads_naming(
     errors: list[str],
     warnings: list[str],
 ) -> None:
-    """Check task-local ADS library, cell and view names against the naming convention."""
+    """Check task-local ADS library, cell and view names against ads-project-kit and task rules."""
     design = design if isinstance(design, dict) else {}
     block_key = design.get("block_key")
     dut_lib = design.get("dut_lib")
@@ -1064,6 +1082,8 @@ def _validate_ads_naming(
             f"got {dut_lib!r}"
         )
 
+    kit_mod, apk_naming = _load_ads_project_kit_modules()
+    warned_missing_apk = False
     found_lib_defs = False
     for rel in ads_ws_rels:
         ads_ws = workspace / rel
@@ -1074,6 +1094,20 @@ def _validate_ads_naming(
             warnings.append(f"No lib.defs under {rel}; ADS naming checks skipped until the native workspace exists.")
             continue
         found_lib_defs = True
+        if apk_naming is None and not warned_missing_apk:
+            warnings.append(
+                "ads_project_kit is not available in the local Python environment; "
+                "generic ADS workspace/library/testbench/view naming checks were NOT RUN."
+            )
+            warned_missing_apk = True
+        if apk_naming is not None and not apk_naming.is_valid_workspace_name(ads_ws.name):
+            errors.append(f"ADS workspace directory {ads_ws.name!r} violates ads_project_kit <identifier>_wrk convention.")
+        if kit_mod is not None and (ads_ws / "ads-project-kit.json").is_file():
+            apk_report = kit_mod.validate_project(ads_ws, native=False)
+            for check in apk_report.static:
+                if check.status == "FAIL":
+                    errors.append(f"ads_project_kit static check {check.name!r} failed: {check.detail}")
+
         lib_defs = _read_lib_defs(lib_defs_path)
         local_cells: dict[str, set[str]] = {}
         lib_roots: dict[str, Path] = {}
@@ -1084,6 +1118,9 @@ def _validate_ads_naming(
             if not _is_within(resolved, workspace):
                 continue
             if lib_name in vendored:
+                continue
+            if apk_naming is not None and not apk_naming.is_valid_library_name(lib_name):
+                errors.append(f"Task-local ADS library {lib_name!r} is not a portable ads_project_kit identifier.")
                 continue
             if lib_name not in allowed_libs:
                 errors.append(
@@ -1102,15 +1139,18 @@ def _validate_ads_naming(
                 cell_name = _oa_decode_name(item.name)
                 cells.add(cell_name)
                 if lib_name == dut_lib_name:
-                    if cell_name.startswith(("TB_", "EM_", "AUX_")):
+                    if apk_naming is not None and not apk_naming.is_valid_dut_cell_name(cell_name):
+                        errors.append(f"DUT library cell {cell_name!r} violates ads_project_kit DUT naming rules.")
+                    elif cell_name.startswith(("TB_", "EM_", "AUX_")):
                         errors.append(f"DUT library cell {cell_name!r} must not use a role prefix TB_/EM_/AUX_.")
                     elif not cell_name.startswith(f"{block_key}_"):
                         errors.append(f"DUT library cell {cell_name!r} must start with {block_key}_.")
-                elif lib_name == tb_lib_name and not TB_CELL_RE.fullmatch(cell_name):
-                    errors.append(
-                        f"Testbench cell {cell_name!r} must match "
-                        "TB_<DUT_CELL>_<SP|HB|TRAN|AC|DC|EM>[_<PURPOSE>]."
-                    )
+                elif lib_name == tb_lib_name:
+                    if apk_naming is not None and not apk_naming.is_valid_testbench_cell_name(cell_name):
+                        errors.append(
+                            f"Testbench cell {cell_name!r} must match "
+                            "TB_<DUT_CELL>_<SP|HB|TRAN|AC|DC|EM>[_<PURPOSE>]."
+                        )
                 elif lib_name == em_lib_name and not EM_CELL_RE.fullmatch(cell_name):
                     errors.append(f"EM library cell {cell_name!r} must match EM_<DEVICE>_<GEOMETRY>.")
                 elif lib_name == aux_lib_name and not AUX_CELL_RE.fullmatch(cell_name):
@@ -1119,11 +1159,12 @@ def _validate_ads_naming(
                     if not view_dir.is_dir() or view_dir.name.startswith("."):
                         continue
                     view_name = _oa_decode_name(view_dir.name)
-                    if view_name not in AUTHORITATIVE_VIEW_NAMES and not view_name.startswith("x_"):
-                        warnings.append(
-                            f"Cell {cell_name!r} has non-standard view {view_name!r}; "
-                            "use a stock view name or an x_ experimental prefix."
-                        )
+                    if apk_naming is not None:
+                        if view_name not in apk_naming.STANDARD_VIEWS and not apk_naming.is_valid_view_name(view_name):
+                            warnings.append(
+                                f"Cell {cell_name!r} has non-standard view {view_name!r}; "
+                                "use a stock view name or an x_ experimental prefix."
+                            )
             local_cells[lib_name] = cells
 
         if isinstance(dut_lib, str) and dut_lib not in vendored and dut_lib not in lib_roots:
@@ -1149,7 +1190,9 @@ def _validate_ads_naming(
         dut_cells = local_cells.get(dut_lib_name, set())
         if tb_cells is not None and dut_cells:
             for tb_cell in sorted(tb_cells):
-                match = TB_CELL_RE.fullmatch(tb_cell)
+                if apk_naming is not None and not apk_naming.is_valid_testbench_cell_name(tb_cell):
+                    continue
+                match = TB_DUT_EXTRACT_RE.fullmatch(tb_cell)
                 if match and match.group("dut") not in dut_cells:
                     errors.append(
                         f"Testbench cell {tb_cell!r} names DUT {match.group('dut')!r}, "

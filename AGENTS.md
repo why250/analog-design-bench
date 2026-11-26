@@ -105,7 +105,11 @@
   `python scripts/ads_workspace.py validate --workspace workspaces/<task-id>`
   (or `--all-v2`). Use stable `workspaces/<task-id>/` roots with `project.toml`
   and the same relative structure on each host; keep run timestamps under
-  `results/`. Preserve existing task roots and completed evidence. Name new
+  `results/`. Preserve existing task roots and completed evidence. When creating
+  and natively validating new ADS workspaces and role libraries inside the ADS
+  Python Runtime, use `ads-project-kit` via `scripts/ads_project_kit_runtime.py`
+  and [ADS Project Kit integration](docs/ads-project-kit-integration.md) (no
+  silent fallback if `ads_project_kit` is unavailable). Name new
   ADS libraries, cells and views per the
   [ADS naming convention](docs/ads-naming-convention.md); pass `--block-key`
   to `init` and declare byte-copied PDK libraries in `vendored_libs`.

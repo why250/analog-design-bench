@@ -1,0 +1,5 @@
+schema_version = 1
+eda = "ads"
+workflow = "ads-lpf"
+kind = "design"
+deliverables = ["source", "simulation"]
