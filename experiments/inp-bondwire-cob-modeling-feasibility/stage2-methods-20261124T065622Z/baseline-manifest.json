@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "purpose": "documentation-only work package; not an ADS engineering run",
+  "files": [
+    {
+      "path": "tasks/inp-bondwire-cob-modeling-feasibility/DEVELOPMENT.md",
+      "sha256": "a6404912f6f972e289fc4b28d0737a82aa1224d74bb3b66ddcd4ae3f61fa3fcd"
+    },
+    {
+      "path": "tasks/inp-bondwire-cob-modeling-feasibility/engineering.toml",
+      "sha256": "209d7d161731458e536da70e00eef318d0d5fe9323679556f38c887d07398cf1"
+    },
+    {
+      "path": "tasks/inp-bondwire-cob-modeling-feasibility/instruction.md",
+      "sha256": "74b27c981cbf221f9f1eddf53644890586ccf5665bd9c54abc5fd76960668271"
+    },
+    {
+      "path": "tasks/inp-bondwire-cob-modeling-feasibility/task.toml",
+      "sha256": "39f83efc5bd222380b24b05d480f6145ac8f78bf71b618baa99bbe366d1efdde"
+    },
+    {
+      "path": "tasks/inp-bondwire-cob-modeling-feasibility/verification-plan.md",
+      "sha256": "90e27e1ef03328828f2c5f481e79fb9e393d447affffff64ebbe05ac26324ae8"
+    },
+    {
+      "path": "engineering/workflows.toml",
+      "sha256": "3b621cf999433329123e3c7a2c8082400d57529c516055bd445de29c3817ce6e"
+    },
+    {
+      "path": ".agents/skills/engineering-learning/SKILL.md",
+      "sha256": "f2372cadc4ffec264f272b1da06e74a5081810d689c9b56218177f4c0b6ddc8f"
+    },
+    {
+      "path": "experiments/inp-bondwire-cob-modeling-feasibility/stage1-theory-20261124T064146Z/stage1-theory.md",
+      "sha256": "9d66d29075c00db8854d42919664d6f81b9d152304be57f8ec50b7cecd8f590d"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "5a9a8504e09ce28d4e2591a872ff4c31cd730ad6a3afb04c4791932990492699"
+    },
+    {
+      "path": "docs/engineering-task-workflow.md",
+      "sha256": "166d07ea0a4d70fd71663797aab39380bc6a292c3943224925cb71edac7e6eab"
+    },
+    {
+      "path": "docs/templates/engineering-delegation.md",
+      "sha256": "6d15870f324e134c9cd332e1ffb9014b821839fe44a81d163f6223a082b7eaee"
+    },
+    {
+      "path": "docs/engineering-workspace-layout.md",
+      "sha256": "b977364528758c73efdecaf3dc140351c00478bce9392b61aef264f9028df4d2"
+    },
+    {
+      "path": "docs/ads-naming-convention.md",
+      "sha256": "47bce6c929865747aabe87cd14e8fea1c2903bd1b1bb11f7e23d7674679e1382"
+    },
+    {
+      "path": "docs/ads-mcp-workflow.md",
+      "sha256": "3e2e98a7b198a1c4abcb69f715b4c79c79ecd26a7c35234c180a3330dc0597a7"
+    },
+    {
+      "path": "scripts/ads_workspace.py",
+      "sha256": "ad8e1671185e7de22644ae44618e53e63f2af99e3c45f1a6ae8c887a4324cbfb"
+    },
+    {
+      "path": "scripts/engineering_runs.py",
+      "sha256": "3f0b7971838de5a8d8e153eab62fa966066da52e8b53d2ffb77c37f9d5175f9f"
+    },
+    {
+      "path": "scripts/engineering_environment.py",
+      "sha256": "9bc6f4eb36cf639fd6b40fa0eac36018e4ccc604cf3f0ea0595dfbc9fb959f53"
+    },
+    {
+      "path": "docs/lab-integration.md",
+      "sha256": "b1f83b80bb1e44e77617c3b97c95fee0798dad8e554d1a4ef72771133775ee92"
+    },
+    {
+      "path": ".agents/skills/configure-ads-environment/SKILL.md",
+      "sha256": "0328148a9364ef018b97a0ac7cdd87a081f1192521c1dd7cbd356294690be602"
+    },
+    {
+      "path": ".agents/skills/configure-ads-environment/references/ads.md",
+      "sha256": "4169ceaf5f9c2a7774ac60216cfbc29bbfa1d4b98e45c3386c4c08599d68c052"
+    },
+    {
+      "path": ".agents/skills/configure-ads-environment/references/ads-workspaces.md",
+      "sha256": "e4782fc6daf88ebceb7fb43c1b2bf639d37612ce73761afb285c1c0fadfd1586"
+    },
+    {
+      "path": ".agents/skills/configure-ads-environment/references/ads-mcp.md",
+      "sha256": "182b517f341eaf75a4d7a9ed18b456b61b8a9a1fb000a8f96928a596ab2ccd00"
+    }
+  ]
+}

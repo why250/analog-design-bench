@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "observed_utc": "2026-11-24 07:03:53 UTC",
+  "scope": "Read-only routing and documentation test; not an ADS execution or solver readiness test.",
+  "project": "inp-bondwire-cob-modeling-feasibility",
+  "planner": {
+    "status": "planned",
+    "task": "em",
+    "selected_host": "win",
+    "ssh_alias": "<redacted; kept in the private lab binding>",
+    "interface": "ads2027-win",
+    "required_tools": {
+      "ads": "2027"
+    },
+    "client": "codex",
+    "binding_status": "configured",
+    "mcp_name": "ads2027",
+    "execution": {
+      "submitted": false,
+      "ready": false,
+      "remote_writes": false
+    },
+    "connection_evidence": {
+      "status": "passed",
+      "checked_at_utc": "2026-11-19T07:40:03.129785+00:00",
+      "scope": "Connection and discovery only; application execution is unverified"
+    }
+  },
+  "product_documentation": {
+    "selected_mcp": "ads2027",
+    "path": "api/keysight.ads.de.db_uu/Bondwire",
+    "call_succeeded": true,
+    "observation": "Returned documentation for a bondwire layout object; no ADS session was attached."
+  },
+  "performed_actions": [
+    "plan_environment",
+    "ads2027.get_docs"
+  ],
+  "limitations": [
+    "No register_project or ensure_product_tools call was performed in this test.",
+    "No ADS application session, solver, license, workspace or simulation was tested.",
+    "The MCP service may be started on demand by its client; its process lifecycle was not inspected.",
+    "This single observation does not establish behavior in every task or initial setup."
+  ]
+}

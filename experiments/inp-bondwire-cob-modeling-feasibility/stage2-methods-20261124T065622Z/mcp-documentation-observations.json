@@ -1,0 +1,36 @@
+{
+  "scope": "Documentation only; no ADS session, model, or simulation. MCP index version label 0.0.0; installed-version match not established.",
+  "provenance": "ADS MCP get_docs responses, consulted read-only on 2026-11-24; summaries, not copies of vendor documentation.",
+  "records": [
+    {
+      "path": "api/keysight.ads.de.db_uu/Bondwire",
+      "query_succeeded": true,
+      "summary": "Documented layout object with profile, endpoint, layer and radius properties."
+    },
+    {
+      "path": "api/keysight.ads.de.tech/BondwireProfile",
+      "query_succeeded": true,
+      "summary": "Documented profile fields include material, radius, ground layer, profile points and metal model type."
+    },
+    {
+      "path": "api/keysight.ads.de.tech/BondwireMetalModelType",
+      "query_succeeded": true,
+      "summary": "Documented metal-model choices include surface impedance and interior mesh."
+    },
+    {
+      "path": "api/keysight.ads.emtools/create_empro_view",
+      "query_succeeded": true,
+      "summary": "Documented API creates an EM-tool view from an existing layout and substrate."
+    },
+    {
+      "path": "examples/rfpro/ex_convert_emsetup_to_rfpro_view",
+      "query_succeeded": true,
+      "summary": "Documented example creates RFPro analysis from an existing EM Setup view."
+    },
+    {
+      "path": "simulation/results",
+      "query_succeeded": true,
+      "summary": "Documented guide shows reading existing simulation datasets and S-parameter data."
+    }
+  ]
+}

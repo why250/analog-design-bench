@@ -1,0 +1,90 @@
+schema_version = 1
+
+# Version the portable workflow contract independently of task revisions.
+# This catalog selects guidance; it is not a simulator or an electrical verifier.
+
+[workflows.ads-generic]
+eda = "ads"
+status = "implemented"
+version = "1.2"
+guide = "docs/ads-mcp-workflow.md"
+skills = ["configure-ads-environment"]
+documents = [
+  "AGENTS.md",
+  "docs/engineering-task-workflow.md",
+  "docs/templates/engineering-delegation.md",
+  "docs/engineering-workspace-layout.md",
+  "docs/ads-naming-convention.md",
+  "docs/ads-mcp-workflow.md",
+  "scripts/ads_workspace.py",
+  "scripts/engineering_runs.py",
+  "scripts/engineering_environment.py",
+  "docs/lab-integration.md",
+  ".agents/skills/configure-ads-environment/SKILL.md",
+  ".agents/skills/configure-ads-environment/references/ads.md",
+  ".agents/skills/configure-ads-environment/references/ads-workspaces.md",
+  ".agents/skills/configure-ads-environment/references/ads-mcp.md",
+]
+
+[workflows.ads-lpf]
+eda = "ads"
+status = "implemented"
+version = "1.2"
+guide = "docs/ads-lpf-task-workflow.md"
+skills = ["configure-ads-environment", "staged-lpf-design"]
+documents = [
+  "AGENTS.md",
+  "docs/engineering-task-workflow.md",
+  "docs/templates/engineering-delegation.md",
+  "docs/engineering-workspace-layout.md",
+  "docs/ads-naming-convention.md",
+  "docs/ads-mcp-workflow.md",
+  "docs/ads-lpf-task-workflow.md",
+  "scripts/ads_workspace.py",
+  "scripts/engineering_runs.py",
+  "scripts/engineering_environment.py",
+  "docs/lab-integration.md",
+  ".agents/skills/configure-ads-environment/SKILL.md",
+  ".agents/skills/configure-ads-environment/references/ads.md",
+  ".agents/skills/configure-ads-environment/references/ads-workspaces.md",
+  ".agents/skills/configure-ads-environment/references/ads-mcp.md",
+  ".agents/skills/staged-lpf-design/SKILL.md",
+  ".agents/skills/create-analog-design-task/SKILL.md",
+  ".agents/skills/create-analog-design-task/references/task-packages.md",
+  ".agents/skills/create-analog-design-task/references/eda-environments.md",
+  ".agents/skills/create-analog-design-task/references/eda-companions.md",
+  ".agents/skills/create-analog-design-task/assets/task-brief.md",
+  ".agents/skills/create-analog-design-task/assets/verification-plan.md",
+]
+
+[workflows.ads-inductor]
+eda = "ads"
+status = "implemented"
+version = "1.2"
+guide = ".agents/skills/rf-inductor-toolkit-design/SKILL.md"
+skills = ["configure-ads-environment", "rf-inductor-toolkit-design"]
+documents = [
+  "AGENTS.md",
+  "docs/engineering-task-workflow.md",
+  "docs/templates/engineering-delegation.md",
+  "docs/engineering-workspace-layout.md",
+  "docs/ads-naming-convention.md",
+  "docs/ads-mcp-workflow.md",
+  "scripts/ads_workspace.py",
+  "scripts/engineering_runs.py",
+  "scripts/engineering_environment.py",
+  "docs/lab-integration.md",
+  ".agents/skills/configure-ads-environment/SKILL.md",
+  ".agents/skills/configure-ads-environment/references/ads.md",
+  ".agents/skills/configure-ads-environment/references/ads-workspaces.md",
+  ".agents/skills/configure-ads-environment/references/ads-mcp.md",
+  ".agents/skills/rf-inductor-toolkit-design/SKILL.md",
+  ".agents/skills/rf-inductor-toolkit-design/references/screening-evidence.md",
+]
+
+[workflows.virtuoso]
+eda = "virtuoso"
+status = "reserved"
+version = "0.0"
+skills = []
+documents = []
