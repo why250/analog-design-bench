@@ -1,0 +1,5 @@
+INCLUDE $HPEESOF_DIR/oalibs/analog_rf.defs
+DEFINE LPF_R01_lib LPF_R01_lib
+ASSIGN LPF_R01_lib libMode shared
+DEFINE LPF_R01_tb_lib LPF_R01_tb_lib
+ASSIGN LPF_R01_tb_lib libMode shared

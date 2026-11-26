@@ -126,7 +126,10 @@ task's project.
 3. Establish the directory roles above and the policy-matched `.gitignore`
    before generating native files. Keep the single primary editable native
    source under `ads/design_wrk/` (or a short `ads/<name>_wrk/`), never storing
-   `.zip` archives or dated backup copies in `ads/`. Keep runnable scripts in
+   `.zip` archives or dated backup copies in `ads/`. When creating that native
+   ADS project and its role libraries for the first time, use `ads-project-kit`
+   inside the target ADS Python Runtime as documented in
+   [ADS Project Kit integration](ads-project-kit-integration.md). Keep runnable scripts in
    `tools/` and all `test_*.py` / `*_test.py` checks in `tests/`, and declare
    committed optional paths (`tools`, `tests`, `specification_snapshot`) in
    `project.toml` only when those directories exist.

@@ -167,9 +167,10 @@ process, software version, workspace and consumer-visible files. Distinguish
 the agent's environment, SSH shell host and native EDA process host. Matching drive
 letters or an MCP server label do not establish a shared filesystem.
 
-For ADS, follow the [ADS MCP workflow](ads-mcp-workflow.md) and record separately
-the configuration, transport, documentation, session, workspace and model
-checks actually performed. Link a portable preflight report from `run.json`;
+For ADS, follow the [ADS MCP workflow](ads-mcp-workflow.md) and
+[ADS Project Kit integration](ads-project-kit-integration.md), and record separately
+the configuration, transport, documentation, session, workspace, `ads_project_kit`
+runtime and model checks actually performed. Link a portable preflight report from `run.json`;
 keep exact host/session/path observations in the private binding receipt.
 Unavailable or unperformed checks remain pending. A recorded preflight status
 is an assertion with evidence references; the static checker does not discover

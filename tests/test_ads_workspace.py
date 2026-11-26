@@ -6,9 +6,12 @@ from contextlib import redirect_stderr, redirect_stdout
 import io
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
+from types import ModuleType
 import unittest
+from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
@@ -16,6 +19,32 @@ sys.path.insert(0, str(REPO))
 
 import ads_workspace as aw  # noqa: E402
 from scripts.lpf import task_handoff  # noqa: E402
+
+
+def _ensure_apk_naming_modules():
+    """Load real sibling ads_project_kit.naming when present, or a minimal test stub."""
+    sibling_src = REPO.parent / "ads-project-kit" / "src"
+    if (sibling_src / "ads_project_kit" / "naming.py").is_file():
+        if str(sibling_src) not in sys.path:
+            sys.path.insert(0, str(sibling_src))
+        import ads_project_kit
+        import ads_project_kit.naming
+
+        return {"ads_project_kit": ads_project_kit, "ads_project_kit.naming": ads_project_kit.naming}
+
+    ident = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z", re.ASCII)
+    tb = re.compile(r"TB_(?P<dut>[A-Za-z_][A-Za-z0-9_]*)_(?:SP|HB|TRAN|AC|DC|EM)(?:_[A-Z][A-Z0-9]*)?\Z", re.ASCII)
+    standard = frozenset({"schematic", "symbol", "layout", "emSetup", "emModel", "emModel_mw"})
+    kit = ModuleType("ads_project_kit")
+    naming = ModuleType("ads_project_kit.naming")
+    naming.STANDARD_VIEWS = standard
+    naming.is_valid_workspace_name = lambda n: isinstance(n, str) and n.endswith("_wrk") and bool(ident.fullmatch(n[:-4]))
+    naming.is_valid_library_name = lambda n: isinstance(n, str) and bool(ident.fullmatch(n))
+    naming.is_valid_dut_cell_name = lambda n: isinstance(n, str) and bool(ident.fullmatch(n)) and not n.upper().startswith("TB_")
+    naming.is_valid_testbench_cell_name = lambda n: isinstance(n, str) and bool(tb.fullmatch(n)) and not tb.fullmatch(n).group("dut").upper().startswith("TB_")
+    naming.is_valid_view_name = lambda n: isinstance(n, str) and (n in standard or (n.startswith("x_") and len(n) > 2 and bool(ident.fullmatch(n))))
+    kit.naming = naming
+    return {"ads_project_kit": kit, "ads_project_kit.naming": naming}
 
 
 class AdsWorkspaceTests(unittest.TestCase):
@@ -275,7 +304,8 @@ class AdsWorkspaceTests(unittest.TestCase):
             (ads_ws / "LPF_R01_lib" / "LPF_Series_First" / view).mkdir(parents=True)
         (ads_ws / "LPF_R01_lib" / "LPF_Series_First_C01" / "schematic").mkdir(parents=True)
         (ads_ws / "LPF_R01_tb_lib" / "TB_LPF_Series_First_SP" / "schematic").mkdir(parents=True)
-        report = aw.validate_workspace(self.repo, ws, require_v2=True)
+        with patch.dict(sys.modules, _ensure_apk_naming_modules()):
+            report = aw.validate_workspace(self.repo, ws, require_v2=True)
         self.assertEqual(report["status"], "ok", report["errors"])
 
     def test_naming_validation_rejects_bad_library_and_tb(self):
@@ -292,11 +322,31 @@ class AdsWorkspaceTests(unittest.TestCase):
             (ads_ws / "LPF_R01_lib" / "LPF_Series_First" / view).mkdir(parents=True)
         (ads_ws / "lpf_lib" / "LPF_Series_First" / "schematic").mkdir(parents=True)
         (ads_ws / "LPF_R01_tb_lib" / "TB_Unknown_SP" / "schematic").mkdir(parents=True)
-        report = aw.validate_workspace(self.repo, ws, require_v2=True)
+        (ads_ws / "LPF_R01_tb_lib" / "InvalidTBName" / "schematic").mkdir(parents=True)
+        with patch.dict(sys.modules, _ensure_apk_naming_modules()):
+            report = aw.validate_workspace(self.repo, ws, require_v2=True)
         self.assertEqual(report["status"], "error")
         joined = "\n".join(report["errors"])
         self.assertIn("Task-local ADS library 'lpf_lib'", joined)
         self.assertIn("names DUT 'Unknown'", joined)
+        self.assertIn("InvalidTBName", joined)
+
+    def test_naming_validation_warns_not_run_when_ads_project_kit_missing(self):
+        ws = self._init_named_workspace()
+        ads_ws = self._write_lib_defs(
+            ws,
+            [
+                ("LPF_R01_lib", "LPF_R01_lib"),
+                ("LPF_R01_tb_lib", "LPF_R01_tb_lib"),
+            ],
+        )
+        for view in ("schematic", "symbol"):
+            (ads_ws / "LPF_R01_lib" / "LPF_Series_First" / view).mkdir(parents=True)
+        (ads_ws / "LPF_R01_tb_lib" / "TB_LPF_Series_First_SP" / "schematic").mkdir(parents=True)
+        with patch.dict(sys.modules, {"ads_project_kit": None, "ads_project_kit.naming": None}):
+            report = aw.validate_workspace(self.repo, ws, require_v2=True)
+        self.assertEqual(report["status"], "ok", report["errors"])
+        self.assertTrue(any("NOT RUN" in warning for warning in report["warnings"]))
 
     def test_naming_validation_skips_without_block_key(self):
         ws = aw.init_workspace(
@@ -327,7 +377,8 @@ class AdsWorkspaceTests(unittest.TestCase):
         for view in ("schematic", "symbol"):
             (ads_ws / "LPF_R01_lib" / "LPF_Series_First" / view).mkdir(parents=True)
         (ads_ws / "example_pcells_lib" / "example_device" / "layout").mkdir(parents=True)
-        report = aw.validate_workspace(self.repo, ws, require_v2=True)
+        with patch.dict(sys.modules, _ensure_apk_naming_modules()):
+            report = aw.validate_workspace(self.repo, ws, require_v2=True)
         self.assertEqual(report["status"], "ok", report["errors"])
 
 

@@ -6,7 +6,7 @@ schema_version = 1
 [workflows.ads-generic]
 eda = "ads"
 status = "implemented"
-version = "1.2"
+version = "1.3"
 guide = "docs/ads-mcp-workflow.md"
 skills = ["configure-ads-environment"]
 documents = [
@@ -15,8 +15,10 @@ documents = [
   "docs/templates/engineering-delegation.md",
   "docs/engineering-workspace-layout.md",
   "docs/ads-naming-convention.md",
+  "docs/ads-project-kit-integration.md",
   "docs/ads-mcp-workflow.md",
   "scripts/ads_workspace.py",
+  "scripts/ads_project_kit_runtime.py",
   "scripts/engineering_runs.py",
   "scripts/engineering_environment.py",
   "docs/lab-integration.md",
@@ -29,7 +31,7 @@ documents = [
 [workflows.ads-lpf]
 eda = "ads"
 status = "implemented"
-version = "1.2"
+version = "1.3"
 guide = "docs/ads-lpf-task-workflow.md"
 skills = ["configure-ads-environment", "staged-lpf-design"]
 documents = [
@@ -38,9 +40,11 @@ documents = [
   "docs/templates/engineering-delegation.md",
   "docs/engineering-workspace-layout.md",
   "docs/ads-naming-convention.md",
+  "docs/ads-project-kit-integration.md",
   "docs/ads-mcp-workflow.md",
   "docs/ads-lpf-task-workflow.md",
   "scripts/ads_workspace.py",
+  "scripts/ads_project_kit_runtime.py",
   "scripts/engineering_runs.py",
   "scripts/engineering_environment.py",
   "docs/lab-integration.md",
@@ -60,7 +64,7 @@ documents = [
 [workflows.ads-inductor]
 eda = "ads"
 status = "implemented"
-version = "1.2"
+version = "1.3"
 guide = ".agents/skills/rf-inductor-toolkit-design/SKILL.md"
 skills = ["configure-ads-environment", "rf-inductor-toolkit-design"]
 documents = [
@@ -69,8 +73,10 @@ documents = [
   "docs/templates/engineering-delegation.md",
   "docs/engineering-workspace-layout.md",
   "docs/ads-naming-convention.md",
+  "docs/ads-project-kit-integration.md",
   "docs/ads-mcp-workflow.md",
   "scripts/ads_workspace.py",
+  "scripts/ads_project_kit_runtime.py",
   "scripts/engineering_runs.py",
   "scripts/engineering_environment.py",
   "docs/lab-integration.md",

@@ -102,7 +102,7 @@ Report the following layers separately, each with its actual evidence and unreso
 | Transport | The selected MCP or other route initializes and exposes its actual capabilities. |
 | Documentation | Available documentation and schemas correspond to the selected tool/version. |
 | Session | The intended existing ADS process is discovered and attached with matching identity. |
-| Workspace | The actual selected library, views, and consumer-visible paths match the task. |
+| Workspace | The actual selected library, views, `ads_project_kit` runtime/validation (when creating or validating a project), and consumer-visible paths match the task. |
 | Models | Actual bindings, samples, domains, includes, and warnings are known for the intended work. |
 
 A configured server is not a connected session; a connected session is not verified models.

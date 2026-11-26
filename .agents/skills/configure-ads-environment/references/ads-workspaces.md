@@ -75,9 +75,13 @@ An initialized directory, even with a valid manifest, does not prove native/mode
 
 - Separate the bare DUT schematic, ordered-terminal symbol, and testbench schematic. Identify
   exact library/cell/view names; distinguish the selected source from historical alternatives.
-- Follow the destination project's ADS library, cell and view naming convention. If none exists,
-  adopt one that encodes the task revision, the library role and the authoritative view, and keep
-  experimental views clearly separated from authoritative source.
+- Follow the destination project's ADS library, cell and view naming convention.
+  When `ads-project-kit` is used for generic ADS project creation and validation,
+  run `preflight_ads_runtime()`, `create_project()`, and `validate_project()` inside
+  the target ADS Python Runtime (keeping `NOT RUN` distinct from native `PASS`).
+  If no task-level extension exists, adopt names that encode the task revision,
+  the library role and the authoritative view, and keep experimental views clearly
+  separated from authoritative source.
 - Keep supplies, loads, Term ports, grounds, feedback, and required model includes with their
   declared DUT or bench owner. A copied bench does not establish correct wiring or analysis.
 - Prefer relative project paths in native library definitions and supported installation

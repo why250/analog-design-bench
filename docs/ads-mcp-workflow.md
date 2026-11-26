@@ -82,9 +82,19 @@ local notes; the portable workflow names capabilities, not machine bindings.
 ## Build an editable, portable source
 
 - Complete [Start another ADS task](engineering-workspace-layout.md#start-another-ads-task)
-  before the first native build. Create the editable ADS project under its
+  before the first native build. When creating a new native ADS workspace and
+  local libraries, follow [ADS Project Kit integration](ads-project-kit-integration.md):
+  preflight the ADS runtime (`preflight_ads_runtime()`), create the workspace and
+  role libraries with `create_ads_project()` (wrapping `ads_project_kit.create_project()`),
+  and verify native readiness with `validate_ads_project()`. Do not duplicate
+  `de.create_workspace()` / `de.create_new_library()` setup or fall back
+  silently when `ads_project_kit` is missing.
+- Create the editable ADS project under its
   declared `workspaces/<task-id>/ads/` path and resolve paths from `project.toml`.
-  Check for unsaved designs before switching the ADS session's active workspace.
+  Check for unsaved designs before switching the ADS session's active workspace;
+  never close an already-open workspace to create or validate a project.
+- For tasks that attach an external PDK technology (`attached_tech_lib_name`) or
+  layout/EM technology, pass `setup_schematic_tech=False` to `create_ads_project()`.
 - Keep the DUT, its symbol and its simulation testbench as separate views. Give
   the DUT explicit ordered terminals; place sources, reference terminations and
   global ground connections in the testbench according to the task contract.

@@ -27,7 +27,8 @@ an isolated run and a delegation package. Host policy stays in the lab; design
 requirements and results stay here. The user's entrypoint remains a normal
 design goal in a conversation opened in this project.
 
-Use the [engineering workspace layout](docs/engineering-workspace-layout.md)
+Use the [engineering workspace layout](docs/engineering-workspace-layout.md),
+[ADS Project Kit integration](docs/ads-project-kit-integration.md),
 and [ADS naming convention](docs/ads-naming-convention.md) for new ADS work.
 Each run has a common machine-readable index while retaining its task-specific
 native files and results. Historical projects and completed evidence keep
